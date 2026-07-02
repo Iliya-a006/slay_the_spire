@@ -36,8 +36,6 @@ private:
 
     bool checkPassword();
 
-public:
-
 };
 
 #endif // LOGIN_H

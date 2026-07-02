@@ -2,6 +2,7 @@
 #include "./ui_mainwindow.h"
 #include "Page.h"
 #include "login.h"
+#include "mainmenu.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -15,11 +16,16 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(m_stack);
 
     login* loginPage = new login(this);
+    MainMenu* mainmenu = new MainMenu(this);
 
     m_stack->addWidget(loginPage);
+    m_stack->addWidget(mainmenu);
+
 
     m_stack->setCurrentIndex((int)Page::login);
 }
+
+QStackedWidget* MainWindow::m_stack;
 
 MainWindow::~MainWindow()
 {

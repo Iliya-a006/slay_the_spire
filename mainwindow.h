@@ -19,10 +19,11 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
 
+    static QStackedWidget* m_stack;
+
 
 private:
     Ui::MainWindow *ui;
 
-    QStackedWidget* m_stack;
 };
 #endif // MAINWINDOW_H

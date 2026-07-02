@@ -3,7 +3,7 @@
 
 enum class Page{
     login,
-    mainMenu
+    MainMenu
 };
 
 #endif // PAGE_H

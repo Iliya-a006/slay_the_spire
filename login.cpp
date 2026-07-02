@@ -1,6 +1,9 @@
 #include "login.h"
 #include "ui_login.h"
 #include <QDebug>
+#include "player.h"
+#include "mainwindow.h"
+#include "Page.h"
 
 login::login(QWidget *parent)
     : QWidget(parent)
@@ -69,10 +72,12 @@ login::login(QWidget *parent)
 
     connect(signInButton, &QPushButton::clicked, this, [this](){
         if (m_signin){
-
+            if (player::findPlayer(nameEdit->text(), passwordEdit->text()))
+                MainWindow::m_stack->setCurrentIndex((int)Page::MainMenu);
         }
         else if (checkPassword() && nameEdit->text().length()){
-
+            if (player::appendPlayer(nameEdit->text(), passwordEdit->text()))
+                MainWindow::m_stack->setCurrentIndex((int)Page::MainMenu);
         }
     });
 }

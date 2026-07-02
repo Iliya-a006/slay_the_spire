@@ -39,8 +39,8 @@ private:
 public:
     void writeToStream(QDataStream &out) const;
     void readFromStream(QDataStream& in);
-    bool appendPlayer(QString name, QString pass);
-    bool findPlayer(QString name, QString pass);
+    static bool appendPlayer(QString name, QString pass);
+    static bool findPlayer(QString name, QString pass);
 };
 
 #endif // PLAYER_H
