@@ -1,47 +1,96 @@
 #include "login.h"
 #include "ui_login.h"
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
+#include <QDebug>
+#include "player.h"
+#include "mainwindow.h"
+#include "Page.h"
 
 login::login(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::login)
 {
     ui->setupUi(this);
-    QFont font;
     font.setPointSize(20);
 
-    QFrame* frame = new QFrame(this);
+    frame = new QFrame(this);
     frame->setGeometry(450, 50, 400, 450);
     frame->setFrameShape(QFrame::Box);
 
-    QLabel* nameLabel = new QLabel(this);
-    nameLabel->setGeometry(500, 100, 300, 25);
+    nameLabel = new QLabel(frame);
+    nameLabel->setGeometry(50, 50, 300, 25);
     nameLabel->setFont(font);
     nameLabel->setText("Enter Your Username");
 
-    QLineEdit* nameEdit = new QLineEdit(this);
-    nameEdit->setGeometry(500, 130, 300, 25);
+    nameEdit = new QLineEdit(frame);
+    nameEdit->setGeometry(50, 80, 300, 25);
     nameEdit->setPlaceholderText(" username");
 
-    QLabel* passwordLabel = new QLabel(this);
-    passwordLabel->setGeometry(500, 220, 300, 25);
+    passwordLabel = new QLabel(frame);
+    passwordLabel->setGeometry(50, 170, 300, 25);
     passwordLabel->setFont(font);
     passwordLabel->setText("Enter Your Password");
 
-    QLineEdit* passwordEdit = new QLineEdit(this);
-    passwordEdit->setGeometry(500, 250, 300, 25);
+    passwordEdit = new QLineEdit(frame);
+    passwordEdit->setGeometry(50, 200, 300, 25);
     passwordEdit->setPlaceholderText(" password");
 
-    QPushButton* signInButton = new QPushButton(this);
-    signInButton->setGeometry(730, 460, 70, 25);
+    signInButton = new QPushButton(frame);
+    signInButton->setGeometry(280, 410, 70, 25);
     signInButton->setText("Sign in");
 
-    QPushButton* newButton = new QPushButton(this);
-    newButton->setGeometry(500, 460, 100, 25);
+    newButton = new QPushButton(frame);
+    newButton->setGeometry(50, 410, 100, 25);
     newButton->setText("New Account");
+
+    confirmLabel = new QLabel(frame);
+    confirmLabel->setGeometry(50, 290, 300, 25);
+    confirmLabel->setFont(font);
+    confirmLabel->setText("Confirm Your Password");
+    confirmLabel->hide();
+
+    confirmEdit = new QLineEdit(frame);
+    confirmEdit->setGeometry(50, 320, 300, 25);
+    confirmEdit->setPlaceholderText(" password");
+    confirmEdit->hide();
+
+    connect(newButton, &QPushButton::clicked, this, [this](){
+        if (m_signin){
+            m_signin = false;
+            confirmLabel->show();
+            confirmEdit->show();
+            signInButton->setText("Sign up");
+            newButton->setText("Sign in");
+        }
+        else{
+            m_signin = true;
+            confirmLabel->hide();
+            confirmEdit->hide();
+            signInButton->setText("Sign in");
+            newButton->setText("New Account");
+        }
+    });
+
+    connect(signInButton, &QPushButton::clicked, this, [this](){
+        if (m_signin){
+            if (player::findPlayer(nameEdit->text(), passwordEdit->text()))
+                MainWindow::m_stack->setCurrentIndex((int)Page::MainMenu);
+        }
+        else if (checkPassword() && nameEdit->text().length()){
+            if (player::appendPlayer(nameEdit->text(), passwordEdit->text()))
+                MainWindow::m_stack->setCurrentIndex((int)Page::MainMenu);
+        }
+    });
 }
+
+bool login::checkPassword(){
+    if (passwordEdit->text() == confirmEdit->text())
+        return true;
+    else{
+        qDebug() << "passwords do not match";
+        return false;
+    }
+}
+
 
 login::~login()
 {

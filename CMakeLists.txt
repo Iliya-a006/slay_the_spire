@@ -30,6 +30,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         buff_debuff.h buff_debuff.cpp
         potion.h potion.cpp
         relic.h relic.cpp
+        mainmenu.h mainmenu.cpp mainmenu.ui
 
 
 
