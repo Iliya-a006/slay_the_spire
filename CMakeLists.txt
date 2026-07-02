@@ -25,6 +25,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         Page.h
         login.h login.cpp login.ui
+        player.h player.cpp
+        card.h card.cpp
+        buff_debuff.h buff_debuff.cpp
+        potion.h potion.cpp
+        relic.h relic.cpp
 
 
 
