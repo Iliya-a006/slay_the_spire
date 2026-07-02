@@ -1,5 +1,6 @@
 #include "login.h"
 #include "ui_login.h"
+#include <QDebug>
 
 login::login(QWidget *parent)
     : QWidget(parent)
@@ -64,10 +65,26 @@ login::login(QWidget *parent)
             signInButton->setText("Sign in");
             newButton->setText("New Account");
         }
+    });
 
+    connect(signInButton, &QPushButton::clicked, this, [this](){
+        if (m_signin){
+
+        }
+        else if (checkPassword() && nameEdit->text().length()){
+
+        }
     });
 }
 
+bool login::checkPassword(){
+    if (passwordEdit->text() == confirmEdit->text())
+        return true;
+    else{
+        qDebug() << "passwords do not match";
+        return false;
+    }
+}
 
 
 login::~login()

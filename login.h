@@ -34,6 +34,8 @@ private:
     QPushButton* signInButton;
     QPushButton* newButton;
 
+    bool checkPassword();
+
 public:
 
 };
