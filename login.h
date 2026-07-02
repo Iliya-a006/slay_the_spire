@@ -2,6 +2,10 @@
 #define LOGIN_H
 
 #include <QWidget>
+#include <qframe.h>
+#include <qlabel.h>
+#include <qlineedit.h>
+#include <qpushbutton.h>
 
 namespace Ui {
 class login;
@@ -17,6 +21,21 @@ public:
 
 private:
     Ui::login *ui;
+
+    bool m_signin=true;
+    QFont font;
+    QFrame* frame;
+    QLabel* nameLabel;
+    QLabel* passwordLabel;
+    QLabel* confirmLabel;
+    QLineEdit* nameEdit;
+    QLineEdit* passwordEdit;
+    QLineEdit* confirmEdit;
+    QPushButton* signInButton;
+    QPushButton* newButton;
+
+public:
+
 };
 
 #endif // LOGIN_H
