@@ -1,10 +1,13 @@
 #include "mainmenu.h"
+#include "Page.h"
+#include "mainwindow.h"
 #include "ui_mainmenu.h"
 #include <QLabel>
 #include <QGuiApplication>
 #include <qscreen.h>
 #include "player.h"
 #include <QFont>
+#include <QCloseEvent>
 
 MainMenu::MainMenu(QWidget *parent)
     : QWidget(parent)
@@ -48,6 +51,15 @@ MainMenu::MainMenu(QWidget *parent)
     exitButton = new QPushButton("Exit", this);
     exitButton->setGeometry(50, 300, 200, 25);
     exitButton->setStyleSheet(buttonStyle);
+
+    connect(exitButton, &QPushButton::clicked, this, [](){
+        player::saveFile();
+        QApplication::quit();
+    });
+
+    connect(startButton, &QPushButton::clicked, this, [](){
+        MainWindow::changeStack((int)Page::startMenu);
+    });
 }
 
 MainMenu::~MainMenu()

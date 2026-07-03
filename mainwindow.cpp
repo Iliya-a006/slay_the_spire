@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QCloseEvent>
 #include "player.h"
+#include "startmenu.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,7 +25,6 @@ MainWindow::MainWindow(QWidget *parent)
     backgrounds.push_back(":/prefix1/images/loginpic.png");
 
     connect(loginPage, &login::loginSuccess, this, &MainWindow::onLoginSuccess);
-    //connect(this, &MainWindow::closeSignal, player::instance, player::saveFile);
 }
 
 QStackedWidget* MainWindow::m_stack;
@@ -37,9 +37,12 @@ void MainWindow::changeStack(int page)
 void MainWindow::onLoginSuccess()
 {
     MainMenu* mainmenu = new MainMenu(m_stack);
+    startMenu* start = new startMenu(m_stack);
 
     m_stack->addWidget(mainmenu);
+    m_stack->addWidget(start);
 
+    backgrounds.push_back(":/prefix1/images/menupic.png");
     backgrounds.push_back(":/prefix1/images/menupic.png");
 }
 

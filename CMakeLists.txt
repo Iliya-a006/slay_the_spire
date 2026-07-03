@@ -32,6 +32,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         relic.h relic.cpp
         mainmenu.h mainmenu.cpp mainmenu.ui
         background.qrc
+        startmenu.h startmenu.cpp
 
 
 

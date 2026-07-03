@@ -25,6 +25,7 @@ private:
     QPushButton* startButton;
     QPushButton* leaderBButton;
     QPushButton* settingsButton;
+public:
     QPushButton* exitButton;
 };
 
