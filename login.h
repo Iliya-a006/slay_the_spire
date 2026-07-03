@@ -36,6 +36,9 @@ private:
 
     bool checkPassword();
 
+signals:
+    void loginSuccess();
+
 };
 
 #endif // LOGIN_H

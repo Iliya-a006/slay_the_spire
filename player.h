@@ -17,7 +17,7 @@ class player : public QObject, public QGraphicsPixmapItem
 
 public:
     explicit player(QGraphicsItem *parent = nullptr);
-    //friend class login;
+    QString getName(){return username;}
 
     static player* instance();
 

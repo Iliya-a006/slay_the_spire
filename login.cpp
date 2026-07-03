@@ -71,17 +71,17 @@ login::login(QWidget *parent)
         }
     });
 
-    connect(signInButton, &QPushButton::clicked, this, [this](){
+    connect(signInButton, &QPushButton::clicked, this, [this, &parent](){
         if (m_signin){
             if (player::findPlayer(nameEdit->text(), passwordEdit->text())){
-                MainWindow::m_stack->setCurrentIndex((int)Page::MainMenu);
-                update();
+                emit loginSuccess();
+                MainWindow::changeStack((int)Page::MainMenu);
             }
         }
         else if (checkPassword() && nameEdit->text().length()){
             if (player::appendPlayer(nameEdit->text(), passwordEdit->text())){
-                MainWindow::m_stack->setCurrentIndex((int)Page::MainMenu);
-                update();
+                emit loginSuccess();
+                MainWindow::changeStack((int)Page::MainMenu);
             }
         }
     });
@@ -95,7 +95,6 @@ bool login::checkPassword(){
         return false;
     }
 }
-
 
 login::~login()
 {
