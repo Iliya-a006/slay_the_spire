@@ -3,6 +3,12 @@
 #include "Page.h"
 #include "login.h"
 #include "mainmenu.h"
+#include <QPainter>
+#include <QCloseEvent>
+#include "player.h"
+#include "settingspage.h"
+#include "startmenu.h"
+#include "leaderboard.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -15,17 +21,52 @@ MainWindow::MainWindow(QWidget *parent)
     m_stack = new QStackedWidget(this);
     setCentralWidget(m_stack);
 
-    login* loginPage = new login(this);
-    MainMenu* mainmenu = new MainMenu(this);
-
+    login* loginPage = new login(m_stack);
     m_stack->addWidget(loginPage);
-    m_stack->addWidget(mainmenu);
-
-
     m_stack->setCurrentIndex((int)Page::login);
+    backgrounds.push_back(":/prefix1/images/loginpic.png");
+
+    connect(loginPage, &login::loginSuccess, this, &MainWindow::onLoginSuccess);
 }
 
 QStackedWidget* MainWindow::m_stack;
+void MainWindow::changeStack(int page)
+{
+    MainWindow::m_stack->setCurrentIndex(page);
+    m_stack->update();
+}
+
+void MainWindow::onLoginSuccess()
+{
+    MainMenu* mainmenu = new MainMenu(m_stack);
+    startMenu* start = new startMenu(m_stack);
+    leaderBoard* leaderB = new leaderBoard(m_stack);
+    SettingsPage* settings = new SettingsPage(m_stack);
+
+    m_stack->addWidget(mainmenu);
+    m_stack->addWidget(start);
+    m_stack->addWidget(leaderB);
+    m_stack->addWidget(settings);
+
+    backgrounds.push_back(":/prefix1/images/menupic.png");
+    backgrounds.push_back(":/prefix1/images/menupic.png");
+    backgrounds.push_back("");
+    backgrounds.push_back("");
+}
+
+void MainWindow::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+    QPixmap bg(backgrounds[m_stack->currentIndex()]);
+    painter.drawPixmap(rect(), bg.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+    QWidget::paintEvent(event);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    player::saveFile();
+    event->accept();
+}
 
 MainWindow::~MainWindow()
 {

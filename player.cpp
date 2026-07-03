@@ -2,8 +2,7 @@
 #include <QFile>
 #include <QDataStream>
 
-player::player(QGraphicsItem *parent)
-    : QGraphicsPixmapItem(parent)
+player::player()
 {
     gold = 0;
     Act = 1;
@@ -24,13 +23,13 @@ player* player::instance()
 void player::writeToStream(QDataStream &out) const
 {
     out << username << password << gold << Act << floor << maxHP << HP;
-    out << cards << buff_debuffs << potions << relics;
+    out << cards << /*buff_debuffs << */potions << relics;
 }
 
 void player::readFromStream(QDataStream &in)
 {
     in >> username >> password >> gold >> Act >> floor >> maxHP >> HP;
-    in >> cards >> buff_debuffs >> potions >> relics;
+    in >> cards >> /*buff_debuffs >> */potions >> relics;
 }
 
 bool player::appendPlayer(QString name, QString pass)
@@ -69,6 +68,35 @@ bool player::findPlayer(QString name, QString pass)
     file.close();
     return false;
 }
+
+void player::saveFile()
+{
+    QVector<player> players;
+    player p;
+
+    QFile file("players.bin");
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+    QDataStream in(&file);
+    in.setVersion(QDataStream::Qt_6_5);
+    while(!in.atEnd()){
+        p.readFromStream(in);
+        if (p.username == m_instance->username && p.password == m_instance->password)
+            p = *m_instance;
+        players.push_back(p);
+    }
+    file.close();
+
+    if (!file.open(QIODevice::WriteOnly))
+        return;
+    QDataStream out(&file);
+    out.setVersion(QDataStream::Qt_6_5);
+    for (int i=0; i<players.length(); ++i)
+        players[i].writeToStream(out);
+    file.close();
+}
+
+
 
 
 

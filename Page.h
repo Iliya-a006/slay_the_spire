@@ -3,7 +3,11 @@
 
 enum class Page{
     login,
-    MainMenu
+    MainMenu,
+    startMenu,
+    leaderBoard,
+    settings,
+
 };
 
 #endif // PAGE_H

@@ -15,6 +15,7 @@ login::login(QWidget *parent)
     frame = new QFrame(this);
     frame->setGeometry(450, 50, 400, 450);
     frame->setFrameShape(QFrame::Box);
+    frame->setStyleSheet("QFrame { border-image: url(:/prefix1/images/whitepic.png) 0 0 0 0 stretch stretch; }");
 
     nameLabel = new QLabel(frame);
     nameLabel->setGeometry(50, 50, 300, 25);
@@ -70,14 +71,18 @@ login::login(QWidget *parent)
         }
     });
 
-    connect(signInButton, &QPushButton::clicked, this, [this](){
+    connect(signInButton, &QPushButton::clicked, this, [this, &parent](){
         if (m_signin){
-            if (player::findPlayer(nameEdit->text(), passwordEdit->text()))
-                MainWindow::m_stack->setCurrentIndex((int)Page::MainMenu);
+            if (player::findPlayer(nameEdit->text(), passwordEdit->text())){
+                emit loginSuccess();
+                MainWindow::changeStack((int)Page::MainMenu);
+            }
         }
         else if (checkPassword() && nameEdit->text().length()){
-            if (player::appendPlayer(nameEdit->text(), passwordEdit->text()))
-                MainWindow::m_stack->setCurrentIndex((int)Page::MainMenu);
+            if (player::appendPlayer(nameEdit->text(), passwordEdit->text())){
+                emit loginSuccess();
+                MainWindow::changeStack((int)Page::MainMenu);
+            }
         }
     });
 }
@@ -90,7 +95,6 @@ bool login::checkPassword(){
         return false;
     }
 }
-
 
 login::~login()
 {

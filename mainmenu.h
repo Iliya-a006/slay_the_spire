@@ -2,6 +2,8 @@
 #define MAINMENU_H
 
 #include <QWidget>
+#include <QLabel>
+#include <qpushbutton.h>
 
 namespace Ui {
 class MainMenu;
@@ -17,6 +19,14 @@ public:
 
 private:
     Ui::MainMenu *ui;
+
+    QString buttonStyle;
+    QLabel* nameLabel;
+    QPushButton* startButton;
+    QPushButton* leaderBButton;
+    QPushButton* settingsButton;
+public:
+    QPushButton* exitButton;
 };
 
 #endif // MAINMENU_H

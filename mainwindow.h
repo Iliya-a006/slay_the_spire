@@ -20,10 +20,20 @@ public:
     ~MainWindow() override;
 
     static QStackedWidget* m_stack;
+    static void changeStack(int page);
 
 
 private:
     Ui::MainWindow *ui;
+
+
+protected:
+    void paintEvent(QPaintEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
+    QVector<QString> backgrounds;
+
+private slots:
+    void onLoginSuccess();
 
 };
 #endif // MAINWINDOW_H

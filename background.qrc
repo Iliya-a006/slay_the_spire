@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/prefix1">
+        <file>images/fightpic.png</file>
+        <file>images/whitepic.png</file>
+        <file>images/loginpic.png</file>
+        <file>images/menupic.png</file>
+    </qresource>
+</RCC>

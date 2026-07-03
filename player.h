@@ -1,23 +1,16 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-// #include "buff_debuff.h"
-// #include "card.h"
-// #include "potion.h"
-// #include "relic.h"
 #include <QWidget>
-#include <QGraphicsPixmapItem>
 #include <QVector>
 #include <QDataStream>
 
 
-class player : public QObject, public QGraphicsPixmapItem
+class player
 {
-    Q_OBJECT
-
 public:
-    explicit player(QGraphicsItem *parent = nullptr);
-    //friend class login;
+    explicit player();
+    QString getName(){return username;}
 
     static player* instance();
 
@@ -41,6 +34,8 @@ public:
     void readFromStream(QDataStream& in);
     static bool appendPlayer(QString name, QString pass);
     static bool findPlayer(QString name, QString pass);
+
+    static void saveFile();
 };
 
 #endif // PLAYER_H
