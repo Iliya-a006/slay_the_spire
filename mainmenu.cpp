@@ -52,13 +52,20 @@ MainMenu::MainMenu(QWidget *parent)
     exitButton->setGeometry(50, 300, 200, 25);
     exitButton->setStyleSheet(buttonStyle);
 
+    connect(startButton, &QPushButton::clicked, this, [](){
+        MainWindow::changeStack((int)Page::startMenu);
+    });
+
+    connect(leaderBButton, &QPushButton::clicked, this, [](){
+        MainWindow::changeStack((int)Page::leaderBoard);
+    });
+
+    connect(settingsButton, &QPushButton::clicked, this, [](){
+        MainWindow::changeStack((int)Page::settings);
+    });
     connect(exitButton, &QPushButton::clicked, this, [](){
         player::saveFile();
         QApplication::quit();
-    });
-
-    connect(startButton, &QPushButton::clicked, this, [](){
-        MainWindow::changeStack((int)Page::startMenu);
     });
 }
 

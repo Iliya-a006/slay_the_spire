@@ -6,7 +6,9 @@
 #include <QPainter>
 #include <QCloseEvent>
 #include "player.h"
+#include "settingspage.h"
 #include "startmenu.h"
+#include "leaderboard.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -38,12 +40,18 @@ void MainWindow::onLoginSuccess()
 {
     MainMenu* mainmenu = new MainMenu(m_stack);
     startMenu* start = new startMenu(m_stack);
+    leaderBoard* leaderB = new leaderBoard(m_stack);
+    SettingsPage* settings = new SettingsPage(m_stack);
 
     m_stack->addWidget(mainmenu);
     m_stack->addWidget(start);
+    m_stack->addWidget(leaderB);
+    m_stack->addWidget(settings);
 
     backgrounds.push_back(":/prefix1/images/menupic.png");
     backgrounds.push_back(":/prefix1/images/menupic.png");
+    backgrounds.push_back("");
+    backgrounds.push_back("");
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)

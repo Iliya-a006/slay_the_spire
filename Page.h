@@ -5,8 +5,8 @@ enum class Page{
     login,
     MainMenu,
     startMenu,
-    settings,
     leaderBoard,
+    settings,
 
 };
 

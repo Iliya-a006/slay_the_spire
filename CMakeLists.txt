@@ -33,6 +33,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         mainmenu.h mainmenu.cpp mainmenu.ui
         background.qrc
         startmenu.h startmenu.cpp
+        leaderboard.h leaderboard.cpp
+        settingspage.h settingspage.cpp
 
 
 
