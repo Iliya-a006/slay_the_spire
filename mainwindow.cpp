@@ -4,6 +4,8 @@
 #include "login.h"
 #include "mainmenu.h"
 #include <QPainter>
+#include <QCloseEvent>
+#include "player.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -22,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     backgrounds.push_back(":/prefix1/images/loginpic.png");
 
     connect(loginPage, &login::loginSuccess, this, &MainWindow::onLoginSuccess);
+    //connect(this, &MainWindow::closeSignal, player::instance, player::saveFile);
 }
 
 QStackedWidget* MainWindow::m_stack;
@@ -46,6 +49,12 @@ void MainWindow::paintEvent(QPaintEvent *event)
     QPixmap bg(backgrounds[m_stack->currentIndex()]);
     painter.drawPixmap(rect(), bg.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
     QWidget::paintEvent(event);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    player::saveFile();
+    event->accept();
 }
 
 MainWindow::~MainWindow()

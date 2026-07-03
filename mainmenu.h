@@ -20,6 +20,7 @@ public:
 private:
     Ui::MainMenu *ui;
 
+    QString buttonStyle;
     QLabel* nameLabel;
     QPushButton* startButton;
     QPushButton* leaderBButton;

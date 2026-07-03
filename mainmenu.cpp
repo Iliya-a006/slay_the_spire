@@ -18,7 +18,7 @@ MainMenu::MainMenu(QWidget *parent)
     nameLabel->setFont(nameFont);
     nameLabel->setStyleSheet("color: white;");
 
-    QString buttonStyle =
+    buttonStyle =
         "QPushButton {"
         "   border: none;"
         "   background: transparent;"

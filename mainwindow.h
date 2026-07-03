@@ -29,9 +29,11 @@ private:
 
 protected:
     void paintEvent(QPaintEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
     QVector<QString> backgrounds;
 
 private slots:
     void onLoginSuccess();
+
 };
 #endif // MAINWINDOW_H
