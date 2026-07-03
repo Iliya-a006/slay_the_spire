@@ -3,6 +3,7 @@
 #include "Page.h"
 #include "login.h"
 #include "mainmenu.h"
+#include <QPainter>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,11 +22,21 @@ MainWindow::MainWindow(QWidget *parent)
     m_stack->addWidget(loginPage);
     m_stack->addWidget(mainmenu);
 
-
     m_stack->setCurrentIndex((int)Page::login);
+
+    backgrounds.push_back(":/prefix1/images/loginpic.png");
+    backgrounds.push_back(":/prefix1/images/menupic.png");
 }
 
 QStackedWidget* MainWindow::m_stack;
+
+void MainWindow::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+    QPixmap bg(backgrounds[m_stack->currentIndex()]);
+    painter.drawPixmap(rect(), bg.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+    QWidget::paintEvent(event);
+}
 
 MainWindow::~MainWindow()
 {

@@ -21,9 +21,12 @@ public:
 
     static QStackedWidget* m_stack;
 
-
 private:
     Ui::MainWindow *ui;
+
+protected:
+    void paintEvent(QPaintEvent *event) override;
+    QVector<QString> backgrounds;
 
 };
 #endif // MAINWINDOW_H

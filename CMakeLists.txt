@@ -31,6 +31,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         potion.h potion.cpp
         relic.h relic.cpp
         mainmenu.h mainmenu.cpp mainmenu.ui
+        background.qrc
 
 
 
