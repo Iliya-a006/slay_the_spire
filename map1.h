@@ -1,6 +1,7 @@
 #ifndef MAP1_H
 #define MAP1_H
 
+#include "floor.h"
 #include <QWidget>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -22,6 +23,8 @@ private:
 
     QGraphicsScene* m_scene;
     QGraphicsView* m_view;
+    QVector<Floor*> floors;
+
 };
 
 #endif // MAP1_H

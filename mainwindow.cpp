@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     m_statusBar = new QStatusBar(this);
-    QGraphicsView *view = new QGraphicsView();
     setWindowTitle("Slay The Spire");
 
     m_stack = new QStackedWidget(this);
@@ -58,7 +57,7 @@ void MainWindow::onLoginSuccess()
     backgrounds.push_back(":/prefix1/images/menupic.png");
     backgrounds.push_back("");
     backgrounds.push_back("");
-    backgrounds.push_back("");
+    backgrounds.push_back(":/prefix1/images/blackpic.png");
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)

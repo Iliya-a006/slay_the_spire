@@ -4,5 +4,7 @@
         <file>images/whitepic.png</file>
         <file>images/loginpic.png</file>
         <file>images/menupic.png</file>
+        <file>images/paperBg.png</file>
+        <file>images/blackpic.png</file>
     </qresource>
 </RCC>

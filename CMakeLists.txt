@@ -37,6 +37,17 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         settingspage.h settingspage.cpp
         statusbar.h statusbar.cpp
         map1.h map1.cpp map1.ui
+        room.h room.cpp
+        enemyroom.h enemyroom.cpp
+        eliteroom.h eliteroom.cpp
+        eventroom.h eventroom.cpp
+        treasureroom.h treasureroom.cpp
+        campfireroom.h campfireroom.cpp
+        shoproom.h shoproom.cpp
+        bossroom.h bossroom.cpp
+        floor.h floor.cpp
+        screensize.h screensize.cpp
+
 
 
 
