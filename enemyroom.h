@@ -6,7 +6,10 @@
 class EnemyRoom : public Room
 {
 public:
-    EnemyRoom();
+    explicit EnemyRoom(QGraphicsItem *parent = nullptr);
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 #endif // ENEMYROOM_H

@@ -6,7 +6,10 @@
 class TreasureRoom : public Room
 {
 public:
-    TreasureRoom();
+    explicit TreasureRoom(QGraphicsItem *parent = nullptr);
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 #endif // TREASUREROOM_H

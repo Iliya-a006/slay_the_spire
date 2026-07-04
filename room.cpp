@@ -9,4 +9,9 @@ Room::Room(QGraphicsItem *parent)
 
 }
 
+void Room::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsItem::mousePressEvent(event);
+}
+
 

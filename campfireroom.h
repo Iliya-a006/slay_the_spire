@@ -6,7 +6,10 @@
 class CampfireRoom : public Room
 {
 public:
-    CampfireRoom();
+    explicit CampfireRoom(QGraphicsItem *parent = nullptr);
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 #endif // CAMPFIREROOM_H

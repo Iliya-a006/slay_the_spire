@@ -6,7 +6,10 @@
 class ShopRoom : public Room
 {
 public:
-    ShopRoom();
+    explicit ShopRoom(QGraphicsItem *parent = nullptr);
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 #endif // SHOPROOM_H

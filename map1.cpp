@@ -2,6 +2,7 @@
 #include "ui_map1.h"
 #include <QVBoxLayout>
 #include "screensize.h"
+#include "bossroom.h"
 
 Map1::Map1(QWidget *parent)
     : QWidget(parent)
@@ -20,11 +21,12 @@ Map1::Map1(QWidget *parent)
     setLayout(layout);
     //:/prefix1/images/paperBg.png
 
-    QPixmap bg(":/prefix1/images/paperBg.png");
+    QPixmap bg(":/prefix1/images/paperBg3.png");
     QPixmap scaledBg = bg.scaled(ScreenSize::getSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     QGraphicsPixmapItem *bgItem = m_scene->addPixmap(scaledBg);
     bgItem->setZValue(-100);
     bgItem->setPos(0, 0);
+
 
 }
 

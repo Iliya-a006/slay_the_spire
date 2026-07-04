@@ -6,7 +6,10 @@
 class EliteRoom : public Room
 {
 public:
-    EliteRoom();
+    explicit EliteRoom(QGraphicsItem *parent = nullptr);
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 #endif // ELITEROOM_H

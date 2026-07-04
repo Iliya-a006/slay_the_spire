@@ -15,8 +15,8 @@ public:
     QVector<Room*> nextRooms;
     QVector<Room*> previouseRooms;
 
-// protected:
-//     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override = 0;
 };
 
 #endif // ROOM_H
