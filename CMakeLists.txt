@@ -35,6 +35,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         startmenu.h startmenu.cpp
         leaderboard.h leaderboard.cpp
         settingspage.h settingspage.cpp
+        statusbar.h statusbar.cpp
 
 
 

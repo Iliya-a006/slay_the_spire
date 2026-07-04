@@ -1,9 +1,11 @@
 #include "login.h"
 #include "ui_login.h"
 #include <QDebug>
+#include <qstatusbar.h>
 #include "player.h"
 #include "mainwindow.h"
 #include "Page.h"
+#include "statusbar.h"
 
 login::login(QWidget *parent)
     : QWidget(parent)
@@ -76,6 +78,9 @@ login::login(QWidget *parent)
             if (player::findPlayer(nameEdit->text(), passwordEdit->text())){
                 emit loginSuccess();
                 MainWindow::changeStack((int)Page::MainMenu);
+            }
+            else{
+                StatusBar::instance()->status("user not found", 3000);
             }
         }
         else if (checkPassword() && nameEdit->text().length()){

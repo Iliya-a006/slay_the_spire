@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QStackedWidget>
 #include <QGraphicsView>
+#include <qstatusbar.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,7 +22,7 @@ public:
 
     static QStackedWidget* m_stack;
     static void changeStack(int page);
-
+    QStatusBar* m_statusBar;
 
 private:
     Ui::MainWindow *ui;
@@ -34,6 +35,7 @@ protected:
 
 private slots:
     void onLoginSuccess();
+    void statusRecieve(QString text, int mSeconds);
 
 };
 #endif // MAINWINDOW_H
