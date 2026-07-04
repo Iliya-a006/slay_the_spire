@@ -10,6 +10,7 @@
 #include "startmenu.h"
 #include "leaderboard.h"
 #include "statusbar.h"
+#include "map1.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -45,14 +46,17 @@ void MainWindow::onLoginSuccess()
     startMenu* start = new startMenu(m_stack);
     leaderBoard* leaderB = new leaderBoard(m_stack);
     SettingsPage* settings = new SettingsPage(m_stack);
+    Map1* mapAct1 = new Map1(m_stack);
 
     m_stack->addWidget(mainmenu);
     m_stack->addWidget(start);
     m_stack->addWidget(leaderB);
     m_stack->addWidget(settings);
+    m_stack->addWidget(mapAct1);
 
     backgrounds.push_back(":/prefix1/images/menupic.png");
     backgrounds.push_back(":/prefix1/images/menupic.png");
+    backgrounds.push_back("");
     backgrounds.push_back("");
     backgrounds.push_back("");
 }

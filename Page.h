@@ -7,7 +7,7 @@ enum class Page{
     startMenu,
     leaderBoard,
     settings,
-
+    Map1
 };
 
 #endif // PAGE_H

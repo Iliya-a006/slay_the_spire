@@ -1,6 +1,8 @@
 #include "startmenu.h"
 #include <QGuiApplication>
 #include <qscreen.h>
+#include "Page.h"
+#include "mainwindow.h"
 
 startMenu::startMenu(QWidget *parent)
     : QWidget(parent)
@@ -39,6 +41,14 @@ startMenu::startMenu(QWidget *parent)
     backButton = new QPushButton("Back", this);
     backButton->setGeometry(screenWidth/2 - 40, screenHeight/2 + 70, 80, 40);
     backButton->setStyleSheet(buttonStyle);
+
+    connect(singleButton, &QPushButton::clicked, this, [](){
+        MainWindow::changeStack((int)Page::Map1);
+    });
+
+    connect(backButton, &QPushButton::clicked, this, [](){
+        MainWindow::changeStack((int)Page::MainMenu);
+    });
 
 }
 
