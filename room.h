@@ -14,9 +14,13 @@ public:
 
     QVector<Room*> nextRooms;
     QVector<Room*> previouseRooms;
+    QVector<QGraphicsLineItem*> roads;
+    int x;
+    int y;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override = 0;
+
 };
 
 #endif // ROOM_H

@@ -31,9 +31,11 @@ private:
     void mapCoder();
     void loadMap();
     void printMap();
+    void roadCreator();
     int roomHeigth(int floor);
     int roomWidth(int type);
     Room* roomCreator(int roomType);
+
 
 };
 

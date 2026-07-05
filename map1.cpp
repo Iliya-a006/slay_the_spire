@@ -41,6 +41,7 @@ Map1::Map1(QWidget *parent)
 
     loadMap();
     printMap();
+    roadCreator();
 
 
 }
@@ -184,7 +185,10 @@ void Map1::printMap()
                 roomType /= 10;
             floors[i][j] = roomCreator(roomType);
             if (!floors[i][j]){continue;}
-            floors[i][j]->setPos(roomWidth(floorsCode[i].size()*10 + j), roomHeigth(i));
+
+            floors[i][j]->x = roomWidth(floorsCode[i].size()*10 + j);
+            floors[i][j]->y = roomHeigth(i);
+            floors[i][j]->setPos(floors[i][j]->x, floors[i][j]->y);
             m_scene->addItem(floors[i][j]);
         }
     }
@@ -219,7 +223,6 @@ Room* Map1::roomCreator(int roomType)
         break;
     }
 }
-
 
 int Map1::roomHeigth(int floor)
 {
@@ -260,6 +263,42 @@ int Map1::roomWidth(int type)
         break;
     }
 }
+
+void Map1::roadCreator()
+{
+    int tmp;
+    for (int i=0; i < 10; ++i){
+        for (int j=0; j < floorsCode[i].size(); ++j){
+            tmp = floorsCode[i][j];
+            while(tmp / 10){
+                floors[i][j]->nextRooms.push_back(floors[i+1][tmp%10]);
+                tmp /= 10;
+            }
+        }
+    }
+    for (int i=1; i < 11; ++i){
+        for (int j=0; j < floorsCode[i].size(); ++j){
+            Room* pre = floors[i][j];
+            for (int k=0; k < floorsCode[i-1].size(); ++k){
+                for (int l=0; l < floors[i-1][k]->nextRooms.size(); ++l){
+                    if (floors[i-1][k]->nextRooms[l] == pre)
+                        floors[i][j]->previouseRooms.push_back(floors[i-1][k]);
+                }
+            }
+        }
+    }
+
+    for (int i=0; i < 10; ++i){
+        for (int j=0; j < floorsCode[i].size(); ++j){
+            for (int k=0; k < floors[i][j]->nextRooms.size(); ++k){
+                floors[i][j]->roads.push_back(m_scene->addLine(
+                    floors[i][j]->x+30, floors[i][j]->y+30, floors[i][j]->nextRooms[k]->x+30, floors[i][j]->nextRooms[k]->y+30, QPen(Qt::black, 2)));
+                floors[i][j]->roads[k]->setZValue(-1);
+            }
+        }
+    }
+}
+
 
 
 Map1::~Map1()
