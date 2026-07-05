@@ -1,11 +1,19 @@
 #include "map1.h"
+#include "bossroom.h"
+#include "eliteroom.h"
+#include "enemyroom.h"
+#include "eventroom.h"
+#include "campfireroom.h"
 #include "player.h"
+#include "shoproom.h"
+#include "treasureroom.h"
 #include "ui_map1.h"
 #include <QVBoxLayout>
 #include "screensize.h"
 #include <QRandomGenerator>
 #include "RoomEnum.h"
 #include <QFile>
+#include "screensize.h"
 
 Map1::Map1(QWidget *parent)
     : QWidget(parent)
@@ -15,21 +23,24 @@ Map1::Map1(QWidget *parent)
 
     m_scene = new QGraphicsScene(this);
     m_view  = new QGraphicsView(m_scene, this);
-    m_scene->setSceneRect(0, 0, ScreenSize::getWidth(), ScreenSize::getHeigth());
+    m_scene->setSceneRect(0, 0, ScreenSize::getWidth(), ScreenSize::getHeigth()*2);
     m_view->setGeometry(0, 0, width(), height());
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(m_view);
     setLayout(layout);
 
+    QSize s = ScreenSize::getSize();
+    s.setHeight(ScreenSize::getHeigth() * 2);
     QPixmap bg(":/prefix1/images/paperBg3.png");
-    QPixmap scaledBg = bg.scaled(ScreenSize::getSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    QPixmap scaledBg = bg.scaled(s, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     QGraphicsPixmapItem *bgItem = m_scene->addPixmap(scaledBg);
     bgItem->setZValue(-100);
     bgItem->setPos(0, 0);
 
 
     loadMap();
+    printMap();
 
 
 }
@@ -46,6 +57,9 @@ void Map1::loadMap()
             out.setVersion(QDataStream::Qt_6_5);
             out << nextID;
             out << ID << floorsCode;
+            floors.resize(11);
+            for (int i=0; i<11; ++i)
+                floors[i].resize(floorsCode[i].size());
             player::instance()->setMapID(ID);
             file.close();
             return;
@@ -61,6 +75,9 @@ void Map1::loadMap()
             in >> ID >> tmp;
             if (ID == player::instance()->getMapID()){
                 floorsCode = tmp;
+                floors.resize(11);
+                for (int i=0; i<11; ++i)
+                    floors[i].resize(floorsCode[i].size());
                 file.close();
                 return;
             }
@@ -68,6 +85,9 @@ void Map1::loadMap()
         file.close();
         if (file.open(QIODevice::ReadWrite)){
             mapCoder();
+            floors.resize(11);
+            for (int i=0; i<11; ++i)
+                floors[i].resize(floorsCode[i].size());
             ID = nextID;
             ++nextID;
             player::instance()->setMapID(ID);
@@ -153,7 +173,92 @@ void Map1::mapCoder()
             }
         }
     }
+}
 
+void Map1::printMap()
+{
+    for (int i=0; i < 11; ++i){
+        for (int j=0; j < floorsCode[i].size(); ++j){
+            int roomType = floorsCode[i][j];
+            while(roomType/10)
+                roomType /= 10;
+            floors[i][j] = roomCreator(roomType);
+            if (!floors[i][j]){continue;}
+            floors[i][j]->setPos(roomWidth(floorsCode[i].size()*10 + j), roomHeigth(i));
+            m_scene->addItem(floors[i][j]);
+        }
+    }
+}
+
+Room* Map1::roomCreator(int roomType)
+{
+    switch (roomType) {
+    case (int)RoomEnum::enemy:
+        return new EnemyRoom();
+        break;
+    case (int)RoomEnum::elite:
+        return new EliteRoom();
+        break;
+    case (int)RoomEnum::event:
+        return new EventRoom();
+        break;
+    case (int)RoomEnum::treasure:
+        return new TreasureRoom();
+        break;
+    case (int)RoomEnum::campfire:
+        return new CampfireRoom();
+        break;
+    case (int)RoomEnum::shop:
+        return new ShopRoom();
+        break;
+    case (int)RoomEnum::boss:
+        return new BossRoom();
+        break;
+    default:
+        return nullptr;
+        break;
+    }
+}
+
+
+int Map1::roomHeigth(int floor)
+{
+    ++floor;
+    return (ScreenSize::getHeigth()*2 * ((12-floor)) / 12);
+}
+int Map1::roomWidth(int type)
+{
+    int centeral = ScreenSize::getWidth() / 2;
+    int iconWidth = 60;
+    switch (type) {
+    case 10:
+    case 31:
+        return centeral;
+        break;
+    case 20:
+    case 41:
+        return centeral - 50 - iconWidth;
+        break;
+    case 21:
+    case 42:
+        return centeral + 50 + iconWidth;
+        break;
+    case 30:
+        return centeral - 2*50 - 2*iconWidth;
+        break;
+    case 32:
+        return centeral + 2*50 + 2*iconWidth;
+        break;
+    case 40:
+        return centeral - 3*50 - 3*iconWidth;
+        break;
+    case 43:
+        return centeral + 3*50 + 3*iconWidth;
+        break;
+    default:
+        return 0;
+        break;
+    }
 }
 
 
