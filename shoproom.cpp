@@ -1,4 +1,6 @@
 #include "shoproom.h"
+#include "mainwindow.h"
+#include "Page.h"
 
 ShopRoom::ShopRoom(QGraphicsItem *parent) : Room(parent){
 
@@ -10,4 +12,6 @@ ShopRoom::ShopRoom(QGraphicsItem *parent) : Room(parent){
 void ShopRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
+
+    MainWindow::changeStack((int)Page::Shop);
 }

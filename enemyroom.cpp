@@ -1,4 +1,6 @@
 #include "enemyroom.h"
+#include "mainwindow.h"
+#include "Page.h"
 
 EnemyRoom::EnemyRoom(QGraphicsItem *parent) : Room(parent){
 
@@ -10,4 +12,6 @@ EnemyRoom::EnemyRoom(QGraphicsItem *parent) : Room(parent){
 void EnemyRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
+
+    MainWindow::changeStack((int)Page::Enemy);
 }

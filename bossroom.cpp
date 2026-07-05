@@ -1,4 +1,6 @@
 #include "bossroom.h"
+#include "Page.h"
+#include "mainwindow.h"
 
 BossRoom::BossRoom(QGraphicsItem *parent) : Room(parent) {
 
@@ -10,4 +12,6 @@ BossRoom::BossRoom(QGraphicsItem *parent) : Room(parent) {
 void BossRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
+
+    MainWindow::changeStack((int)Page::Boss);
 }

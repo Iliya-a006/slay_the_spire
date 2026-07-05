@@ -1,4 +1,6 @@
 #include "eventroom.h"
+#include "mainwindow.h"
+#include "Page.h"
 
 EventRoom::EventRoom(QGraphicsItem *parent) :Room(parent) {
 
@@ -10,4 +12,6 @@ EventRoom::EventRoom(QGraphicsItem *parent) :Room(parent) {
 void EventRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
+
+    MainWindow::changeStack((int)Page::Event);
 }

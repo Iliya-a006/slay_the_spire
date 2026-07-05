@@ -25,7 +25,6 @@ private:
     QGraphicsScene* m_scene;
     QGraphicsView* m_view;
 
-    //QVector<Floor*> floors;
     QVector<QVector<Room*>> floors;
     QVector<QVector<int>> floorsCode;
     void mapCoder();

@@ -1,4 +1,6 @@
 #include "treasureroom.h"
+#include "mainwindow.h"
+#include "Page.h"
 
 TreasureRoom::TreasureRoom(QGraphicsItem *parent) : Room(parent){
 
@@ -10,4 +12,6 @@ TreasureRoom::TreasureRoom(QGraphicsItem *parent) : Room(parent){
 void TreasureRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
+
+    MainWindow::changeStack((int)Page::Treasure);
 }

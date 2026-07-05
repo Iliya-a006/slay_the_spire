@@ -1,4 +1,6 @@
 #include "campfireroom.h"
+#include "mainwindow.h"
+#include "Page.h"
 
 CampfireRoom::CampfireRoom(QGraphicsItem *parent) : Room(parent){
 
@@ -10,4 +12,6 @@ CampfireRoom::CampfireRoom(QGraphicsItem *parent) : Room(parent){
 void CampfireRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
+
+    MainWindow::changeStack((int)Page::Campfire);
 }

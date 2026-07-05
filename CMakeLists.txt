@@ -48,6 +48,13 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         floor.h floor.cpp
         screensize.h screensize.cpp
         RoomEnum.h
+        enemyscene.h enemyscene.cpp enemyscene.ui
+        elitescene.h elitescene.cpp elitescene.ui
+        eventscene.h eventscene.cpp eventscene.ui
+        treasurescene.h treasurescene.cpp treasurescene.ui
+        campscene.h campscene.cpp campscene.ui
+        shopscene.h shopscene.cpp shopscene.ui
+        bossscene.h bossscene.cpp bossscene.ui
 
 
 

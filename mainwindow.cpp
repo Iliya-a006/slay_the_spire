@@ -11,6 +11,14 @@
 #include "leaderboard.h"
 #include "statusbar.h"
 #include "map1.h"
+#include "enemyscene.h"
+#include "elitescene.h"
+#include "eventscene.h"
+#include "treasurescene.h"
+#include "campscene.h"
+#include "shopscene.h"
+#include "bossscene.h"
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -46,18 +54,39 @@ void MainWindow::onLoginSuccess()
     leaderBoard* leaderB = new leaderBoard(m_stack);
     SettingsPage* settings = new SettingsPage(m_stack);
     Map1* mapAct1 = new Map1(m_stack);
+    EnemyScene* enemySc = new EnemyScene(m_stack);
+    EliteScene* eliteSc = new EliteScene(m_stack);
+    EventScene* eventSc = new EventScene(m_stack);
+    TreasureScene* treasureSc = new TreasureScene(m_stack);
+    CampScene* campSc = new CampScene(m_stack);
+    ShopScene* shopSc = new ShopScene(m_stack);
+    BossScene * bossSc = new BossScene(m_stack);
 
     m_stack->addWidget(mainmenu);
     m_stack->addWidget(start);
     m_stack->addWidget(leaderB);
     m_stack->addWidget(settings);
     m_stack->addWidget(mapAct1);
+    m_stack->addWidget(enemySc);
+    m_stack->addWidget(eliteSc);
+    m_stack->addWidget(eventSc);
+    m_stack->addWidget(treasureSc);
+    m_stack->addWidget(campSc);
+    m_stack->addWidget(shopSc);
+    m_stack->addWidget(bossSc);
 
     backgrounds.push_back(":/prefix1/images/menupic.png");
     backgrounds.push_back(":/prefix1/images/menupic.png");
     backgrounds.push_back("");
     backgrounds.push_back("");
     backgrounds.push_back(":/prefix1/images/blackpic.png");
+    backgrounds.push_back(":/prefix1/images/fightpic.png");
+    backgrounds.push_back(":/prefix1/images/fightpic.png");
+    backgrounds.push_back("");
+    backgrounds.push_back("");
+    backgrounds.push_back("");
+    backgrounds.push_back("");
+    backgrounds.push_back(":/prefix1/images/fightpic.png");
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)
