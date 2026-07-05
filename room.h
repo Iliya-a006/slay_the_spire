@@ -1,0 +1,26 @@
+#ifndef ROOM_H
+#define ROOM_H
+
+#include <QObject>
+#include <QGraphicsPixmapItem>
+//#include <QGraphicsSceneMouseEvent>
+
+class Room : public QObject, public QGraphicsPixmapItem
+{
+    Q_OBJECT
+
+public:
+    explicit Room(QGraphicsItem *parent = nullptr);
+
+    QVector<Room*> nextRooms;
+    QVector<Room*> previouseRooms;
+    QVector<QGraphicsLineItem*> roads;
+    int x;
+    int y;
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override = 0;
+
+};
+
+#endif // ROOM_H

@@ -4,5 +4,16 @@
         <file>images/whitepic.png</file>
         <file>images/loginpic.png</file>
         <file>images/menupic.png</file>
+        <file>images/blackpic.png</file>
+        <file>images/paperBg3.png</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file>images/BossMapIcon2.png</file>
+        <file>images/ChestMapIcon.png</file>
+        <file>images/EliteMapIcon.png</file>
+        <file>images/EventMapIcon.png</file>
+        <file>images/MonsterMapIcon.png</file>
+        <file>images/RestMapIcon.png</file>
+        <file>images/ShopMapIcon.png</file>
     </qresource>
 </RCC>

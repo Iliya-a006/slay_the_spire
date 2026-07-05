@@ -9,6 +9,7 @@ player::player()
     floor = 1;
     maxHP = 80;
     HP = maxHP;
+    mapID = -1;
     //cards.push_back(...);
 }
 
@@ -22,13 +23,13 @@ player* player::instance()
 
 void player::writeToStream(QDataStream &out) const
 {
-    out << username << password << gold << Act << floor << maxHP << HP;
+    out << username << password << gold << Act << floor << maxHP << HP << mapID;
     out << cards << /*buff_debuffs << */potions << relics;
 }
 
 void player::readFromStream(QDataStream &in)
 {
-    in >> username >> password >> gold >> Act >> floor >> maxHP >> HP;
+    in >> username >> password >> gold >> Act >> floor >> maxHP >> HP >> mapID;
     in >> cards >> /*buff_debuffs >> */potions >> relics;
 }
 

@@ -7,7 +7,14 @@ enum class Page{
     startMenu,
     leaderBoard,
     settings,
-    Map1
+    Map1,
+    Enemy,
+    Elite,
+    Event,
+    Treasure,
+    Campfire,
+    Shop,
+    Boss
 };
 
 #endif // PAGE_H

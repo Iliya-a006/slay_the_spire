@@ -11,6 +11,8 @@ class player
 public:
     explicit player();
     QString getName(){return username;}
+    int getMapID(){return mapID;}
+    void setMapID(int id){mapID = id;}
 
     static player* instance();
 
@@ -24,6 +26,7 @@ private:
     int floor;
     int maxHP;
     int HP;
+    int mapID = -1;
     QVector<int> cards/*(20)*/;
     QVector<int> buff_debuffs;
     QVector<int> potions;

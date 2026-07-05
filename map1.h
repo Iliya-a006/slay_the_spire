@@ -1,6 +1,8 @@
 #ifndef MAP1_H
 #define MAP1_H
 
+#include "floor.h"
+#include "room.h"
 #include <QWidget>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -22,6 +24,18 @@ private:
 
     QGraphicsScene* m_scene;
     QGraphicsView* m_view;
+
+    QVector<QVector<Room*>> floors;
+    QVector<QVector<int>> floorsCode;
+    void mapCoder();
+    void loadMap();
+    void printMap();
+    void roadCreator();
+    int roomHeigth(int floor);
+    int roomWidth(int type);
+    Room* roomCreator(int roomType);
+
+
 };
 
 #endif // MAP1_H
