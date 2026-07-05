@@ -23,7 +23,11 @@ private:
 
     QGraphicsScene* m_scene;
     QGraphicsView* m_view;
+
     QVector<Floor*> floors;
+    QVector<QVector<int>> floorsCode;
+    void mapCoder();
+    void loadMap();
 
 };
 

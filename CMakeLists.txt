@@ -47,6 +47,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         bossroom.h bossroom.cpp
         floor.h floor.cpp
         screensize.h screensize.cpp
+        RoomEnum.h
 
 
 
