@@ -6,6 +6,7 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
+#include <qcheckbox.h>
 
 namespace Ui {
 class login;
@@ -18,7 +19,8 @@ class login : public QWidget
 public:
     explicit login(QWidget *parent = nullptr);
     ~login();
-
+    void Show_Password(bool checked);
+    void Show_Confirm(bool checked);
 private:
     Ui::login *ui;
 
@@ -33,7 +35,8 @@ private:
     QLineEdit* confirmEdit;
     QPushButton* signInButton;
     QPushButton* newButton;
-
+    QCheckBox *Password_CheckBox;
+    QCheckBox *Confirm_CheckBox;
     bool checkPassword();
 
 signals:
