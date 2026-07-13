@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/soundtrack">
+        <file>Track/Menusoundtrsck.mp3</file>
+    </qresource>
+    <qresource prefix="/musicsofcombat"/>
+</RCC>
