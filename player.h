@@ -15,18 +15,17 @@ public:
     QString getName(){return username;}
     int getMapID(){return mapID;}
     void setMapID(int id){mapID = id;}
-    
-
-    static player* instance();
-    static QVector<player> allPlayers();
-
     int getFloor(){return floor;}
     void setFloor(int f){floor = f;}
     int getAct(){return Act;}
     void setAct(int a){Act = a;}
+    
+    static player* instance();
+    static QVector<player> allPlayers();
+
+
     int& GETER_SETEE_ENERGY(){return energy;}
 
-    static player* instance();
     int GETER_HP() const { return HP; }
     int GETER_MAXHP() const { return maxHP; }
     int GETER_ENERGY() const { return energy; }
@@ -40,9 +39,9 @@ public:
     QVector<Card*>& GETٍER_DISCARDPILE() { return discardPile; }
     QVector<Card*>& GETٍER_EXHAUSTPILE() { return exhaustPile; }
 
-    void SETٍER_BLOCK(int amount) { block = qMax(0, amount); }
-    void SETٍER_STRENGtH(int amount) { strength = amount; }
-    void SETٍER_DEXTERITY(int amount) { dexterity = amount; }
+    void SETER_BLOCK(int amount) { block = qMax(0, amount); }
+    void SETER_STRENGtH(int amount) { strength = amount; }
+    void SETER_DEXTERITY(int amount) { dexterity = amount; }
     void ADD_BLOCK(int amount) { block += amount; }
     void ADD_STRENGtH(int amount) { strength += amount; }
     void ADD_DEXTERITY(int amount) { dexterity += amount; }
@@ -100,6 +99,7 @@ private:
     QVector<int> buff_debuffs;
     QVector<int> potions;
     QVector<int> relics;
+
 public:
     void writeToStream(QDataStream &out) const;
     void readFromStream(QDataStream& in);
