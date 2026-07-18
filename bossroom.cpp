@@ -11,6 +11,8 @@ BossRoom::BossRoom(QGraphicsItem *parent) : Room(parent) {
 
 void BossRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    if(!this->accessible)
+        return;
     Q_UNUSED(event);
 
     MainWindow::changeStack((int)Page::Boss);

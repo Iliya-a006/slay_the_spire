@@ -15,5 +15,6 @@
         <file>images/MonsterMapIcon.png</file>
         <file>images/RestMapIcon.png</file>
         <file>images/ShopMapIcon.png</file>
+        <file>images/RedX_blood.png</file>
     </qresource>
 </RCC>

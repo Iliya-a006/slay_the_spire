@@ -11,6 +11,8 @@ TreasureRoom::TreasureRoom(QGraphicsItem *parent) : Room(parent){
 
 void TreasureRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    if(!this->accessible)
+        return;
     Q_UNUSED(event);
 
     MainWindow::changeStack((int)Page::Treasure);
