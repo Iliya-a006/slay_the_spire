@@ -11,6 +11,8 @@ EnemyRoom::EnemyRoom(QGraphicsItem *parent) : Room(parent){
 
 void EnemyRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    if(!this->accessible)
+        return;
     Q_UNUSED(event);
 
     MainWindow::changeStack((int)Page::Enemy);

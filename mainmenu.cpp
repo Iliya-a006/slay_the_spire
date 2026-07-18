@@ -1,6 +1,7 @@
 #include "mainmenu.h"
 #include "Page.h"
 #include "mainwindow.h"
+#include "map1.h"
 #include "ui_mainmenu.h"
 #include <QLabel>
 #include <QGuiApplication>
@@ -65,6 +66,7 @@ MainMenu::MainMenu(QWidget *parent)
     });
     connect(exitButton, &QPushButton::clicked, this, [](){
         player::saveFile();
+        Map1::saveMap();
         QApplication::quit();
     });
 }

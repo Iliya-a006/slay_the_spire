@@ -54,6 +54,7 @@ void MainWindow::onLoginSuccess()
     leaderBoard* leaderB = new leaderBoard(m_stack);
     SettingsPage* settings = new SettingsPage(m_stack);
     Map1* mapAct1 = new Map1(m_stack);
+    Map1::m_instance = mapAct1;
     EnemyScene* enemySc = new EnemyScene(m_stack);
     EliteScene* eliteSc = new EliteScene(m_stack);
     EventScene* eventSc = new EventScene(m_stack);
@@ -100,6 +101,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     player::saveFile();
+    Map1::saveMap();
     event->accept();
 }
 

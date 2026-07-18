@@ -11,6 +11,8 @@ CampfireRoom::CampfireRoom(QGraphicsItem *parent) : Room(parent){
 
 void CampfireRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    if(!this->accessible)
+        return;
     Q_UNUSED(event);
 
     MainWindow::changeStack((int)Page::Campfire);

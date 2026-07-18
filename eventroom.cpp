@@ -11,6 +11,8 @@ EventRoom::EventRoom(QGraphicsItem *parent) :Room(parent) {
 
 void EventRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    if(!this->accessible)
+        return;
     Q_UNUSED(event);
 
     MainWindow::changeStack((int)Page::Event);

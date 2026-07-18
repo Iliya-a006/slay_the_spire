@@ -6,7 +6,7 @@ player::player()
 {
     gold = 0;
     Act = 1;
-    floor = 1;
+    floor = 0;
     maxHP = 80;
     HP = maxHP;
     mapID = -1;
