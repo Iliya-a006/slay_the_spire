@@ -11,6 +11,8 @@ ShopRoom::ShopRoom(QGraphicsItem *parent) : Room(parent){
 
 void ShopRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    if(!this->accessible)
+        return;
     Q_UNUSED(event);
 
     MainWindow::changeStack((int)Page::Shop);

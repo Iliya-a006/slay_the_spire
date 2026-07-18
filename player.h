@@ -15,6 +15,8 @@ public:
     QString getName(){return username;}
     int getMapID(){return mapID;}
     void setMapID(int id){mapID = id;}
+    int getFloor(){return floor;}
+    void setFloor(int f){floor = f;}
     int& GETER_SETEE_ENERGY(){return energy;}
 
     static player* instance();
