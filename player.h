@@ -15,8 +15,15 @@ public:
     QString getName(){return username;}
     int getMapID(){return mapID;}
     void setMapID(int id){mapID = id;}
+    
+
+    static player* instance();
+    static QVector<player> allPlayers();
+
     int getFloor(){return floor;}
     void setFloor(int f){floor = f;}
+    int getAct(){return Act;}
+    void setAct(int a){Act = a;}
     int& GETER_SETEE_ENERGY(){return energy;}
 
     static player* instance();
@@ -56,6 +63,7 @@ public:
     void ADD_TO_EXHAUSTPILE(Card* card);
     void SHUFFLE_DRAWPILE();
     void SHUFFLE_DISCARDPILE();
+
 
     void START_TURN();
     void END_TURN();

@@ -105,6 +105,24 @@ void player::saveFile()
     file.close();
 }
 
+QVector<player> player::allPlayers()
+{
+    QVector<player> players(0);
+    player p;
+
+    QFile file("players.bin");
+    if (!file.open(QIODevice::ReadOnly))
+        return players;
+    QDataStream in(&file);
+    in.setVersion(QDataStream::Qt_6_5);
+    while(!in.atEnd()){
+        p.readFromStream(in);
+        players.push_back(p);
+    }
+    file.close();
+    return players;
+}
+
 
 void player::TAKE_DAMAGE(int damage){
     int reminder_of_damage=damage-block;
