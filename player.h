@@ -13,8 +13,13 @@ public:
     QString getName(){return username;}
     int getMapID(){return mapID;}
     void setMapID(int id){mapID = id;}
+    int getAct(){return Act;}
+    void setAct(int a){Act = a;}
+    int getFloor(){return floor;}
+    void setFloor(int f){floor = f;}
 
     static player* instance();
+    static QVector<player> allPlayers();
 
 private:
     static player* m_instance;
@@ -37,7 +42,6 @@ public:
     void readFromStream(QDataStream& in);
     static bool appendPlayer(QString name, QString pass);
     static bool findPlayer(QString name, QString pass);
-
     static void saveFile();
 };
 

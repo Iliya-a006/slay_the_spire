@@ -6,7 +6,7 @@ player::player()
 {
     gold = 0;
     Act = 1;
-    floor = 1;
+    floor = 0;
     maxHP = 80;
     HP = maxHP;
     mapID = -1;
@@ -95,6 +95,24 @@ void player::saveFile()
     for (int i=0; i<players.length(); ++i)
         players[i].writeToStream(out);
     file.close();
+}
+
+QVector<player> player::allPlayers()
+{
+    QVector<player> players(0);
+    player p;
+
+    QFile file("players.bin");
+    if (!file.open(QIODevice::ReadOnly))
+        return players;
+    QDataStream in(&file);
+    in.setVersion(QDataStream::Qt_6_5);
+    while(!in.atEnd()){
+        p.readFromStream(in);
+        players.push_back(p);
+    }
+    file.close();
+    return players;
 }
 
 
