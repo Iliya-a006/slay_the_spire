@@ -3,25 +3,106 @@
 #include <QDataStream>
 #include <algorithm>
 #include <random>
-player::player()
+#include <QPainter>
+
+player::player(QGraphicsItem *parent)
+    : QObject(nullptr),
+    QGraphicsPixmapItem(parent)
 {
     gold = 0;
     Act = 1;
     floor = 0;
     maxHP = 80;
     HP = maxHP;
-    energy=3;
+    energy = 3;
     mapID = -1;
-    block=0;
-    strength=0;
-    dexterity=0;
-    unblockedDamageTaken=0;
-    barricadeActive=false;
-    // initializeDeck();
-    //cards.push_back(...);
+    block = 0;
+    strength = 0;
+    dexterity = 0;
+    unblockedDamageTaken = 0;
+    barricadeActive = false;
+
+    setAcceptHoverEvents(true);
+    setScale(0.8);
+    loadDefaultAvatar();
+}
+
+player::player(const player& other)
+    : QObject(nullptr),
+    QGraphicsPixmapItem(other.parentItem())
+{
+
+    username = other.username;
+    password = other.password;
+    gold = other.gold;
+    Act = other.Act;
+    floor = other.floor;
+
+    maxHP = other.maxHP;
+    HP = other.HP;
+    energy = other.energy;
+    mapID = other.mapID;
+    block = other.block;
+    strength = other.strength;
+    dexterity = other.dexterity;
+    unblockedDamageTaken = other.unblockedDamageTaken;
+    barricadeActive = other.barricadeActive;
+
+    hand = other.hand;
+    drawPile = other.drawPile;
+    discardPile = other.discardPile;
+    exhaustPile = other.exhaustPile;
+
+    potions = other.potions;
+    relics = other.relics;
+
+    buffManager = other.buffManager;
+
+    setPixmap(other.pixmap());
+    setScale(0.8);
+}
+
+player& player::operator=(const player& other)
+{
+    if (this == &other) {
+        return *this;
+    }
+
+
+    username = other.username;
+    password = other.password;
+    gold = other.gold;
+    Act = other.Act;
+    floor = other.floor;
+
+    maxHP = other.maxHP;
+    HP = other.HP;
+    energy = other.energy;
+    mapID = other.mapID;
+    block = other.block;
+    strength = other.strength;
+    dexterity = other.dexterity;
+    unblockedDamageTaken = other.unblockedDamageTaken;
+    barricadeActive = other.barricadeActive;
+
+    hand = other.hand;
+    drawPile = other.drawPile;
+    discardPile = other.discardPile;
+    exhaustPile = other.exhaustPile;
+
+    potions = other.potions;
+    relics = other.relics;
+
+    buffManager = other.buffManager;
+
+    setPixmap(other.pixmap());
+    setScale(0.8);
+
+    return *this;
 }
 
 player* player::m_instance = nullptr;
+
 player* player::instance()
 {
     if (!m_instance)
@@ -29,16 +110,37 @@ player* player::instance()
     return m_instance;
 }
 
+void player::loadAvatar(const QString& path) {
+    QPixmap pixmap(path);
+    if (!pixmap.isNull()) {
+        setPixmap(pixmap);
+        setScale(0.8);
+    }
+}
+
+void player::loadDefaultAvatar() {
+    QPixmap avatar(100, 100);
+    avatar.fill(QColor(50, 50, 200));
+
+    QPainter painter(&avatar);
+    painter.setPen(Qt::white);
+    painter.setFont(QFont("Vazirmatn", 12, QFont::Bold));
+    painter.drawText(avatar.rect(), Qt::AlignCenter, "Player");
+
+    setPixmap(avatar);
+    setScale(0.8);
+}
+
 void player::writeToStream(QDataStream &out) const
 {
     out << username << password << gold << Act << floor << maxHP << HP << mapID;
-    out << /*cards <<*/ /*buff_debuffs << */potions << relics;
+    out << potions << relics;
 }
 
 void player::readFromStream(QDataStream &in)
 {
     in >> username >> password >> gold >> Act >> floor >> maxHP >> HP >> mapID;
-    in >> /*cards >>*/ /*buff_debuffs >> */potions >> relics;
+    in >> potions >> relics;
 }
 
 bool player::appendPlayer(QString name, QString pass)
@@ -105,75 +207,70 @@ void player::saveFile()
     file.close();
 }
 
-QVector<player> player::allPlayers()
-{
-    QVector<player> players(0);
-    player p;
-
-    QFile file("players.bin");
-    if (!file.open(QIODevice::ReadOnly))
-        return players;
-    QDataStream in(&file);
-    in.setVersion(QDataStream::Qt_6_5);
-    while(!in.atEnd()){
-        p.readFromStream(in);
-        players.push_back(p);
-    }
-    file.close();
-    return players;
+void player::ADD_BLOCK(int amount) {
+    amount = buffManager.applyFrailToBlock(amount);
+    block += amount;
+    emit blockChanged(block);
 }
 
+void player::TAKE_DAMAGE(int damage) {
+    damage = buffManager.applyVulnerableToDamage(damage);
 
-    QFile file("players.bin");
-    if (!file.open(QIODevice::ReadOnly))
-        return players;
-    QDataStream in(&file);
-    in.setVersion(QDataStream::Qt_6_5);
-    while(!in.atEnd()){
-        p.readFromStream(in);
-        players.push_back(p);
+    int remaining = damage - block;
+    if (remaining > 0) {
+        HP = qMax(0, HP - remaining);
+        unblockedDamageTaken += remaining;
+        block = 0;
+    } else {
+        block -= damage;
     }
-    file.close();
-    return players;
+    emit hpChanged(HP, maxHP);
+    emit blockChanged(block);
 }
 
+void player::LOSE_HP(int amount) {
+    HP = qMax(0, HP - amount);
+    emit hpChanged(HP, maxHP);
+}
 
-void player::TAKE_DAMAGE(int damage){
-    int reminder_of_damage=damage-block;
-    if(reminder_of_damage>0){
-        HP=qMax(0,HP-reminder_of_damage);
-        unblockedDamageTaken+=reminder_of_damage;
-        block=0;
-        return;
-    }else{
-        block-=damage;
-        return;
-    }
+void player::INCREASE_MAXHP(int amount) {
+    maxHP += amount;
+    HP += amount;
+    emit hpChanged(HP, maxHP);
+}
+
+void player::SET_MAXHP(int newMax) {
+    maxHP = newMax;
+    HP = qMin(HP, maxHP);
+    emit hpChanged(HP, maxHP);
 }
 
 void player::ADD_TO_HAND(Card* card){
-    if(card&&hand.size()<10){
+    if(card && hand.size() < 10){
         hand.push_back(card);
+        emit handUpdated();
     }
 }
 
 void player::REMOVE_FROM_HAND(Card* card){
     hand.removeAll(card);
+    emit handUpdated();
 }
 
 void player::ADD_TO_DISCARDPILE(Card* card){
-    if(card!=NULL){
+    if(card != NULL){
         discardPile.append(card);
     }
 }
 
 void player::ADD_TO_DRAWPILE(Card* card){
-    if(card!=NULL){
+    if(card != NULL){
         drawPile.append(card);
     }
 }
+
 void player::ADD_TO_EXHAUSTPILE(Card* card ){
-    if(card!=NULL){
+    if(card != NULL){
         exhaustPile.append(card);
     }
 }
@@ -181,76 +278,85 @@ void player::ADD_TO_EXHAUSTPILE(Card* card ){
 void player::SHUFFLE_DRAWPILE(){
     std::random_device rand;
     std::mt19937 g(rand());
-    std::shuffle(drawPile.begin(),drawPile.end(),g);
+    std::shuffle(drawPile.begin(), drawPile.end(), g);
 }
+
 void player::SHUFFLE_DISCARDPILE(){
     std::random_device rand;
     std::mt19937 g(rand());
-    std::shuffle(discardPile.begin(),discardPile.end(),g);
+    std::shuffle(discardPile.begin(), discardPile.end(), g);
 }
 
 void player::START_TURN()
 {
     energy = 3;
+    emit energyChanged(energy);
+
+    buffManager.decreaseTurns();
+
     DRAW_CARD(5);
-    if (barricadeActive==false) {
+    if (!barricadeActive) {
         block = 0;
+        emit blockChanged(block);
     }
 }
 
 void player::DRAW_CARD(int count){
-    int draw=0;
-    while(draw<count){
+    int draw = 0;
+    while(draw < count){
         if(drawPile.isEmpty()){
             if(discardPile.isEmpty()){
                 break;
             }
-            drawPile=discardPile;
+            drawPile = discardPile;
             discardPile.clear();
             SHUFFLE_DRAWPILE();
         }
-        if(hand.size()>=10){
+        if(hand.size() >= 10){
             break;
         }
-        Card* card=drawPile.takeLast();
+        Card* card = drawPile.takeLast();
         hand.append(card);
         draw++;
     }
+    emit handUpdated();
 }
 
 void player::END_TURN(){
-    energy=0;
-    QVector<Card*> retiancard;
-    QVector<Card*> discard;
-    QVector<Card*> exhaust;
+    energy = 0;
+    emit energyChanged(energy);
 
-    for(Card* card:hand){
+    buffManager.applyMetallicizeAtEndOfTurn(block);
+
+    QVector<Card*> retainCards;
+    QVector<Card*> discardCards;
+    QVector<Card*> exhaustCards;
+
+    for(Card* card : hand){
         if(card->GETER_SETER_RETAIN()){
-            retiancard.append(card);
-        }else if(card->GETER_SETER_Exhaust()){
-            exhaust.append(card);
-        }else{
-            discard.append(card);
+            retainCards.append(card);
+        } else if(card->GETER_SETER_Ethereal()){
+            exhaustCards.append(card);
+        } else if(card->GETER_SETER_Exhaust()){
+            exhaustCards.append(card);
+        } else {
+            discardCards.append(card);
         }
     }
-    hand.clear();
-    hand=retiancard;
 
-    for(Card* card:discard){
+    hand.clear();
+    hand = retainCards;
+
+    for(Card* card : discardCards){
         discardPile.append(card);
     }
-    for(Card* card:exhaust){
+    for(Card* card : exhaustCards){
         exhaustPile.append(card);
     }
-    if(barricadeActive==false){
-        block=0;
-    }
-}
 
-void player::LOAD_DEFAUL_TAVATAR(){
-    if(avatar.load("")==true){
-        ;
-    }else{
-
+    if(!barricadeActive){
+        block = 0;
+        emit blockChanged(block);
     }
+    emit handUpdated();
 }
