@@ -14,6 +14,7 @@
 #include "RoomEnum.h"
 #include <QFile>
 #include "screensize.h"
+#include "redx.h"
 
 Map1::Map1(QWidget *parent)
     : QWidget(parent)
@@ -46,18 +47,27 @@ Map1::Map1(QWidget *parent)
 
 }
 
+Map1* Map1::m_instance = nullptr;
+Map1* Map1::instance(){
+    if (!m_instance)
+        m_instance = new Map1();
+    return m_instance;
+}
+
 void Map1::loadMap()
 {
     QVector<QVector<int>> tmp;
+    QVector<int> routeTmp;
     int ID=1, nextID=ID+1;
     QFile file("maps.bin");
     if (!file.open(QIODevice::ReadOnly)){
         if (file.open(QIODevice::WriteOnly)){
             mapCoder();
+            route.resize(0);
             QDataStream out(&file);
             out.setVersion(QDataStream::Qt_6_5);
             out << nextID;
-            out << ID << floorsCode;
+            out << ID << floorsCode << route;
             floors.resize(11);
             for (int i=0; i<11; ++i)
                 floors[i].resize(floorsCode[i].size());
@@ -73,9 +83,10 @@ void Map1::loadMap()
         in.setVersion(QDataStream::Qt_6_5);
         in >> nextID;
         while(!in.atEnd()){
-            in >> ID >> tmp;
+            in >> ID >> tmp >> routeTmp;
             if (ID == player::instance()->getMapID()){
                 floorsCode = tmp;
+                route = routeTmp;
                 floors.resize(11);
                 for (int i=0; i<11; ++i)
                     floors[i].resize(floorsCode[i].size());
@@ -86,6 +97,7 @@ void Map1::loadMap()
         file.close();
         if (file.open(QIODevice::ReadWrite)){
             mapCoder();
+            route.resize(0);
             floors.resize(11);
             for (int i=0; i<11; ++i)
                 floors[i].resize(floorsCode[i].size());
@@ -94,10 +106,10 @@ void Map1::loadMap()
             player::instance()->setMapID(ID);
             QDataStream stream(&file);
             stream.setVersion(QDataStream::Qt_6_5);
-            file.seek(file.size());
-            stream << ID << floorsCode;
             file.seek(0);
             stream << nextID;
+            file.seek(file.size());
+            stream << ID << floorsCode << route;
             file.close();
         }
         else
@@ -190,6 +202,25 @@ void Map1::printMap()
             floors[i][j]->y = roomHeigth(i);
             floors[i][j]->setPos(floors[i][j]->x, floors[i][j]->y);
             m_scene->addItem(floors[i][j]);
+        }
+    }
+    for (int i=0; i<route.size(); ++i){
+        RedX* redx = new RedX();
+        redx->setPos(floors[i][route[i]]->x, floors[i][route[i]]->y);
+        m_scene->addItem(redx);
+    }
+
+    if (player::instance()->getFloor() == 0)
+        for (int i=0; i<floors[0].size(); ++i){
+            floors[0][i]->accessible = true;
+            accessibleRooms.push_back(floors[0][i]);
+            floors[0][i]->setScale(1.2);
+        }
+    else {
+        for (auto r : floors[route.size()-1][route.last()]->nextRooms){
+            r->accessible = true;
+            accessibleRooms.push_back(r);
+            r->setScale(1.2);
         }
     }
 }
@@ -297,6 +328,50 @@ void Map1::roadCreator()
             }
         }
     }
+}
+
+void Map1::saveMap()
+{
+    QFile file("maps.bin");
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+    QDataStream in(&file);
+    in.setVersion(QDataStream::Qt_6_5);
+    int nextID;
+    in >> nextID;
+
+    QVector<int> ids;
+    QVector<QVector<QVector<int>>> allFloorsCode;
+    QVector<QVector<int>> allRoutes;
+
+    int id;
+    QVector<QVector<int>> fc;
+    QVector<int> rt;
+    while (!in.atEnd()){
+        in >> id >> fc >> rt;
+        ids.push_back(id);
+        allFloorsCode.push_back(fc);
+        allRoutes.push_back(rt);
+    }
+    file.close();
+
+    int currentID = player::instance()->getMapID();
+    for (int i = 0; i < ids.size(); ++i){
+        if (ids[i] == currentID){
+            allFloorsCode[i] = Map1::m_instance->floorsCode;
+            allRoutes[i] = Map1::m_instance->route;
+            break;
+        }
+    }
+
+    if (!file.open(QIODevice::WriteOnly))
+        return;
+    QDataStream out(&file);
+    out.setVersion(QDataStream::Qt_6_5);
+    out << nextID;
+    for (int i = 0; i < ids.size(); ++i)
+        out << ids[i] << allFloorsCode[i] << allRoutes[i];
+    file.close();
 }
 
 
