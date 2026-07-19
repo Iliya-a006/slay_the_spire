@@ -78,7 +78,7 @@ void MainWindow::onLoginSuccess()
     backgrounds.push_back(":/prefix1/images/menupic.png");
     backgrounds.push_back(":/prefix1/images/menupic.png");
     backgrounds.push_back("");
-    backgrounds.push_back("");
+    backgrounds.push_back(":/prefix1/images/menupic.png");
     backgrounds.push_back(":/prefix1/images/blackpic.png");
     backgrounds.push_back(":/prefix1/images/fightpic.png");
     backgrounds.push_back(":/prefix1/images/fightpic.png");
