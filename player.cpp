@@ -90,7 +90,7 @@ void player::saveFile()
     in.setVersion(QDataStream::Qt_6_5);
     while(!in.atEnd()){
         p.readFromStream(in);
-        if (p.username == m_instance->username && p.password == m_instance->password)
+        if (p.username == m_instance->oldUsername && p.password == m_instance->oldPassword)
             p = *m_instance;
         players.push_back(p);
     }
@@ -109,6 +109,20 @@ QVector<player> player::allPlayers()
 {
     QVector<player> players(0);
     player p;
+
+    QFile file("players.bin");
+    if (!file.open(QIODevice::ReadOnly))
+        return players;
+    QDataStream in(&file);
+    in.setVersion(QDataStream::Qt_6_5);
+    while(!in.atEnd()){
+        p.readFromStream(in);
+        players.push_back(p);
+    }
+    file.close();
+    return players;
+}
+
 
     QFile file("players.bin");
     if (!file.open(QIODevice::ReadOnly))
