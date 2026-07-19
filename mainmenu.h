@@ -18,8 +18,10 @@ protected:
 public:
     explicit MainMenu(QWidget *parent = nullptr);
     ~MainMenu();
-
-private:
+    void mute_track();
+signals:
+    void muteRequested();
+   private:
     Ui::MainMenu *ui;
 
     QString buttonStyle;
