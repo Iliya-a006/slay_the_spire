@@ -1,6 +1,7 @@
 #include "login.h"
 #include "ui_login.h"
 #include <QDebug>
+#include <qboxlayout.h>
 #include <qstatusbar.h>
 #include "player.h"
 #include "mainwindow.h"
@@ -15,7 +16,15 @@ login::login(QWidget *parent)
     font.setPointSize(20);
 
     frame = new QFrame(this);
-    frame->setGeometry(450, 30, 450, 520);
+    frame->setFixedSize(450, 520);
+    QHBoxLayout *hLayout = new QHBoxLayout;
+    hLayout->addStretch();
+    hLayout->addWidget(frame);
+    hLayout->addStretch();
+    QVBoxLayout *vLayout = new QVBoxLayout(this);
+    vLayout->addStretch();
+    vLayout->addLayout(hLayout);
+    vLayout->addStretch();
     frame->setFrameShape(QFrame::Box);
     frame->setStyleSheet("QFrame { border-image: url(:/prefix1/images/whitepic.png) 0 0 0 0 stretch stretch; }");
 

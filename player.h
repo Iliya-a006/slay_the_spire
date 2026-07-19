@@ -13,9 +13,17 @@ class player
 public:
     explicit player();
     QString getName(){return username;}
+    void setName(QString n){username = n;}
+    QString getPassword(){return password;}
+    void setPassword(QString p){password = p;}
+    QString getOldName(){return oldUsername;}
+    void setOldName(QString n){oldUsername = n;}
+    QString getOldPassword(){return oldPassword;}
+    void setOldPassword(QString p){oldPassword = p;}
     int getMapID(){return mapID;}
     void setMapID(int id){mapID = id;}
     
+
 
     static player* instance();
     static QVector<player> allPlayers();
@@ -79,6 +87,8 @@ private:
     QPixmap avatar;
     QString username;
     QString password;
+    QString oldUsername;
+    QString oldPassword;
     int gold;
     int Act;
     int floor;
