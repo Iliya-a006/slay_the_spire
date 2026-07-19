@@ -80,6 +80,7 @@ public:
     void SHUFFLE_DRAWPILE();
     void SHUFFLE_DISCARDPILE();
 
+
     void START_TURN();
     void END_TURN();
     void DRAW_CARD(int count);
@@ -98,6 +99,8 @@ private:
 
     QString username;
     QString password;
+    QString oldUsername;
+    QString oldPassword;
     int gold;
     int Act;
     int floor;

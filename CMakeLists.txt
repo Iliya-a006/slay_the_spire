@@ -45,7 +45,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         campfireroom.h campfireroom.cpp
         shoproom.h shoproom.cpp
         bossroom.h bossroom.cpp
-        floor.h floor.cpp
+
         screensize.h screensize.cpp
         RoomEnum.h
         enemyscene.h enemyscene.cpp enemyscene.ui
@@ -55,7 +55,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         campscene.h campscene.cpp campscene.ui
         shopscene.h shopscene.cpp shopscene.ui
         bossscene.h bossscene.cpp bossscene.ui
-
         Soundtrack.qrc
         attackcrads.qrc
         attack_cards.h attack_cards.cpp

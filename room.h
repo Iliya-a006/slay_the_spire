@@ -17,6 +17,7 @@ public:
     QVector<QGraphicsLineItem*> roads;
     int x;
     int y;
+    bool accessible=false;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override = 0;
