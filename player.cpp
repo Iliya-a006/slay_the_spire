@@ -31,7 +31,7 @@ player::player(const player& other)
     : QObject(nullptr),
     QGraphicsPixmapItem(other.parentItem())
 {
-    // ===== کپی اطلاعات پایه =====
+
     username = other.username;
     password = other.password;
     gold = other.gold;
@@ -68,7 +68,7 @@ player& player::operator=(const player& other)
         return *this;
     }
 
-    // ===== کپی اطلاعات پایه =====
+
     username = other.username;
     password = other.password;
     gold = other.gold;

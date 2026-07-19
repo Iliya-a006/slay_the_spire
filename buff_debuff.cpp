@@ -81,7 +81,7 @@ QString BuffDebuffManager::getDescription() const {
     return desc.join(", ");
 }
 
-// ===== اعمال Vulnerable: ۵۰٪ دمج بیشتر =====
+
 int BuffDebuffManager::applyVulnerableToDamage(int damage) const {
     if (has(Vulnerable)) {
         int val = getTotalValue(Vulnerable);
@@ -92,7 +92,7 @@ int BuffDebuffManager::applyVulnerableToDamage(int damage) const {
     return damage;
 }
 
-// ===== اعمال Weak: ۵۰٪ دمج کمتر =====
+
 int BuffDebuffManager::applyWeakToDamage(int damage) const {
     if (has(Weak)) {
         int val = getTotalValue(Weak);
@@ -104,7 +104,6 @@ int BuffDebuffManager::applyWeakToDamage(int damage) const {
     return damage;
 }
 
-// ===== اعمال Frail: ۲۵٪ Block کمتر =====
 int BuffDebuffManager::applyFrailToBlock(int block) const {
     if (has(Frail)) {
         int val = getTotalValue(Frail);
@@ -116,7 +115,6 @@ int BuffDebuffManager::applyFrailToBlock(int block) const {
     return block;
 }
 
-// ===== اعمال Metallicize: دریافت Block در پایان نوبت =====
 void BuffDebuffManager::applyMetallicizeAtEndOfTurn(int& block) {
     if (has(Metallicize)) {
         int metalValue = getTotalValue(Metallicize);
