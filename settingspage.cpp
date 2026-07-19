@@ -1,14 +1,21 @@
 #include "settingspage.h"
+#include "Page.h"
+#include "mainwindow.h"
+#include "player.h"
+#include <QVector>
 #include <QPushButton>
 #include <QStyle>
+#include <qboxlayout.h>
 
 SettingsPage::SettingsPage(QWidget *parent)
     : QWidget(parent)
 {
-    QFont nameFont("Papyrus", 35, QFont::Bold);
+    font.setPointSize(20);
+
+    QFont titleFont("Papyrus", 35, QFont::Bold);
     settingsLabel = new QLabel("Settings", this);
     settingsLabel->setGeometry(100, 80, 200, 50);
-    settingsLabel->setFont(nameFont);
+    settingsLabel->setFont(titleFont);
     settingsLabel->setStyleSheet("color: white;");
 
     buttonStyle =
@@ -38,8 +45,6 @@ SettingsPage::SettingsPage(QWidget *parent)
     backButton->setGeometry(100, 360, 200, 25);
     backButton->setStyleSheet(buttonStyle);
 
-
-
     soundLabel = new QLabel(this);
     soundLabel->setText("Sound");
     soundLabel->setGeometry(100, 300, 100, 25);
@@ -65,6 +70,160 @@ SettingsPage::SettingsPage(QWidget *parent)
         "   border-color: #B71C1C;"
         "}"
         );
+
+    frame = new QFrame(this);
+    frame->setFixedSize(450, 400);
+    QHBoxLayout *hLayout = new QHBoxLayout;
+    hLayout->addStretch();
+    hLayout->addWidget(frame);
+    hLayout->addStretch();
+    QVBoxLayout *vLayout = new QVBoxLayout(this);
+    vLayout->addStretch();
+    vLayout->addLayout(hLayout);
+    vLayout->addStretch();
+    frame->setFrameShape(QFrame::Box);
+    frame->setStyleSheet("QFrame { border-image: url(:/prefix1/images/whitepic.png) 0 0 0 0 stretch stretch; }");
+    frame->hide();
+
+    nameLabel = new QLabel(frame);
+    nameLabel->setGeometry(50, 50, 300, 25);
+    nameLabel->setFont(font);
+    nameLabel->setText("Enter New Username");
+    nameEdit = new QLineEdit(frame);
+    nameEdit->setGeometry(50, 80, 300, 25);
+    nameEdit->setPlaceholderText(" username");
+    nameLabel->hide();
+    nameEdit->hide();
+
+    passwordLabel = new QLabel(frame);
+    passwordLabel->setGeometry(50, 50, 300, 25);
+    passwordLabel->setFont(font);
+    passwordLabel->setText("Enter New Password");
+    passwordEdit = new QLineEdit(frame);
+    passwordEdit->setEchoMode(QLineEdit::Password);
+    passwordEdit->setGeometry(50, 80, 300, 25);
+    passwordEdit->setPlaceholderText(" password");
+    passwordEdit->hide();
+    passwordLabel->hide();
+
+    confirmLabel = new QLabel(frame);
+    confirmLabel->setGeometry(50, 170, 300, 25);
+    confirmLabel->setFont(font);
+    confirmLabel->setText("Confirm Your Password");
+    confirmEdit = new QLineEdit(frame);
+    confirmEdit->setEchoMode(QLineEdit::Password);
+    confirmEdit->setGeometry(50, 200, 300, 25);
+    confirmEdit->setPlaceholderText(" password");
+    confirmEdit->hide();
+    confirmLabel->hide();
+
+
+    saveButtton = new QPushButton(frame);
+    saveButtton->setGeometry(280, 290, 70, 25);
+    saveButtton->setText("Save");
+    cancelButton = new QPushButton(frame);
+    cancelButton->setGeometry(50, 290, 70, 25);
+    cancelButton->setText("Cancel");
+
+
+
+    connect(backButton, &QPushButton::clicked, this, [](){
+        MainWindow::changeStack((int)Page::MainMenu);
+    });
+
+    connect(nameButton, &QPushButton::clicked, this, [this](){
+        changeName();
+    });
+
+    connect(passwordButton, &QPushButton::clicked, this, [this](){
+        changePassword();
+    });
+
+    connect(saveButtton, &QPushButton::clicked, this, [this](){
+        saving();
+    });
+
+    connect(cancelButton, &QPushButton::clicked, this, [this](){
+        canceling();
+    });
+}
+
+void SettingsPage::changeName()
+{
+    namePage = true;
+    nameButton->hide();
+    passwordButton->hide();
+    soundLabel->hide();
+    soundButton->hide();
+    backButton->hide();
+
+    frame->show();
+    nameLabel->show();
+    nameEdit->show();
+    nameEdit->clear();
+}
+void SettingsPage::changePassword()
+{
+    namePage = false;
+    nameButton->hide();
+    passwordButton->hide();
+    soundLabel->hide();
+    soundButton->hide();
+    backButton->hide();
+
+    frame->show();
+    passwordLabel->show();
+    passwordEdit->show();
+    confirmLabel->show();
+    confirmEdit->show();
+    passwordEdit->clear();
+    confirmEdit->clear();
+}
+
+void SettingsPage::saving()
+{
+    player::instance()->setOldName(player::instance()->getName());
+    player::instance()->setOldPassword(player::instance()->getPassword());
+    if (namePage){
+        QString newName = nameEdit->text();
+        QVector<player> players = player::allPlayers();
+        for (auto p : players)
+            if (p.getName() == newName)
+                return;
+        player::instance()->setName(newName);
+        player::instance()->saveFile();
+        canceling();
+    }
+    else{
+        QString newPassword = passwordEdit->text();
+        QString newConfirm = confirmEdit->text();
+        if(!newPassword.size())
+            return;
+        if (newPassword != newConfirm)
+            return;
+        else{
+            player::instance()->setPassword(newPassword);
+            player::instance()->saveFile();
+            canceling();
+        }
+    }
+}
+
+void SettingsPage::canceling()
+{
+    nameLabel->hide();
+    nameEdit->hide();
+    passwordLabel->hide();
+    passwordEdit->hide();
+    confirmLabel->hide();
+    confirmEdit->hide();
+    frame->hide();
+
+    nameButton->show();
+    passwordButton->show();
+    soundLabel->show();
+    soundButton->show();
+    backButton->show();
 }
 
 SettingsPage::~SettingsPage()

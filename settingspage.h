@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <qlabel.h>
+#include <qlineedit.h>
 #include <qpushbutton.h>
 
 
@@ -15,6 +16,7 @@ public:
     ~SettingsPage();
 
 private:
+    QFont font;
     QString buttonStyle;
     QLabel* settingsLabel;
     QPushButton* nameButton;
@@ -22,6 +24,21 @@ private:
     QLabel* soundLabel;
     QPushButton *soundButton;
     QPushButton* backButton;
+    QFrame* frame;
+    QLabel* nameLabel;
+    QLabel* passwordLabel;
+    QLabel* confirmLabel;
+    QLineEdit* nameEdit;
+    QLineEdit* passwordEdit;
+    QLineEdit* confirmEdit;
+    QPushButton* saveButtton;
+    QPushButton* cancelButton;
+
+    void changeName();
+    void changePassword();
+    bool namePage;
+    void saving();
+    void canceling();
 
 };
 
