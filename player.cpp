@@ -11,7 +11,7 @@ player::player(QGraphicsItem *parent)
 {
     gold = 0;
     Act = 1;
-    floor = 1;
+    floor = 0;
     maxHP = 80;
     HP = maxHP;
     energy = 3;
@@ -31,7 +31,7 @@ player::player(const player& other)
     : QObject(nullptr),
     QGraphicsPixmapItem(other.parentItem())
 {
-    // ===== کپی اطلاعات پایه =====
+
     username = other.username;
     password = other.password;
     gold = other.gold;
@@ -68,7 +68,7 @@ player& player::operator=(const player& other)
         return *this;
     }
 
-    // ===== کپی اطلاعات پایه =====
+
     username = other.username;
     password = other.password;
     gold = other.gold;
@@ -192,7 +192,7 @@ void player::saveFile()
     in.setVersion(QDataStream::Qt_6_5);
     while(!in.atEnd()){
         p.readFromStream(in);
-        if (p.username == m_instance->username && p.password == m_instance->password)
+        if (p.username == m_instance->oldUsername && p.password == m_instance->oldPassword)
             p = *m_instance;
         players.push_back(p);
     }

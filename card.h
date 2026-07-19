@@ -96,7 +96,7 @@ protected:
     QString getCardTypePath() const;
     QString getCardTypeFolder() const;
     QString getCardImagePath() const;
-
+    //int data;
     int ID;
     QString name;
     QString description;

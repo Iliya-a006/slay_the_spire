@@ -1,7 +1,6 @@
 #ifndef MAP1_H
 #define MAP1_H
 
-#include "floor.h"
 #include "room.h"
 #include <QWidget>
 #include <QGraphicsScene>
@@ -19,14 +18,21 @@ public:
     explicit Map1(QWidget *parent = nullptr);
     ~Map1();
 
+    static Map1* instance();
+    static void saveMap();
+
 private:
     Ui::Map1 *ui;
+    friend class MainWindow;
 
+    static Map1* m_instance;
     QGraphicsScene* m_scene;
     QGraphicsView* m_view;
 
     QVector<QVector<Room*>> floors;
     QVector<QVector<int>> floorsCode;
+    QVector<int> route;
+    QVector<Room*> accessibleRooms;
     void mapCoder();
     void loadMap();
     void printMap();
