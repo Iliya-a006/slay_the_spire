@@ -55,9 +55,22 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         campscene.h campscene.cpp campscene.ui
         shopscene.h shopscene.cpp shopscene.ui
         bossscene.h bossscene.cpp bossscene.ui
-        cardimagemanager.h cardimagemanager.cpp
+
         Soundtrack.qrc
         attackcrads.qrc
+        attack_cards.h attack_cards.cpp
+        enemy.h enemy.cpp
+        strike.h strike.cpp
+        twinstrike.h twinstrike.cpp
+        bloodforblood.h bloodforblood.cpp
+        hemokinesis.h hemokinesis.cpp
+        carnage.h carnage.cpp
+        whirlwind.h whirlwind.cpp
+        bludgeon.h bludgeon.cpp
+        immolate.h immolate.cpp
+        reaper.h reaper.cpp
+        feed.h feed.cpp
+
 
 
 

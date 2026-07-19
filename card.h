@@ -3,14 +3,19 @@
 
 #include <QWidget>
 #include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
 #include <QString>
 #include <QObject>
-#include <QGraphicsSceneMouseEvent>
 #include <QVector>
 #include <QPainter>
 #include <QFont>
+#include <QList>
+#include <QPixmap>
+#include <QLabel>
+#include <QCursor>
 
-enum Card_Type{
+enum Card_Type {
     ATTACK,
     SKILL,
     POWER,
@@ -18,61 +23,79 @@ enum Card_Type{
     CURSE
 };
 
-enum Card_Rarity{
+enum Card_Rarity {
     BASIC,
     COMMON,
     UNCOMMON,
     RARE,
     SPECIAL
 };
+
 class player;
-class enemy;
+class Enemy;
+
 class Card : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 
 public:
     explicit Card(QGraphicsItem *parent = nullptr);
-    virtual ~Card()=default;
+    Card(const Card& other);  // Copy Constructor
+    virtual ~Card() = default;
 
-    int GETER_ID(){return ID;}
-    QString GETER_NAME(){return name;}
-    int GETER_ENERGY_COST(){return energy_cost;}
-    int GETER_DAMAGE(){return damage;}
-    int GETER_BLOCK(){return block;}
-    Card_Rarity GETER_RARITY(){return rarity;}
-    Card_Type GETER_TYPE(){return type;}
-    QString& GETER_SETER_DESCRIPTION(){return description;}
-    bool& GETER_SETER_Exhaust(){return is_Exhaust;}
-    bool& GETER_SETER_Ethereal(){return is_Ethereal;}
-    bool& GETER_SETER_RETAIN(){return is_Retain;}
-    bool& GETER_SETER_UPGRADE(){return is_Upgrade;}
+    int GETER_ID() const { return ID; }
+    QString GETER_NAME() const { return name; }
+    int GETER_ENERGY_COST() const { return energy_cost; }
+    int GETER_DAMAGE() const { return damage; }
+    int GETER_BLOCK() const { return block; }
+    Card_Rarity GETER_RARITY() const { return rarity; }
+    Card_Type GETER_TYPE() const { return type; }
+    QString GETER_DESCRIPTION() const { return description; }
+    bool GETER_IS_UPGRADE() const { return is_Upgrade; }
 
-    virtual int getCurrentCost(const player* player) const;
+    QString& GETER_SETER_DESCRIPTION() { return description; }
+    bool& GETER_SETER_Exhaust() { return is_Exhaust; }
+    bool& GETER_SETER_Ethereal() { return is_Ethereal; }
+    bool& GETER_SETER_RETAIN() { return is_Retain; }
+    bool& GETER_SETER_UPGRADE() { return is_Upgrade; }
+
+    QString getDisplayName() const;
+    QColor getNameColor() const;
+
+    virtual int getCurrentCost( player* player) const;
     virtual bool canPlay(player* player) const;
-    virtual void play(player* player, QList<enemy*>& enemies) = 0;
+    virtual void play(player* player, QList<Enemy*>& enemies) = 0;
     virtual Card* upgrade() = 0;
     virtual Card* clone() const = 0;
 
     void Set_Hovered(bool hovered);
     bool Is_Hovered() const { return hovered; }
-    void Set_Playable(bool playable) { playable = playable; }
+    void Set_Playable(bool playable) { this->playable = playable; }
+    bool Is_Playable() const { return playable; }
     void Set_Position(qreal x, qreal y) { setPos(x, y); }
-    void Load_Card_Image(bool upgraded = false);
+    void Set_Original_Position(qreal x, qreal y) { originalPos = QPointF(x, y); }
+    void Reset_Position() { setPos(originalPos); }
+
+    virtual void Load_Card_Image(bool upgraded = false);
+
 signals:
     void Card_Drag_Started(Card* card);
     void Card_Drag_Moved(Card* card);
     void Card_Dropped(Card* card);
-    void Card_Dropped_On_Enemy(Card* card, enemy* enemy);
+    void Card_Dropped_On_Enemy(Card* card, Enemy* enemy);
     void Card_Dropped_On_Player(Card* card);
-protected:
 
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+
+    QString getCardNameFormatted() const;
+    QString getCardTypePath() const;
+    QString getCardTypeFolder() const;
+    QString getCardImagePath() const;
 
     int ID;
     QString name;
@@ -82,15 +105,21 @@ protected:
     int block;
     Card_Type type;
     Card_Rarity rarity;
+
     bool is_Exhaust;
     bool is_Ethereal;
     bool is_Retain;
     bool is_Upgrade;
 
-    //show DISPLAYSTATUS of card
-    bool hovered,playeable;
+    bool hovered;
+    bool playable;
     bool m_isDragged;
-    QPointF m_dragOffset;
+
+    QPointF originalPos;
+    QPointF dragStartPos;
+
+    static constexpr int CARD_WIDTH = 150;
+    static constexpr int CARD_HEIGHT = 210;
 };
 
 #endif // CARD_H
