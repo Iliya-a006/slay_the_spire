@@ -24,8 +24,15 @@ public:
     player& operator=(const player& other);
 
     QString getName() { return username; }
+    void setName(QString n){username = n;}
+    QString getPassword(){return password;}
+    void setPassword(QString p){password = p;}
     int getMapID() { return mapID; }
     void setMapID(int id) { mapID = id; }
+    int getAct(){return Act;}
+    int getFloor(){return floor;}
+    void setOldName(QString n){oldUsername = n;}
+    void setOldPassword(QString p){oldPassword = p;}
     int& GETER_SETER_ENERGY() { return energy; }
 
     static player* instance();
@@ -131,6 +138,7 @@ public:
     static bool appendPlayer(QString name, QString pass);
     static bool findPlayer(QString name, QString pass);
     static void saveFile();
+    static QVector<player> allPlayers();
 };
 
 #endif // PLAYER_H

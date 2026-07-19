@@ -207,6 +207,24 @@ void player::saveFile()
     file.close();
 }
 
+QVector<player> player::allPlayers()
+{
+    QVector<player> players(0);
+    player p(nullptr);
+
+    QFile file("players.bin");
+    if (!file.open(QIODevice::ReadOnly))
+        return players;
+    QDataStream in(&file);
+    in.setVersion(QDataStream::Qt_6_5);
+    while(!in.atEnd()){
+        p.readFromStream(in);
+        players.push_back(p);
+    }
+    file.close();
+    return players;
+}
+
 void player::ADD_BLOCK(int amount) {
     amount = buffManager.applyFrailToBlock(amount);
     block += amount;

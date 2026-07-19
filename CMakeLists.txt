@@ -69,6 +69,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         immolate.h immolate.cpp
         reaper.h reaper.cpp
         feed.h feed.cpp
+	redx.h redx.cpp
 
 
 
