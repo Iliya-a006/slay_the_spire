@@ -6,7 +6,9 @@
 #include <QPushButton>
 #include <QStyle>
 #include <qboxlayout.h>
-
+#include "mainmenu.h"
+#include <QMediaPlayer>
+#include <QAudioOutput>
 SettingsPage::SettingsPage(QWidget *parent)
     : QWidget(parent)
 {
@@ -125,7 +127,7 @@ SettingsPage::SettingsPage(QWidget *parent)
     cancelButton->setGeometry(50, 290, 70, 25);
     cancelButton->setText("Cancel");
 
-
+    connect(soundButton,&QPushButton::clicked,this,&SettingsPage::mute);
 
     connect(backButton, &QPushButton::clicked, this, [](){
         MainWindow::changeStack((int)Page::MainMenu);
@@ -225,7 +227,15 @@ void SettingsPage::canceling()
     soundButton->show();
     backButton->show();
 }
-
+void SettingsPage::mute(){
+    if (mainMenu) {
+        emit mainMenu->muteRequested();
+    }
+}
+void SettingsPage::setMainMenu(MainMenu *menu)
+{
+    mainMenu = menu;
+}
 SettingsPage::~SettingsPage()
 {
 

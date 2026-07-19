@@ -53,6 +53,7 @@ void MainWindow::onLoginSuccess()
     startMenu* start = new startMenu(m_stack);
     leaderBoard* leaderB = new leaderBoard(m_stack);
     SettingsPage* settings = new SettingsPage(m_stack);
+    settings->setMainMenu(mainmenu);
     Map1* mapAct1 = new Map1(m_stack);
     Map1::m_instance = mapAct1;
     EnemyScene* enemySc = new EnemyScene(m_stack);
