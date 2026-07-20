@@ -40,7 +40,7 @@ class Card : public QObject, public QGraphicsPixmapItem
 
 public:
     explicit Card(QGraphicsItem *parent = nullptr);
-    Card(const Card& other);  // Copy Constructor
+    Card(const Card& other);
     virtual ~Card() = default;
 
     int GETER_ID() const { return ID; }
@@ -62,7 +62,7 @@ public:
     QString getDisplayName() const;
     QColor getNameColor() const;
 
-    virtual int getCurrentCost( player* player) const;
+    virtual int getCurrentCost(player* player) const;
     virtual bool canPlay(player* player) const;
     virtual void play(player* player, QList<Enemy*>& enemies) = 0;
     virtual Card* upgrade() = 0;
@@ -96,7 +96,7 @@ protected:
     QString getCardTypePath() const;
     QString getCardTypeFolder() const;
     QString getCardImagePath() const;
-    //int data;
+
     int ID;
     QString name;
     QString description;

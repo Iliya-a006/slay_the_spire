@@ -61,7 +61,7 @@ public:
     void SPEND_ENERGY(int amount) { energy = qMax(0, energy - amount); }
     void TAKE_DAMAGE(int damage);
     void HEAL(int amount) { HP = qMin(maxHP, HP + amount); }
-    void RESETCOMBATSTATS() { block = 0; strength = 0; unblockedDamageTaken = 0; }
+    void RESETCOMBATSTATS();
 
     void ADD_TO_HAND(Card* card);
     void REMOVE_FROM_HAND(Card* card);
@@ -87,6 +87,7 @@ public:
     void SHUFFLE_DRAWPILE();
     void SHUFFLE_DISCARDPILE();
 
+    void initializeDeck();
 
     void START_TURN();
     void END_TURN();

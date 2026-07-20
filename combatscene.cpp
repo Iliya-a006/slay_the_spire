@@ -1,32 +1,31 @@
-#include "enemyscene.h"
+#include "combatscene.h"
 #include "screensize.h"
 #include <QVBoxLayout>
 #include <QMouseEvent>
-#include <QGraphicsView>
-#include <QGraphicsScene>
 
-EnemyScene::EnemyScene(QWidget *parent)
-    : RoomScene(parent),
-    m_currentEnemy(nullptr),
-    m_enemyItem(nullptr),
-    m_enemyHPText(nullptr),
-    m_enemyIntentText(nullptr)
+CombatScene::CombatScene(QWidget *parent)
+    : QWidget(parent)
 {
+    setAttribute(Qt::WA_TranslucentBackground);
+    setStyleSheet("background: transparent;");
+
     m_scene = new QGraphicsScene(this);
-    m_view  = new QGraphicsView(m_scene, this);
-    m_scene->setSceneRect(0, 0, ScreenSize::getWidth(), ScreenSize::getHeigth());
-    m_view->setGeometry(0, 0, ScreenSize::getWidth(), ScreenSize::getHeigth());
+    m_view = new QGraphicsView(m_scene, this);
+
     m_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_view->setStyleSheet("background: transparent; border: none;");
     m_view->setAttribute(Qt::WA_TranslucentBackground);
     m_view->viewport()->setStyleSheet("background: transparent;");
 
-    QPixmap bg(":/prefix1/images/battleBg.png");
-    QPixmap scaledBg = bg.scaled(ScreenSize::getSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    QGraphicsPixmapItem *bgItem = m_scene->addPixmap(scaledBg);
-    bgItem->setZValue(-100);
-    bgItem->setPos(0, 0);
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(m_view);
+    setLayout(layout);
+
+    m_view->setGeometry(0, 0, width(), height());
+    m_scene->setSceneRect(0, 0, ScreenSize::getWidth(), ScreenSize::getHeigth());
+    m_scene->setBackgroundBrush(Qt::transparent);
 
     m_playerAvatar = nullptr;
     m_hpBarBg = nullptr;
@@ -36,7 +35,7 @@ EnemyScene::EnemyScene(QWidget *parent)
     m_endTurnButton = nullptr;
 }
 
-EnemyScene::~EnemyScene()
+CombatScene::~CombatScene()
 {
     clearCards();
     if (m_playerAvatar) {
@@ -68,46 +67,20 @@ EnemyScene::~EnemyScene()
         delete m_endTurnButton;
         m_endTurnButton = nullptr;
     }
-    if (m_enemyItem) {
-        m_scene->removeItem(m_enemyItem);
-        delete m_enemyItem;
-        m_enemyItem = nullptr;
-    }
-    if (m_enemyHPText) {
-        m_scene->removeItem(m_enemyHPText);
-        delete m_enemyHPText;
-        m_enemyHPText = nullptr;
-    }
-    if (m_enemyIntentText) {
-        m_scene->removeItem(m_enemyIntentText);
-        delete m_enemyIntentText;
-        m_enemyIntentText = nullptr;
-    }
 }
 
-void EnemyScene::resetRoom()
-{
-
-}
-
-void EnemyScene::setupCombat()
+void CombatScene::setupCombat()
 {
     connectPlayerSignals();
     setupPlayerAvatar();
     setupHPBar();
     setupEnergyLabel();
     setupEndTurnButton();
-    setupEnemy();
     setupPlayerCards();
     updateUI();
 }
 
-void EnemyScene::setEnemy(Enemy* enemy)
-{
-    m_currentEnemy = enemy;
-}
-
-void EnemyScene::connectPlayerSignals()
+void CombatScene::connectPlayerSignals()
 {
     player* p = player::instance();
     if (!p) return;
@@ -126,7 +99,7 @@ void EnemyScene::connectPlayerSignals()
     });
 }
 
-void EnemyScene::setupPlayerAvatar()
+void CombatScene::setupPlayerAvatar()
 {
     player* p = player::instance();
     if (!p) return;
@@ -147,7 +120,7 @@ void EnemyScene::setupPlayerAvatar()
     m_scene->addItem(m_playerAvatar);
 }
 
-void EnemyScene::setupHPBar()
+void CombatScene::setupHPBar()
 {
     player* p = player::instance();
     if (!p) return;
@@ -178,7 +151,7 @@ void EnemyScene::setupHPBar()
     updateHPBar();
 }
 
-void EnemyScene::updateHPBar()
+void CombatScene::updateHPBar()
 {
     player* p = player::instance();
     if (!p) return;
@@ -205,7 +178,7 @@ void EnemyScene::updateHPBar()
     m_hpText->setPlainText(QString("%1/%2").arg(currentHP).arg(maxHP));
 }
 
-void EnemyScene::setupEnergyLabel()
+void CombatScene::setupEnergyLabel()
 {
     player* p = player::instance();
     if (!p) return;
@@ -224,7 +197,7 @@ void EnemyScene::setupEnergyLabel()
     updateEnergyLabel();
 }
 
-void EnemyScene::updateEnergyLabel()
+void CombatScene::updateEnergyLabel()
 {
     player* p = player::instance();
     if (!p) return;
@@ -234,7 +207,7 @@ void EnemyScene::updateEnergyLabel()
     m_energyText->setPlainText(QString("⚡ %1").arg(energy));
 }
 
-void EnemyScene::setupEndTurnButton()
+void CombatScene::setupEndTurnButton()
 {
     m_endTurnButton = new QPushButton("End Turn", this);
     m_endTurnButton->setGeometry(ScreenSize::getWidth() - 150, 30, 120, 40);
@@ -257,15 +230,15 @@ void EnemyScene::setupEndTurnButton()
         "}"
         );
 
-    connect(m_endTurnButton, &QPushButton::clicked, this, &EnemyScene::onEndTurnClicked);
+    connect(m_endTurnButton, &QPushButton::clicked, this, &CombatScene::onEndTurnClicked);
 }
 
-void EnemyScene::onEndTurnClicked()
+void CombatScene::onEndTurnClicked()
 {
     endTurn();
 }
 
-void EnemyScene::endTurn()
+void CombatScene::endTurn()
 {
     player* p = player::instance();
     if (!p) return;
@@ -276,71 +249,7 @@ void EnemyScene::endTurn()
     updateUI();
 }
 
-void EnemyScene::setupEnemy()
-{
-    if (!m_currentEnemy) return;
-
-    if (m_enemyItem) {
-        m_scene->removeItem(m_enemyItem);
-        delete m_enemyItem;
-        m_enemyItem = nullptr;
-    }
-
-    m_enemyItem = new QGraphicsPixmapItem();
-    m_enemyItem->setPixmap(m_currentEnemy->pixmap());
-    m_enemyItem->setScale(0.8);
-    m_enemyItem->setPos((ScreenSize::getWidth() / 2) - 50, 80);
-    m_scene->addItem(m_enemyItem);
-
-    if (m_enemyHPText) {
-        m_scene->removeItem(m_enemyHPText);
-        delete m_enemyHPText;
-        m_enemyHPText = nullptr;
-    }
-    m_enemyHPText = new QGraphicsTextItem();
-    QFont font("Vazirmatn", 14, QFont::Bold);
-    m_enemyHPText->setFont(font);
-    m_enemyHPText->setDefaultTextColor(Qt::red);
-    m_enemyHPText->setPos((ScreenSize::getWidth() / 2) - 50, 200);
-    m_scene->addItem(m_enemyHPText);
-
-    if (m_enemyIntentText) {
-        m_scene->removeItem(m_enemyIntentText);
-        delete m_enemyIntentText;
-        m_enemyIntentText = nullptr;
-    }
-    m_enemyIntentText = new QGraphicsTextItem();
-    QFont intentFont("Vazirmatn", 12, QFont::Bold);
-    m_enemyIntentText->setFont(intentFont);
-    m_enemyIntentText->setDefaultTextColor(Qt::yellow);
-    m_enemyIntentText->setPos((ScreenSize::getWidth() / 2) - 60, 240);
-    m_scene->addItem(m_enemyIntentText);
-
-    updateEnemyUI();
-}
-
-void EnemyScene::updateEnemyUI()
-{
-    if (!m_currentEnemy) return;
-    if (m_enemyHPText) {
-        m_enemyHPText->setPlainText(QString("HP: %1/%2").arg(m_currentEnemy->getHP()).arg(m_currentEnemy->getMaxHP()));
-    }
-    if (m_enemyIntentText) {
-        Intent intent = m_currentEnemy->getNextIntent();
-        QString intentText;
-        switch (intent.type) {
-        case Intent::ATTACK: intentText = "⚔️ Attack: " + QString::number(intent.value); break;
-        case Intent::DEFEND: intentText = "🛡️ Defend: " + QString::number(intent.value); break;
-        case Intent::BUFF:   intentText = "✨ Buff: " + intent.description; break;
-        case Intent::DEBUFF: intentText = "💀 Debuff: " + intent.description; break;
-        case Intent::MIXED:  intentText = "⚡ Mixed: " + intent.description; break;
-        default: intentText = "❓ Unknown";
-        }
-        m_enemyIntentText->setPlainText(intentText);
-    }
-}
-
-void EnemyScene::setupPlayerCards()
+void CombatScene::setupPlayerCards()
 {
     player* p = player::instance();
     if (!p) return;
@@ -401,7 +310,7 @@ void EnemyScene::setupPlayerCards()
     }
 }
 
-void EnemyScene::clearCards()
+void CombatScene::clearCards()
 {
     for (auto item : m_cardItems) {
         m_scene->removeItem(item);
@@ -410,7 +319,7 @@ void EnemyScene::clearCards()
     m_cardItems.clear();
 }
 
-void EnemyScene::updateUI()
+void CombatScene::updateUI()
 {
     player* p = player::instance();
     if (p && m_playerAvatar) {
@@ -419,12 +328,11 @@ void EnemyScene::updateUI()
 
     updateHPBar();
     updateEnergyLabel();
-    updateEnemyUI();
     clearCards();
     setupPlayerCards();
 }
 
-void EnemyScene::resizeEvent(QResizeEvent* event)
+void CombatScene::resizeEvent(QResizeEvent* event)
 {
     QWidget::resizeEvent(event);
     m_view->setGeometry(0, 0, width(), height());

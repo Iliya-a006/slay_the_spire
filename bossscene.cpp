@@ -22,7 +22,7 @@ BossScene::BossScene(QWidget *parent)
 
 void BossScene::resetRoom()
 {
-    // called after each room entry
+
 }
 
 BossScene::~BossScene()

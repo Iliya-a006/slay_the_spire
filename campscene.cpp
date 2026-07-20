@@ -22,7 +22,7 @@ CampScene::CampScene(QWidget *parent)
 
 void CampScene::resetRoom()
 {
-    // called after each room entry
+
 }
 
 CampScene::~CampScene()

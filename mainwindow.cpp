@@ -57,6 +57,7 @@ void MainWindow::onLoginSuccess()
     Map1* mapAct1 = new Map1(m_stack);
     Map1::m_instance = mapAct1;
     EnemyScene* enemySc = new EnemyScene(m_stack);
+    enemySc->setupCombat();
     EliteScene* eliteSc = new EliteScene(m_stack);
     EventScene* eventSc = new EventScene(m_stack);
     TreasureScene* treasureSc = new TreasureScene(m_stack);
@@ -81,23 +82,25 @@ void MainWindow::onLoginSuccess()
     backgrounds.push_back(":/prefix1/images/menupic.png");
     backgrounds.push_back(":/prefix1/images/menupic.png");
     backgrounds.push_back(":/prefix1/images/menupic.png");
-   
+
 
     backgrounds.push_back(":/prefix1/images/blackpic.png");
-    backgrounds.push_back(":/prefix1/images/fightpic.png");
-    backgrounds.push_back(":/prefix1/images/fightpic.png");
+    backgrounds.push_back(":/prefix1/images/battleBg.png");
+    backgrounds.push_back(":/prefix1/images/battleBg.png");
     backgrounds.push_back("");
     backgrounds.push_back("");
     backgrounds.push_back("");
     backgrounds.push_back("");
-    backgrounds.push_back(":/prefix1/images/fightpic.png");
+    backgrounds.push_back(":/prefix1/images/battleBg.png");
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     QPixmap bg(backgrounds[m_stack->currentIndex()]);
-    painter.drawPixmap(rect(), bg.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+    if (!bg.isNull()) {
+        painter.drawPixmap(rect(), bg.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+    }
     QWidget::paintEvent(event);
 }
 
