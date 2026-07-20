@@ -1,13 +1,10 @@
 #ifndef CAMPSCENE_H
 #define CAMPSCENE_H
 
+#include "roomscene.h"
 #include <QWidget>
 
-namespace Ui {
-class CampScene;
-}
-
-class CampScene : public QWidget
+class CampScene : public RoomScene
 {
     Q_OBJECT
 
@@ -15,8 +12,7 @@ public:
     explicit CampScene(QWidget *parent = nullptr);
     ~CampScene();
 
-private:
-    Ui::CampScene *ui;
+    void resetRoom() override;
 };
 
 #endif // CAMPSCENE_H

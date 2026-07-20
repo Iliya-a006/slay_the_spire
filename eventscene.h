@@ -1,13 +1,10 @@
 #ifndef EVENTSCENE_H
 #define EVENTSCENE_H
 
+#include "roomscene.h"
 #include <QWidget>
 
-namespace Ui {
-class EventScene;
-}
-
-class EventScene : public QWidget
+class EventScene : public RoomScene
 {
     Q_OBJECT
 
@@ -15,8 +12,7 @@ public:
     explicit EventScene(QWidget *parent = nullptr);
     ~EventScene();
 
-private:
-    Ui::EventScene *ui;
+    void resetRoom() override;
 };
 
 #endif // EVENTSCENE_H

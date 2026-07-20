@@ -2,12 +2,10 @@
 #define ENEMYSCENE_H
 
 #include <QWidget>
+#include "roomscene.h"
 
-namespace Ui {
-class EnemyScene;
-}
 
-class EnemyScene : public QWidget
+class EnemyScene : public RoomScene
 {
     Q_OBJECT
 
@@ -15,8 +13,7 @@ public:
     explicit EnemyScene(QWidget *parent = nullptr);
     ~EnemyScene();
 
-private:
-    Ui::EnemyScene *ui;
+    void resetRoom() override;
 };
 
 #endif // ENEMYSCENE_H

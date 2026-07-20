@@ -6,6 +6,9 @@
         <file>images/menupic.png</file>
         <file>images/blackpic.png</file>
         <file>images/paperBg3.png</file>
+        <file>images/battleBg.png</file>
+        <file>images/greenBg.png</file>
+        <file>images/restBg.png</file>
     </qresource>
     <qresource prefix="/icons">
         <file>images/BossMapIcon2.png</file>
@@ -16,5 +19,8 @@
         <file>images/RestMapIcon.png</file>
         <file>images/ShopMapIcon.png</file>
         <file>images/RedX_blood.png</file>
+    </qresource>
+    <qresource prefix="/characters">
+        <file>images/vendor.png</file>
     </qresource>
 </RCC>

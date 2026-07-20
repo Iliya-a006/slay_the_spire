@@ -1,13 +1,11 @@
 #ifndef BOSSSCENE_H
 #define BOSSSCENE_H
 
+#include "roomscene.h"
 #include <QWidget>
 
-namespace Ui {
-class BossScene;
-}
 
-class BossScene : public QWidget
+class BossScene : public RoomScene
 {
     Q_OBJECT
 
@@ -15,8 +13,7 @@ public:
     explicit BossScene(QWidget *parent = nullptr);
     ~BossScene();
 
-private:
-    Ui::BossScene *ui;
+    void resetRoom() override;
 };
 
 #endif // BOSSSCENE_H
