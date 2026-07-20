@@ -28,7 +28,7 @@ Card::Card(QGraphicsItem *parent)
 {
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
-    setFlag(QGraphicsItem::ItemIsMovable, false);
+    setFlag(QGraphicsItem::ItemIsMovable, true);
     setScale(0.8);
 }
 
@@ -54,12 +54,12 @@ Card::Card(const Card& other)
 {
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
-    setFlag(QGraphicsItem::ItemIsMovable, false);
+    setFlag(QGraphicsItem::ItemIsMovable, true);
     setScale(0.8);
     setPixmap(other.pixmap());
 }
 
-int Card::getCurrentCost( player* player) const {
+int Card::getCurrentCost(player* player) const {
     Q_UNUSED(player);
     return energy_cost;
 }
@@ -77,9 +77,11 @@ void Card::Set_Hovered(bool hovered) {
     if (hovered) {
         setScale(0.9);
         setZValue(10);
+        setPos(x(), y() - 20);
     } else {
         setScale(0.8);
         setZValue(0);
+        setPos(originalPos);
     }
 }
 
@@ -241,8 +243,7 @@ void Card::mousePressEvent(QGraphicsSceneMouseEvent* event) {
 
 void Card::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
     if (m_isDragged) {
-        QPointF newPos = pos() + (event->pos() - dragStartPos);
-        setPos(newPos);
+        setPos(mapToParent(event->pos() - dragStartPos));
         emit Card_Drag_Moved(this);
         setCursor(Qt::ClosedHandCursor);
         event->accept();
@@ -261,6 +262,14 @@ void Card::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
             Enemy* targetEnemy = dynamic_cast<Enemy*>(droppedOn);
             if (targetEnemy) {
                 emit Card_Dropped_On_Enemy(this, targetEnemy);
+                event->accept();
+                QGraphicsPixmapItem::mouseReleaseEvent(event);
+                return;
+            }
+
+            player* targetPlayer = dynamic_cast<player*>(droppedOn);
+            if (targetPlayer) {
+                emit Card_Dropped_On_Player(this);
                 event->accept();
                 QGraphicsPixmapItem::mouseReleaseEvent(event);
                 return;

@@ -70,6 +70,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         reaper.h reaper.cpp
         feed.h feed.cpp
 	redx.h redx.cpp
+        avatar.qrc
+        combatscene.h combatscene.cpp
 
 
 
