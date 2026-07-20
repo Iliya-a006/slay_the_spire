@@ -27,6 +27,7 @@ MainMenu::MainMenu(QWidget *parent)
     output->setVolume(0.5);
     player->setSource(QUrl("qrc:/soundtrack/Track/Menusoundtrsck.mp3"));
 
+    connect(this, &MainMenu::muteRequested, this, &MainMenu::mute_track);
 
     QFont nameFont("Papyrus", 35, QFont::Bold);
     nameLabel = new QLabel(player::instance()->getName(), this);
@@ -135,6 +136,14 @@ bool MainMenu::eventFilter(QObject *obj, QEvent *event){
 
     return QWidget::eventFilter(obj, event);
 }
+
+void MainMenu::mute_track(){
+    if(output->isMuted()==true)
+        output->setMuted(false);
+else
+        output->setMuted(true);
+}
+
 MainMenu::~MainMenu()
 {
     delete ui;
