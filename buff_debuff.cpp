@@ -81,7 +81,6 @@ QString BuffDebuffManager::getDescription() const {
     return desc.join(", ");
 }
 
-
 int BuffDebuffManager::applyVulnerableToDamage(int damage) const {
     if (has(Vulnerable)) {
         int val = getTotalValue(Vulnerable);
@@ -91,7 +90,6 @@ int BuffDebuffManager::applyVulnerableToDamage(int damage) const {
     }
     return damage;
 }
-
 
 int BuffDebuffManager::applyWeakToDamage(int damage) const {
     if (has(Weak)) {
