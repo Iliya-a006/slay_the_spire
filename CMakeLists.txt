@@ -71,6 +71,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         feed.h feed.cpp
 	redx.h redx.cpp
         roomscene.h roomscene.cpp
+        combatscene.h combatscene.cpp
+        avatar.qrc
 
 
 

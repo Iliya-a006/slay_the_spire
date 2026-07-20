@@ -22,7 +22,7 @@ TreasureScene::TreasureScene(QWidget *parent)
 
 void TreasureScene::resetRoom()
 {
-    // called after each room entry
+
 }
 
 TreasureScene::~TreasureScene()

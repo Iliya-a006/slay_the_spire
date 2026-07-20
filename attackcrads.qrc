@@ -9,5 +9,6 @@
         <file>ATTACK_CARDS/Reaper.jpg</file>
         <file>ATTACK_CARDS/TwinStrike.jpg</file>
         <file>ATTACK_CARDS/Whirlwind.jpg</file>
+        <file>ATTACK_CARDS/Strike.jpg</file>
     </qresource>
 </RCC>

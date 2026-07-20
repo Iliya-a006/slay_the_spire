@@ -1,4 +1,14 @@
 #include "player.h"
+#include "strike.h"
+#include "twinstrike.h"
+#include "bloodforblood.h"
+#include "hemokinesis.h"
+#include "carnage.h"
+#include "whirlwind.h"
+#include "bludgeon.h"
+#include "immolate.h"
+#include "reaper.h"
+#include "feed.h"
 #include <QFile>
 #include <QDataStream>
 #include <algorithm>
@@ -25,6 +35,7 @@ player::player(QGraphicsItem *parent)
     setAcceptHoverEvents(true);
     setScale(0.8);
     loadDefaultAvatar();
+    initializeDeck();
 }
 
 player::player(const player& other)
@@ -115,10 +126,21 @@ void player::loadAvatar(const QString& path) {
     if (!pixmap.isNull()) {
         setPixmap(pixmap);
         setScale(0.8);
+    } else {
+        loadDefaultAvatar();
     }
 }
 
 void player::loadDefaultAvatar() {
+    QString avatarPath = ":/avatar/images/Ironclad.png";
+    QPixmap pixmap(avatarPath);
+
+    if (!pixmap.isNull()) {
+        setPixmap(pixmap);
+        setScale(0.8);
+        return;
+    }
+
     QPixmap avatar(100, 100);
     avatar.fill(QColor(50, 50, 200));
 
@@ -129,6 +151,56 @@ void player::loadDefaultAvatar() {
 
     setPixmap(avatar);
     setScale(0.8);
+}
+
+void player::initializeDeck()
+{
+    qDeleteAll(drawPile);
+    drawPile.clear();
+    qDeleteAll(hand);
+    hand.clear();
+    qDeleteAll(discardPile);
+    discardPile.clear();
+    qDeleteAll(exhaustPile);
+    exhaustPile.clear();
+
+    QVector<Card*> allCards;
+    allCards.append(new Strike());
+    allCards.append(new TwinStrike());
+    allCards.append(new BloodForBlood());
+    allCards.append(new Hemokinesis());
+    allCards.append(new Carnage());
+    allCards.append(new Whirlwind());
+    allCards.append(new Bludgeon());
+    allCards.append(new Immolate());
+    allCards.append(new Reaper());
+    allCards.append(new Feed());
+
+    // ===== رندوم کردن =====
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(allCards.begin(), allCards.end(), g);
+
+    // ===== ۵ کارت اول به دست =====
+    int cardCount = qMin(5, allCards.size());
+    for (int i = 0; i < cardCount; ++i) {
+        hand.append(allCards[i]);
+    }
+
+    // ===== بقیه به drawPile =====
+    for (int i = cardCount; i < allCards.size(); ++i) {
+        drawPile.append(allCards[i]);
+    }
+
+    SHUFFLE_DRAWPILE();
+    emit handUpdated();
+}
+
+void player::RESETCOMBATSTATS() {
+    block = 0;
+    strength = 0;
+    unblockedDamageTaken = 0;
+    buffManager.clearAll();
 }
 
 void player::writeToStream(QDataStream &out) const
@@ -192,7 +264,8 @@ void player::saveFile()
     in.setVersion(QDataStream::Qt_6_5);
     while(!in.atEnd()){
         p.readFromStream(in);
-        if (p.username == m_instance->oldUsername && p.password == m_instance->oldPassword   ||   p.username == m_instance->username && p.password == m_instance->password)
+        if ((p.username == m_instance->oldUsername && p.password == m_instance->oldPassword) ||
+            (p.username == m_instance->username && p.password == m_instance->password))
             p = *m_instance;
         players.push_back(p);
     }
