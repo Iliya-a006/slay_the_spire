@@ -1,14 +1,17 @@
 #include "elitescene.h"
-#include "ui_elitescene.h"
 
 EliteScene::EliteScene(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::EliteScene)
+    : RoomScene(parent)
 {
-    ui->setupUi(this);
+
+}
+
+void EliteScene::resetRoom()
+{
+    // called after each room entry
 }
 
 EliteScene::~EliteScene()
 {
-    delete ui;
+
 }

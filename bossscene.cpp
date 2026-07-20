@@ -1,14 +1,17 @@
 #include "bossscene.h"
-#include "ui_bossscene.h"
 
 BossScene::BossScene(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::BossScene)
+    : RoomScene(parent)
 {
-    ui->setupUi(this);
+
+}
+
+void BossScene::resetRoom()
+{
+    // called after each room entry
 }
 
 BossScene::~BossScene()
 {
-    delete ui;
+
 }

@@ -1,13 +1,10 @@
 #ifndef ELITESCENE_H
 #define ELITESCENE_H
 
+#include "roomscene.h"
 #include <QWidget>
 
-namespace Ui {
-class EliteScene;
-}
-
-class EliteScene : public QWidget
+class EliteScene : public RoomScene
 {
     Q_OBJECT
 
@@ -15,8 +12,7 @@ public:
     explicit EliteScene(QWidget *parent = nullptr);
     ~EliteScene();
 
-private:
-    Ui::EliteScene *ui;
+    void resetRoom() override;
 };
 
 #endif // ELITESCENE_H

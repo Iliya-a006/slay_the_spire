@@ -1,14 +1,17 @@
 #include "eventscene.h"
-#include "ui_eventscene.h"
 
 EventScene::EventScene(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::EventScene)
+    : RoomScene(parent)
 {
-    ui->setupUi(this);
+
+}
+
+void EventScene::resetRoom()
+{
+    // called after each room entry
 }
 
 EventScene::~EventScene()
 {
-    delete ui;
+
 }

@@ -1,14 +1,17 @@
 #include "treasurescene.h"
-#include "ui_treasurescene.h"
 
 TreasureScene::TreasureScene(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::TreasureScene)
+    : RoomScene(parent)
 {
-    ui->setupUi(this);
+
+}
+
+void TreasureScene::resetRoom()
+{
+    // called after each room entry
 }
 
 TreasureScene::~TreasureScene()
 {
-    delete ui;
+
 }

@@ -1,14 +1,17 @@
 #include "enemyscene.h"
-#include "ui_enemyscene.h"
 
 EnemyScene::EnemyScene(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::EnemyScene)
+    : RoomScene(parent)
 {
-    ui->setupUi(this);
+
+}
+
+void EnemyScene::resetRoom()
+{
+    // called after each room entry
 }
 
 EnemyScene::~EnemyScene()
 {
-    delete ui;
+
 }

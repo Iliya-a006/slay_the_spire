@@ -70,6 +70,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         reaper.h reaper.cpp
         feed.h feed.cpp
 	redx.h redx.cpp
+        roomscene.h roomscene.cpp
 
 
 

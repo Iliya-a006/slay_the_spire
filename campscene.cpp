@@ -1,14 +1,17 @@
 #include "campscene.h"
-#include "ui_campscene.h"
 
 CampScene::CampScene(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::CampScene)
+    : RoomScene(parent)
 {
-    ui->setupUi(this);
+
+}
+
+void CampScene::resetRoom()
+{
+    // called after each room entry
 }
 
 CampScene::~CampScene()
 {
-    delete ui;
+
 }
