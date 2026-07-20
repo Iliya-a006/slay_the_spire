@@ -8,10 +8,6 @@
 startMenu::startMenu(QWidget *parent)
     : QWidget(parent)
 {
-    // QRect screenGeometry = QGuiApplication::primaryScreen()->geometry();
-    // int screenWidth = screenGeometry.width();
-    // int screenHeight = screenGeometry.height();
-
     QString buttonStyle = R"(
     QPushButton {
         background-color: rgba(40, 20, 15, 180);

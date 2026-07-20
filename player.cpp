@@ -192,7 +192,7 @@ void player::saveFile()
     in.setVersion(QDataStream::Qt_6_5);
     while(!in.atEnd()){
         p.readFromStream(in);
-        if (p.username == m_instance->oldUsername && p.password == m_instance->oldPassword)
+        if (p.username == m_instance->oldUsername && p.password == m_instance->oldPassword   ||   p.username == m_instance->username && p.password == m_instance->password)
             p = *m_instance;
         players.push_back(p);
     }
