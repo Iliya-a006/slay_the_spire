@@ -4,6 +4,16 @@
 #include <algorithm>
 #include <random>
 #include <QPainter>
+#include "strike.h"
+#include "twinstrike.h"
+#include "bloodforblood.h"
+#include "hemokinesis.h"
+#include "carnage.h"
+#include "whirlwind.h"
+#include "bludgeon.h"
+#include "immolate.h"
+#include "reaper.h"
+#include "feed.h"
 
 player::player(QGraphicsItem *parent)
     : QObject(nullptr),
@@ -25,6 +35,7 @@ player::player(QGraphicsItem *parent)
     setAcceptHoverEvents(true);
     setScale(0.8);
     loadDefaultAvatar();
+    initializeDeck();
 }
 
 player::player(const player& other)
@@ -119,16 +130,22 @@ void player::loadAvatar(const QString& path) {
 }
 
 void player::loadDefaultAvatar() {
-    QPixmap avatar(100, 100);
-    avatar.fill(QColor(50, 50, 200));
+    QPixmap pixmap(":/avartar/images/Ironclad.png");
 
-    QPainter painter(&avatar);
-    painter.setPen(Qt::white);
-    painter.setFont(QFont("Vazirmatn", 12, QFont::Bold));
-    painter.drawText(avatar.rect(), Qt::AlignCenter, "Player");
-
-    setPixmap(avatar);
-    setScale(0.8);
+    if (!pixmap.isNull()) {
+        setPixmap(pixmap);
+        setScale(0.8);
+    } else {
+        // اگه عکس پیدا نشد، یه تصویر ساده بساز
+        QPixmap avatar(100, 100);
+        avatar.fill(QColor(50, 50, 200));
+        QPainter painter(&avatar);
+        painter.setPen(Qt::white);
+        painter.setFont(QFont("Vazirmatn", 12, QFont::Bold));
+        painter.drawText(avatar.rect(), Qt::AlignCenter, "P");
+        setPixmap(avatar);
+        setScale(0.8);
+    }
 }
 
 void player::writeToStream(QDataStream &out) const
@@ -377,4 +394,51 @@ void player::END_TURN(){
         emit blockChanged(block);
     }
     emit handUpdated();
+}
+
+void player::initializeDeck()
+{
+    // ===== پاک کردن کارت‌های قبلی =====
+    qDeleteAll(drawPile);
+    drawPile.clear();
+    qDeleteAll(hand);
+    hand.clear();
+    qDeleteAll(discardPile);
+    discardPile.clear();
+    qDeleteAll(exhaustPile);
+    exhaustPile.clear();
+
+    // ===== لیست کارت‌ها =====
+    QVector<Card*> allCards;
+
+    // ===== اضافه کردن کارت‌ها =====
+    allCards.append(new Strike());
+    allCards.append(new TwinStrike());
+    allCards.append(new BloodForBlood());
+    allCards.append(new Hemokinesis());
+    allCards.append(new Carnage());
+    allCards.append(new Whirlwind());
+    allCards.append(new Bludgeon());
+    allCards.append(new Immolate());
+    allCards.append(new Reaper());
+    allCards.append(new Feed());
+
+    // ===== رندوم کردن کارت‌ها =====
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(allCards.begin(), allCards.end(), g);
+
+    // ===== انتخاب ۵ کارت رندوم برای دست =====
+    int cardCount = qMin(5, allCards.size());
+    for (int i = 0; i < cardCount; ++i) {
+        hand.append(allCards[i]);
+    }
+
+    // ===== بقیه کارت‌ها برن به drawPile =====
+    for (int i = cardCount; i < allCards.size(); ++i) {
+        drawPile.append(allCards[i]);
+    }
+
+    // ===== شافل کردن drawPile =====
+    SHUFFLE_DRAWPILE();
 }

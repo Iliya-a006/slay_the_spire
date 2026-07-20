@@ -11,7 +11,7 @@
 #include "leaderboard.h"
 #include "statusbar.h"
 #include "map1.h"
-#include "enemyscene.h"
+#include "combatscene.h"
 #include "elitescene.h"
 #include "eventscene.h"
 #include "treasurescene.h"
@@ -56,7 +56,8 @@ void MainWindow::onLoginSuccess()
     settings->setMainMenu(mainmenu);
     Map1* mapAct1 = new Map1(m_stack);
     Map1::m_instance = mapAct1;
-    EnemyScene* enemySc = new EnemyScene(m_stack);
+    CombatScene* combatScene = new CombatScene(m_stack);
+    combatScene->setupCombat();
     EliteScene* eliteSc = new EliteScene(m_stack);
     EventScene* eventSc = new EventScene(m_stack);
     TreasureScene* treasureSc = new TreasureScene(m_stack);
@@ -69,7 +70,7 @@ void MainWindow::onLoginSuccess()
     m_stack->addWidget(leaderB);
     m_stack->addWidget(settings);
     m_stack->addWidget(mapAct1);
-    m_stack->addWidget(enemySc);
+    m_stack->addWidget(combatScene);
     m_stack->addWidget(eliteSc);
     m_stack->addWidget(eventSc);
     m_stack->addWidget(treasureSc);
@@ -81,7 +82,7 @@ void MainWindow::onLoginSuccess()
     backgrounds.push_back(":/prefix1/images/menupic.png");
     backgrounds.push_back(":/prefix1/images/menupic.png");
     backgrounds.push_back(":/prefix1/images/menupic.png");
-   
+
 
     backgrounds.push_back(":/prefix1/images/blackpic.png");
     backgrounds.push_back(":/prefix1/images/fightpic.png");

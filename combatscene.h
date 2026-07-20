@@ -1,37 +1,37 @@
-#ifndef ENEMYSCENE_H
-#define ENEMYSCENE_H
+#ifndef COMBATSCENE_H
+#define COMBATSCENE_H
 
 #include <QWidget>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
+#include <QVector>
 #include "player.h"
+#include "card.h"
 
-namespace Ui {
-class EnemyScene;
-}
-
-class EnemyScene : public QWidget
+class CombatScene : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit EnemyScene(QWidget *parent = nullptr);
-    ~EnemyScene();
+    explicit CombatScene(QWidget *parent = nullptr);
+    ~CombatScene();
 
     void setupCombat();
+    void updateUI();
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
 
 private:
-    Ui::EnemyScene *ui;
-
     QGraphicsScene* m_scene;
     QGraphicsView* m_view;
     QGraphicsPixmapItem* m_playerAvatar;
+    QVector<Card*> m_cardItems;  // ===== الان از نوع Card* هست =====
 
     void setupPlayerAvatar();
+    void setupPlayerCards();
+    void clearCards();
 };
 
-#endif // ENEMYSCENE_H
+#endif // COMBATSCENE_H

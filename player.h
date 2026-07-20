@@ -95,6 +95,8 @@ public:
     void loadAvatar(const QString& path);
     void loadDefaultAvatar();
 
+    void initializeDeck();
+
 signals:
     void hpChanged(int newHP, int maxHP);
     void blockChanged(int newBlock);

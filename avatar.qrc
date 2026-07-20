@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/avartar">
+        <file>images/Ironclad.png</file>
+    </qresource>
+</RCC>

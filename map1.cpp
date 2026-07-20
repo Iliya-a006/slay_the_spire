@@ -374,8 +374,6 @@ void Map1::saveMap()
     file.close();
 }
 
-
-
 Map1::~Map1()
 {
     delete ui;
