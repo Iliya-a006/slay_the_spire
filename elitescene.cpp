@@ -22,7 +22,7 @@ EliteScene::EliteScene(QWidget *parent)
 
 void EliteScene::resetRoom()
 {
-    // called after each room entry
+
 }
 
 EliteScene::~EliteScene()
