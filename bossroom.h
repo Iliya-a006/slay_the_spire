@@ -6,7 +6,7 @@
 class BossRoom : public Room
 {
 public:
-    explicit BossRoom(QGraphicsItem *parent = nullptr);
+    explicit BossRoom(int index, QGraphicsItem *parent = nullptr);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

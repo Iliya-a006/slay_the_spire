@@ -2,8 +2,9 @@
 #include "Page.h"
 #include "mainwindow.h"
 #include "roomscene.h"
+#include "map1.h"
 
-BossRoom::BossRoom(QGraphicsItem *parent) : Room(parent) {
+BossRoom::BossRoom(int index, QGraphicsItem *parent) : Room(index, parent) {
 
     setPixmap(QPixmap(":/icons/images/BossMapIcon2.png"));
 
@@ -15,6 +16,7 @@ void BossRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if(!this->accessible)
         return;
 
+    Map1::selectedIndex = this->index;
     QWidget *widget = MainWindow::m_stack->widget((int)Page::Boss);
     RoomScene *room = qobject_cast<RoomScene*>(widget);
     if (room)

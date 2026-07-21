@@ -2,10 +2,9 @@
 #include <qgraphicsscene.h>
 #include <QVector>
 
-Room::Room(QGraphicsItem *parent)
-    : QGraphicsPixmapItem(parent)
+Room::Room(int index, QGraphicsItem *parent)
+    : index(index), QGraphicsPixmapItem(parent)
 {
-    //setPixmap(QPixmap(""));
 
 }
 

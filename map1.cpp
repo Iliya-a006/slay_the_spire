@@ -1,4 +1,5 @@
 #include "map1.h"
+#include "Page.h"
 #include "bossroom.h"
 #include "eliteroom.h"
 #include "enemyroom.h"
@@ -15,6 +16,7 @@
 #include <QFile>
 #include "screensize.h"
 #include "redx.h"
+#include "mainwindow.h"
 
 Map1::Map1(QWidget *parent)
     : QWidget(parent)
@@ -42,11 +44,11 @@ Map1::Map1(QWidget *parent)
 
     loadMap();
     printMap();
-    roadCreator();
 
 
 }
 
+int Map1::selectedIndex;
 Map1* Map1::m_instance = nullptr;
 Map1* Map1::instance(){
     if (!m_instance)
@@ -119,6 +121,7 @@ void Map1::loadMap()
 
 void Map1::mapCoder()
 {
+    floorsCode.clear();
     floorsCode.resize(11);
     int typeOf_rooms;
     int NOf_rooms;
@@ -195,7 +198,7 @@ void Map1::printMap()
             int roomType = floorsCode[i][j];
             while(roomType/10)
                 roomType /= 10;
-            floors[i][j] = roomCreator(roomType);
+            floors[i][j] = roomCreator(roomType, j);
             if (!floors[i][j]){continue;}
 
             floors[i][j]->x = roomWidth(floorsCode[i].size()*10 + j);
@@ -209,6 +212,8 @@ void Map1::printMap()
         redx->setPos(floors[i][route[i]]->x, floors[i][route[i]]->y);
         m_scene->addItem(redx);
     }
+
+    roadCreator();
 
     if (player::instance()->getFloor() == 0)
         for (int i=0; i<floors[0].size(); ++i){
@@ -225,29 +230,29 @@ void Map1::printMap()
     }
 }
 
-Room* Map1::roomCreator(int roomType)
+Room* Map1::roomCreator(int roomType, int roomIndex)
 {
     switch (roomType) {
     case (int)RoomEnum::enemy:
-        return new EnemyRoom();
+        return new EnemyRoom(roomIndex);
         break;
     case (int)RoomEnum::elite:
-        return new EliteRoom();
+        return new EliteRoom(roomIndex);
         break;
     case (int)RoomEnum::event:
-        return new EventRoom();
+        return new EventRoom(roomIndex);
         break;
     case (int)RoomEnum::treasure:
-        return new TreasureRoom();
+        return new TreasureRoom(roomIndex);
         break;
     case (int)RoomEnum::campfire:
-        return new CampfireRoom();
+        return new CampfireRoom(roomIndex);
         break;
     case (int)RoomEnum::shop:
-        return new ShopRoom();
+        return new ShopRoom(roomIndex);
         break;
     case (int)RoomEnum::boss:
-        return new BossRoom();
+        return new BossRoom(roomIndex);
         break;
     default:
         return nullptr;
@@ -372,6 +377,49 @@ void Map1::saveMap()
     for (int i = 0; i < ids.size(); ++i)
         out << ids[i] << allFloorsCode[i] << allRoutes[i];
     file.close();
+}
+
+void Map1::onRoomExited(bool result)
+{
+    if (result){
+        route.push_back(selectedIndex);
+        RedX* redx = new RedX();
+        redx->setPos(floors[player::instance()->getFloor()][selectedIndex]->x, floors[player::instance()->getFloor()][selectedIndex]->y);
+        m_scene->addItem(redx);
+
+        for (auto r : accessibleRooms){
+            r->accessible = false;
+            r->setScale(1.0);
+        }
+        accessibleRooms.clear();
+        for (auto r : floors[route.size()-1][route.last()]->nextRooms){
+            r->accessible = true;
+            accessibleRooms.push_back(r);
+            r->setScale(1.2);
+        }
+        player::instance()->plusFloor();
+        MainWindow::changeStack((int)Page::Map1);
+    }
+    else{
+        m_scene->clear();
+        mapCoder();
+        route.clear();
+        for (auto &floor : floors) {
+            for (Room *room : floor) {
+                delete room;
+            }
+            floor.clear();
+        }
+        floors.clear();
+        floors.resize(11);
+        for (int i=0; i<11; ++i)
+            floors[i].resize(floorsCode[i].size());
+        saveMap();
+        printMap();
+
+        player::instance()->setFloor(0);
+        MainWindow::changeStack((int)Page::MainMenu);
+    }
 }
 
 
