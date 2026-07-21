@@ -1,9 +1,11 @@
 #include "map1.h"
+#include "Page.h"
 #include "bossroom.h"
 #include "eliteroom.h"
 #include "enemyroom.h"
 #include "eventroom.h"
 #include "campfireroom.h"
+#include "mainwindow.h"
 #include "player.h"
 #include "shoproom.h"
 #include "treasureroom.h"
@@ -13,6 +15,7 @@
 #include <QRandomGenerator>
 #include "RoomEnum.h"
 #include <QFile>
+#include <qpushbutton.h>
 #include "screensize.h"
 #include "redx.h"
 
@@ -26,6 +29,7 @@ Map1::Map1(QWidget *parent)
     m_view  = new QGraphicsView(m_scene, this);
     m_scene->setSceneRect(0, 0, ScreenSize::getWidth(), ScreenSize::getHeigth()*2);
     m_view->setGeometry(0, 0, width(), height());
+    m_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(m_view);
@@ -39,12 +43,35 @@ Map1::Map1(QWidget *parent)
     bgItem->setZValue(-100);
     bgItem->setPos(0, 0);
 
+    backButton = new QPushButton("Back", this);
+    backButton->setGeometry(100, 100, 100, 40);
+    backButton->setStyleSheet(R"(
+    QPushButton {
+        background-color: rgba(60, 40, 25, 200);
+    border: 2px solid #d4a24c;
+        border-radius: 10px;
+    color: #f5e3b3;
+        font-size: 18px;
+        font-weight: bold;
+    padding: 10px 20px;
+    }
+      QPushButton:hover {
+          background-color: rgba(212, 162, 76, 230);
+      border: 2px solid #f5e3b3;
+      color: #2a1a10;
+      }
+      QPushButton:pressed {
+          background-color: rgba(140, 95, 40, 255);
+      border: 2px solid #8c5f28;
+      }
+    })");
+    connect(backButton, &QPushButton::clicked, this, [](){
+        MainWindow::changeStack((int)Page::MainMenu);
+    });
 
     loadMap();
     printMap();
     roadCreator();
-
-
 }
 
 Map1* Map1::m_instance = nullptr;
