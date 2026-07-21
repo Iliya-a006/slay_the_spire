@@ -2,8 +2,9 @@
 #include "mainwindow.h"
 #include "Page.h"
 #include "roomscene.h"
+#include "map1.h"
 
-TreasureRoom::TreasureRoom(QGraphicsItem *parent) : Room(parent){
+TreasureRoom::TreasureRoom(int index, QGraphicsItem *parent) : Room(index, parent){
 
     setPixmap(QPixmap(":/icons/images/ChestMapIcon.png"));
 
@@ -15,6 +16,7 @@ void TreasureRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if(!this->accessible)
         return;
 
+    Map1::selectedIndex = this->index;
     QWidget *widget = MainWindow::m_stack->widget((int)Page::Treasure);
     RoomScene *room = qobject_cast<RoomScene*>(widget);
     if (room)

@@ -6,7 +6,7 @@
 class EventRoom : public Room
 {
 public:
-    explicit EventRoom(QGraphicsItem *parent = nullptr);
+    explicit EventRoom(int index, QGraphicsItem *parent = nullptr);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

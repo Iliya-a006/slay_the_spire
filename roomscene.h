@@ -17,6 +17,9 @@ public:
 protected:
     QGraphicsScene* m_scene;
     QGraphicsView* m_view;
+
+signals:
+    void roomExited(bool result);
 };
 
 #endif // ROOMSCENE_H

@@ -6,7 +6,7 @@
 class TreasureRoom : public Room
 {
 public:
-    explicit TreasureRoom(QGraphicsItem *parent = nullptr);
+    explicit TreasureRoom(int index, QGraphicsItem *parent = nullptr);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

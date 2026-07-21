@@ -34,6 +34,8 @@ EnemyScene::EnemyScene(QWidget *parent)
     m_hpText = nullptr;
     m_energyText = nullptr;
     m_endTurnButton = nullptr;
+
+
 }
 
 EnemyScene::~EnemyScene()

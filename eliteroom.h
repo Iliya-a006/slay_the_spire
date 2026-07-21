@@ -6,7 +6,7 @@
 class EliteRoom : public Room
 {
 public:
-    explicit EliteRoom(QGraphicsItem *parent = nullptr);
+    explicit EliteRoom(int index, QGraphicsItem *parent = nullptr);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

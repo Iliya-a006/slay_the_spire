@@ -18,6 +18,7 @@ EventScene::EventScene(QWidget *parent)
     QGraphicsPixmapItem *bgItem = m_scene->addPixmap(scaledBg);
     bgItem->setZValue(-100);
     bgItem->setPos(0, 0);
+
 }
 
 void EventScene::resetRoom()
