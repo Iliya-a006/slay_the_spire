@@ -13,6 +13,7 @@
 #include <QFont>
 #include <QList>
 #include <QPixmap>
+#include <QPainterPath>
 #include <QLabel>
 #include <QCursor>
 #include <QGraphicsTextItem>
@@ -44,6 +45,8 @@ public:
     explicit Card(QGraphicsItem *parent = nullptr);
     Card(const Card& other);
     virtual ~Card() = default;
+
+    QRectF boundingRect() const override;
 
     int GETER_ID() const { return ID; }
     QString GETER_NAME() const { return name; }

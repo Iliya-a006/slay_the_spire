@@ -43,6 +43,17 @@ Card::Card(QGraphicsItem *parent)
     setScale(0.5);
 }
 
+QRectF Card::boundingRect() const
+{
+    qreal cardWidth = 299;
+    qreal cardHeight = 418;
+
+    qreal offsetX = (512 - cardWidth) / 2;   // 106.5
+    qreal offsetY = (512 - cardHeight) / 2;  // 47
+
+    return QRectF(offsetX, offsetY, cardWidth, cardHeight);
+}
+
 Card::Card(const Card& other)
     : QGraphicsItemGroup(other.parentItem()),
     ID(other.ID),
@@ -97,9 +108,11 @@ void Card::Set_Hovered(bool hovered) {
     if (hovered) {
         setZValue(10);
         setPos(x(), y() - 20);
+        setScale(0.55);
     } else {
         setZValue(0);
         setPos(originalPos);
+        setScale(0.5);
     }
 }
 
