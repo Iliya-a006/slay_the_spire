@@ -314,11 +314,10 @@ void Card::loadTexts()
     if (m_valueText) { removeFromGroup(m_valueText); delete m_valueText; m_valueText = nullptr; }
 
     QFont nameFont("Vazirmatn", 20, QFont::Bold);
-    QFont typeFont("Vazirmatn", 11, QFont::Bold);  // Bold اضافه شد
+    QFont typeFont("Vazirmatn", 11, QFont::Bold);
     QFont descFont("Vazirmatn", 14);
     QFont valueFont("Vazirmatn", 18, QFont::Bold);
 
-    // ===== اسم کارت (وسط نسبت به banner) =====
     QFontMetrics fm(nameFont);
     int nameWidth = fm.horizontalAdvance(getDisplayName());
     int nameX = (CARD_WIDTH - nameWidth) / 2;
@@ -328,18 +327,16 @@ void Card::loadTexts()
     m_nameText->setPos(nameX, 55);
     addToGroup(m_nameText);
 
-    // ===== نوع کارت (دقیقا وسط Background) =====
     QFontMetrics fmType(typeFont);
     int typeWidth = fmType.horizontalAdvance(getTypeString());
     int typeX = (CARD_WIDTH - typeWidth) / 2;
-    int typeY = (CARD_HEIGHT - fmType.height()) / 2 +17;  // وسط کارت
+    int typeY = (CARD_HEIGHT - fmType.height()) / 2 +17;
     m_typeText = new QGraphicsTextItem(getTypeString(), this);
     m_typeText->setFont(typeFont);
-    m_typeText->setDefaultTextColor(Qt::black);  // طلایی
+    m_typeText->setDefaultTextColor(Qt::black);
     m_typeText->setPos(typeX, typeY);
     addToGroup(m_typeText);
 
-    // ===== توضیحات (پایین کارت، وسط) =====
     // QStringList words = description.split(" ");
     // QStringList lines;
     // QString currentLine;
@@ -363,7 +360,7 @@ void Card::loadTexts()
 
     // QFontMetrics fmDesc(descFont);
     // int descWidth = fmDesc.horizontalAdvance(formattedDesc);
-    // int descX = (CARD_WIDTH - descWidth) / 2 + 30;  // +30 به راست
+    // int descX = (CARD_WIDTH - descWidth) / 2 + 30;
     // if (descX < 0) descX = 10;
     // int descY = typeY + fmType.height() + 20;
     // m_descriptionText = new QGraphicsTextItem(formattedDesc, this);
@@ -372,14 +369,12 @@ void Card::loadTexts()
     // m_descriptionText->setPos(descX, descY);
     // addToGroup(m_descriptionText);
 
-    // // ===== هزینه انرژی (روی icon - گوشه بالا چپ) =====
     m_energyText = new QGraphicsTextItem(QString::number(energy_cost), this);
     m_energyText->setFont(valueFont);
     m_energyText->setDefaultTextColor(Qt::black);
     m_energyText->setPos(120, 48);
     addToGroup(m_energyText);
 
-    // ===== damage/block (گوشه بالا راست) =====
     // if (damage > 0) {
     //     m_valueText = new QGraphicsTextItem(QString::number(damage), this);
     //     m_valueText->setFont(valueFont);
