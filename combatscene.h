@@ -7,11 +7,11 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsRectItem>
 #include <QGraphicsTextItem>
-#include <QGraphicsSceneMouseEvent>
 #include <QPushButton>
 #include <QVector>
 #include "player.h"
 #include "card.h"
+#include "enemy.h"
 
 class CombatScene : public QWidget
 {
@@ -53,6 +53,7 @@ private:
     void updateEnergyLabel();
     void clearCards();
     void endTurn();
+
     void connectPlayerSignals();
 };
 
