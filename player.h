@@ -31,6 +31,8 @@ public:
     void setMapID(int id) { mapID = id; }
     int getAct(){return Act;}
     int getFloor(){return floor;}
+    void setFloor(int f){floor = f;}
+    void plusFloor(){++floor;}
     void setOldName(QString n){oldUsername = n;}
     void setOldPassword(QString p){oldPassword = p;}
     int& GETER_SETER_ENERGY() { return energy; }

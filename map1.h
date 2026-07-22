@@ -21,6 +21,7 @@ public:
 
     static Map1* instance();
     static void saveMap();
+    static int selectedIndex;
 
 private:
     Ui::Map1 *ui;
@@ -41,7 +42,11 @@ private:
     void roadCreator();
     int roomHeigth(int floor);
     int roomWidth(int type);
-    Room* roomCreator(int roomType);
+    Room* roomCreator(int roomType, int roomIndex);
+
+
+public slots:
+    void onRoomExited(bool result);
 
 
 };

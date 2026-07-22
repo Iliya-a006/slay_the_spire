@@ -10,13 +10,14 @@ class Room : public QObject, public QGraphicsPixmapItem
     Q_OBJECT
 
 public:
-    explicit Room(QGraphicsItem *parent = nullptr);
+    explicit Room(int index, QGraphicsItem *parent = nullptr);
 
     QVector<Room*> nextRooms;
     QVector<Room*> previouseRooms;
     QVector<QGraphicsLineItem*> roads;
     int x;
     int y;
+    int index;
     bool accessible=false;
 
 protected:
