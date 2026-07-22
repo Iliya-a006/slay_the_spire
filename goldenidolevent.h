@@ -1,7 +1,10 @@
 #ifndef GOLDENIDOLEVENT_H
 #define GOLDENIDOLEVENT_H
 
-class GoldenIdolEvent
+#include "event.h"
+
+
+class GoldenIdolEvent : public Event
 {
 public:
     GoldenIdolEvent();

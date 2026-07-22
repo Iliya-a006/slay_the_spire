@@ -6,6 +6,7 @@
 
 struct EventOption {
     QString buttonText;
+    QString description;
     std::function<void()> action;
 };
 

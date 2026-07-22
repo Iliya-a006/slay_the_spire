@@ -7,7 +7,7 @@ class GoldenShrineEvent : public Event
 {
     Q_OBJECT
 public:
-    explicit GoldenShrineEvent(QWidget *parent = nullptr);
+    explicit GoldenShrineEvent();
 };
 
 #endif // GOLDENSHRINEEVENT_H

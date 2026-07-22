@@ -1,7 +1,9 @@
 #ifndef SERPANTEVENT_H
 #define SERPANTEVENT_H
 
-class SerpantEvent
+#include "event.h"
+
+class SerpantEvent : public Event
 {
 public:
     SerpantEvent();

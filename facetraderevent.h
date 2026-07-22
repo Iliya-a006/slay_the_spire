@@ -1,7 +1,9 @@
 #ifndef FACETRADEREVENT_H
 #define FACETRADEREVENT_H
 
-class FaceTraderEvent
+#include "event.h"
+
+class FaceTraderEvent : public Event
 {
 public:
     FaceTraderEvent();

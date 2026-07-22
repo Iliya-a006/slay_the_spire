@@ -1,7 +1,9 @@
 #ifndef LABEVENT_H
 #define LABEVENT_H
 
-class LabEvent
+#include "event.h"
+
+class LabEvent : public Event
 {
 public:
     LabEvent();

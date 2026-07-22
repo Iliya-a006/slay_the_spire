@@ -50,13 +50,13 @@ login::login(QWidget *parent)
     Password_CheckBox=new QCheckBox(frame);
     Password_CheckBox->setGeometry(50, 225, 200, 30);
     Password_CheckBox->setText("Show Password");
-    Password_CheckBox->setStyleSheet("QCheckBox {font-size:16px;");
+    Password_CheckBox->setStyleSheet("QCheckBox {font-size:16px;}");
     Password_CheckBox->setToolTip("Show/Hide Password");
 
     Confirm_CheckBox=new QCheckBox(frame);
     Confirm_CheckBox->setGeometry(50, 345, 200, 30);
     Confirm_CheckBox->setText("Show Password");
-    Confirm_CheckBox->setStyleSheet("QCheckBox {font-size:16px;");
+    Confirm_CheckBox->setStyleSheet("QCheckBox {font-size:16px;}");
     Confirm_CheckBox->setToolTip("Show/Hide Password");
     Confirm_CheckBox->hide();
 

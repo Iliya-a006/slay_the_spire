@@ -13,6 +13,7 @@ public:
     ~EventScene();
 
     void resetRoom() override;
+
 };
 
 #endif // EVENTSCENE_H

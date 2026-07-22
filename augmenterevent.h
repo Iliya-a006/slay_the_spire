@@ -1,12 +1,13 @@
 #ifndef AUGMENTEREVENT_H
 #define AUGMENTEREVENT_H
 
+#include "event.h"
 #include <qwidget.h>
 
-class AugmenterEvent
+class AugmenterEvent : public Event
 {
 public:
-    AugmenterEvent(QWidget *parent);
+    AugmenterEvent();
 };
 
 #endif // AUGMENTEREVENT_H

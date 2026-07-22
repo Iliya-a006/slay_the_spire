@@ -1,7 +1,9 @@
 #ifndef JOUSTEVENT_H
 #define JOUSTEVENT_H
 
-class JoustEvent
+#include "event.h"
+
+class JoustEvent : public Event
 {
 public:
     JoustEvent();
