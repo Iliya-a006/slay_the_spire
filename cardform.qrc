@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/form">
+        <file>ATTACK_CARDS/Strike/512_banner_common.png</file>
+        <file>ATTACK_CARDS/Strike/512_bg_attack_red.png</file>
+        <file>ATTACK_CARDS/Strike/512_card_red_orb.png</file>
+        <file>ATTACK_CARDS/Strike/512_frame_attack_common.png</file>
+        <file>ATTACK_CARDS/Strike/strike.png</file>
+    </qresource>
+</RCC>
