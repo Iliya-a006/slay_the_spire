@@ -56,7 +56,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         shopscene.h shopscene.cpp shopscene.ui
         bossscene.h bossscene.cpp bossscene.ui
         Soundtrack.qrc
-        attackcrads.qrc
+
         attack_cards.h attack_cards.cpp
         enemy.h enemy.cpp
         strike.h strike.cpp
@@ -73,6 +73,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         roomscene.h roomscene.cpp
         combatscene.h combatscene.cpp
         avatar.qrc
+        Attackcardform.qrc
+        attackcard.qrc
+
+
 
 
 

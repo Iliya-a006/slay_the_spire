@@ -5,6 +5,7 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
+#include <QGraphicsItemGroup>
 #include <QString>
 #include <QObject>
 #include <QVector>
@@ -14,6 +15,7 @@
 #include <QPixmap>
 #include <QLabel>
 #include <QCursor>
+#include <QGraphicsTextItem>
 
 enum Card_Type {
     ATTACK,
@@ -34,7 +36,7 @@ enum Card_Rarity {
 class player;
 class Enemy;
 
-class Card : public QObject, public QGraphicsPixmapItem
+class Card : public QObject, public QGraphicsItemGroup
 {
     Q_OBJECT
 
@@ -61,6 +63,7 @@ public:
 
     QString getDisplayName() const;
     QColor getNameColor() const;
+    QString getTypeString() const;
 
     virtual int getCurrentCost(player* player) const;
     virtual bool canPlay(player* player) const;
@@ -95,7 +98,28 @@ protected:
     QString getCardNameFormatted() const;
     QString getCardTypePath() const;
     QString getCardTypeFolder() const;
-    QString getCardImagePath() const;
+    QString getRarityString() const;
+    QString getColorString() const;
+
+    QGraphicsPixmapItem* m_background;
+    QGraphicsPixmapItem* m_banner;
+    QGraphicsPixmapItem* m_icon;
+    QGraphicsPixmapItem* m_frame;
+    QGraphicsPixmapItem* m_nameImage;
+
+    // ===== متن‌های کارت =====
+    QGraphicsTextItem* m_nameText;
+    QGraphicsTextItem* m_typeText;
+    QGraphicsTextItem* m_descriptionText;
+    QGraphicsTextItem* m_energyText;
+    QGraphicsTextItem* m_valueText;
+
+    void loadBackground();
+    void loadBanner();
+    void loadIcon();
+    void loadFrame();
+    void loadNameImage();
+    void loadTexts();
 
     int ID;
     QString name;
@@ -118,8 +142,8 @@ protected:
     QPointF originalPos;
     QPointF dragStartPos;
 
-    static constexpr int CARD_WIDTH = 150;
-    static constexpr int CARD_HEIGHT = 210;
+    static constexpr int CARD_WIDTH = 512;
+    static constexpr int CARD_HEIGHT = 512;
 };
 
 #endif // CARD_H

@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/form">
+        <file>ATTACK_CARDS/form/512_banner_common.png</file>
+        <file>ATTACK_CARDS/form/512_bg_attack_red.png</file>
+        <file>ATTACK_CARDS/form/512_card_red_orb.png</file>
+        <file>ATTACK_CARDS/form/512_frame_attack_common.png</file>
+        <file>ATTACK_CARDS/form/512_banner_basic.png</file>
+        <file>ATTACK_CARDS/form/512_frame_attack_basic.png</file>
+        <file>ATTACK_CARDS/form/512_banner_uncommon.png</file>
+        <file>ATTACK_CARDS/form/512_frame_attack_rare.png</file>
+        <file>ATTACK_CARDS/form/512_banner_rare.png</file>
+        <file>ATTACK_CARDS/form/512_frame_attack_uncommon.png</file>
+    </qresource>
+</RCC>

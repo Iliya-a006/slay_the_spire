@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QGraphicsPixmapItem>
 #include <QString>
-#include <QList>
 #include <QPixmap>
 #include <QPainter>
 #include "player.h"
@@ -32,6 +31,7 @@ public:
     Enemy(const Enemy& other);
     virtual ~Enemy() = default;
 
+    // ===== Getterها =====
     QString getName() const { return name; }
     int getHP() const { return currentHP; }
     int getMaxHP() const { return maxHP; }

@@ -51,11 +51,14 @@ void Enemy::heal(int amount) {
 
 void Enemy::startTurn() {
     buffManager.decreaseTurns();
+
     buffManager.applyMetallicizeAtEndOfTurn(block);
+    emit blockChanged(block);
 }
 
 void Enemy::endTurn() {
     buffManager.applyMetallicizeAtEndOfTurn(block);
+    emit blockChanged(block);
 }
 
 void Enemy::loadImage(const QString& path) {
@@ -67,5 +70,6 @@ void Enemy::loadImage(const QString& path) {
 }
 
 QString Enemy::getDefaultImagePath() const {
-    return QString(":/enemies/%1.jpg").arg(name.toLower().replace(" ", "_"));
+    QString formattedName = name.toLower().replace(" ", "_");
+    return QString(":/enemies/%1.jpg").arg(formattedName);
 }

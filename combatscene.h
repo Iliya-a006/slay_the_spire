@@ -53,7 +53,6 @@ private:
     void updateEnergyLabel();
     void clearCards();
     void endTurn();
-
     void connectPlayerSignals();
 };
 
