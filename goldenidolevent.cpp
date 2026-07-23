@@ -5,7 +5,7 @@ GoldenIdolEvent::GoldenIdolEvent()
 {
     this->name = "Golden Idol";
     this->description = "You come across an inconspicuous pedestal with a shining gold idol sitting peacefully atop. It looks incredibly valuable. You sure don't see any traps nearby.";
-    this->picture = ":/prefix1/eventPictures/glodenShrine.png";
+    this->picture = ":/prefix1/eventPictures/goldnShrine.png";
 
     EventOption steal = {"Steal",
                          "",

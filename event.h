@@ -15,6 +15,8 @@ class Event : public QWidget
     Q_OBJECT
 public:
     explicit Event(QWidget *parent = nullptr);
+    virtual ~Event(){}
+    friend class EventScene;
 
     QVector<EventOption> eventOptions;
     void addOption(const EventOption &option);

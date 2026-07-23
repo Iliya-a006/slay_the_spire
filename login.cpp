@@ -26,7 +26,7 @@ login::login(QWidget *parent)
     vLayout->addLayout(hLayout);
     vLayout->addStretch();
     frame->setFrameShape(QFrame::Box);
-    frame->setStyleSheet("QFrame { border-image: url(:/prefix1/images/whitepic.png) 0 0 0 0 stretch stretch; }");
+    frame->setStyleSheet("QFrame { background-color: white; border-radius: 10px; }");
 
     nameLabel = new QLabel(frame);
     nameLabel->setGeometry(50, 50, 300, 25);

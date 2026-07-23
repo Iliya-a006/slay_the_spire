@@ -241,6 +241,7 @@ void Map1::printMap()
 
     roadCreator();
 
+
     if (player::instance()->getFloor() == 0)
         for (int i=0; i<floors[0].size(); ++i){
             floors[0][i]->accessible = true;
