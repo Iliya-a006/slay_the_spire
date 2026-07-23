@@ -7,7 +7,7 @@ TwinStrike::TwinStrike(QGraphicsItem *parent) : Attack_Cards(parent) {
     energy_cost = 1;
     rarity = COMMON;
     damage = 6;
-    description = "Deal 6 damage twice.";
+    description = "Deal " + QString::number(damage) + " damage twice.";
     is_Exhaust = false;
     is_Ethereal = false;
     is_Retain = false;
@@ -28,7 +28,7 @@ Card* TwinStrike::upgrade() {
     TwinStrike* upgraded = new TwinStrike(*this);
     upgraded->damage += 4;
     upgraded->is_Upgrade = true;
-    upgraded->description = "Deal 10 damage twice.";
+    upgraded->description = "Deal " + QString::number(upgraded->damage) + " damage twice.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

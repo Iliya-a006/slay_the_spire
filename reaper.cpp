@@ -7,7 +7,8 @@ Reaper::Reaper(QGraphicsItem *parent) : Attack_Cards(parent) {
     energy_cost = 2;
     rarity = RARE;
     damage = 4;
-    description = "Deal 4 damage to all enemies. Heal HP equal to unblocked damage. Exhaust.";
+    description = "Deal " + QString::number(damage) +
+                  " damage to ALL enemies.\nHeal HP equal to unblocked damage.\nExhaust.";
     is_Exhaust = true;
     is_Ethereal = false;
     is_Retain = false;
@@ -33,7 +34,8 @@ Card* Reaper::upgrade() {
     Reaper* upgraded = new Reaper(*this);
     upgraded->damage += 3;
     upgraded->is_Upgrade = true;
-    upgraded->description = "Deal 7 damage to all enemies. Heal HP equal to unblocked damage. Exhaust.";
+    upgraded->description = "Deal " + QString::number(upgraded->damage) +
+                            " damage to ALL enemies.\nHeal HP equal to unblocked damage.\nExhaust.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

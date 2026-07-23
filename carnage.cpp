@@ -7,7 +7,7 @@ Carnage::Carnage(QGraphicsItem *parent) : Attack_Cards(parent) {
     energy_cost = 2;
     rarity = UNCOMMON;
     damage = 20;
-    description = "Deal 20 damage. Ethereal.";
+    description = "Ethereal.\nDeal " + QString::number(damage) + " damage.";
     is_Exhaust = false;
     is_Ethereal = true;
     is_Retain = false;
@@ -26,7 +26,7 @@ Card* Carnage::upgrade() {
     Carnage* upgraded = new Carnage(*this);
     upgraded->damage += 8;
     upgraded->is_Upgrade = true;
-    upgraded->description = "Deal 28 damage. Ethereal.";
+    upgraded->description = "Ethereal.\nDeal " + QString::number(upgraded->damage) + " damage.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

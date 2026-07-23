@@ -7,7 +7,7 @@ Feed::Feed(QGraphicsItem *parent) : Attack_Cards(parent) {
     energy_cost = 1;
     rarity = RARE;
     damage = 10;
-    description = "Deal 10 damage. If fatal, raise max HP by 3. Exhaust.";
+    description = "Deal " + QString::number(damage) + " damage.\nIf Fatal, raise your Max HP by 3.\nExhaust.";
     is_Exhaust = true;
     is_Ethereal = false;
     is_Retain = false;
@@ -32,7 +32,8 @@ Card* Feed::upgrade() {
     Feed* upgraded = new Feed(*this);
     upgraded->damage += 4;
     upgraded->is_Upgrade = true;
-    upgraded->description = "Deal 14 damage. If fatal, raise max HP by 4. Exhaust.";
+    upgraded->description = "Deal " + QString::number(upgraded->damage) +
+                            " damage.\nIf Fatal, raise your Max HP by 4.\nExhaust.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

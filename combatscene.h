@@ -7,11 +7,11 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsRectItem>
 #include <QGraphicsTextItem>
-#include <QGraphicsSceneMouseEvent>
 #include <QPushButton>
 #include <QVector>
 #include "player.h"
 #include "card.h"
+#include "enemy.h"
 
 class CombatScene : public QWidget
 {
@@ -19,18 +19,12 @@ class CombatScene : public QWidget
 
 public:
     explicit CombatScene(QWidget *parent = nullptr);
-    ~CombatScene();
+    virtual ~CombatScene();
 
-    void setupCombat();
-    void updateUI();
+    virtual void setupCombat();
+    virtual void updateUI();
 
 protected:
-    void resizeEvent(QResizeEvent* event) override;
-
-private slots:
-    void onEndTurnClicked();
-
-private:
     QGraphicsScene* m_scene;
     QGraphicsView* m_view;
     QGraphicsPixmapItem* m_playerAvatar;
@@ -39,22 +33,24 @@ private:
     QGraphicsRectItem* m_hpBarBg;
     QGraphicsRectItem* m_hpBar;
     QGraphicsTextItem* m_hpText;
-
     QGraphicsTextItem* m_energyText;
-
     QPushButton* m_endTurnButton;
 
-    void setupPlayerAvatar();
-    void setupPlayerCards();
-    void setupHPBar();
-    void setupEnergyLabel();
-    void setupEndTurnButton();
-    void updateHPBar();
-    void updateEnergyLabel();
-    void clearCards();
-    void endTurn();
+    virtual void setupPlayerAvatar();
+    virtual void setupPlayerCards();
+    virtual void setupHPBar();
+    virtual void setupEnergyLabel();
+    virtual void setupEndTurnButton();
+    virtual void updateHPBar();
+    virtual void updateEnergyLabel();
+    virtual void clearCards();
+    virtual void endTurn();
+    virtual void connectPlayerSignals();
 
-    void connectPlayerSignals();
+    void resizeEvent(QResizeEvent* event) override;
+
+private slots:
+    void onEndTurnClicked();
 };
 
 #endif // COMBATSCENE_H

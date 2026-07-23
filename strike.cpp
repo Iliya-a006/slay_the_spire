@@ -7,7 +7,7 @@ Strike::Strike(QGraphicsItem *parent) : Attack_Cards(parent) {
     energy_cost = 1;
     rarity = COMMON;
     damage = 6;
-    description = "Deal 6 damage.";
+    description = "Deal " + QString::number(damage) + " damage.";
     is_Exhaust = false;
     is_Ethereal = false;
     is_Retain = false;
@@ -24,7 +24,7 @@ Card* Strike::upgrade() {
     Strike* upgraded = new Strike(*this);
     upgraded->damage += 3;
     upgraded->is_Upgrade = true;
-    upgraded->description = "Deal 9 damage.";
+    upgraded->description = "Deal " + QString::number(upgraded->damage) + " damage.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

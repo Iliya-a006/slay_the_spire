@@ -5,9 +5,10 @@
 #include <QPainter>
 #include <QGraphicsScene>
 #include <QGraphicsView>
-
+#include <QGraphicsTextItem>
+#include <QRegularExpression>
 Card::Card(QGraphicsItem *parent)
-    : QGraphicsPixmapItem(parent),
+    : QGraphicsItemGroup(parent),
     ID(-1),
     name(""),
     description(""),
@@ -24,16 +25,37 @@ Card::Card(QGraphicsItem *parent)
     playable(false),
     m_isDragged(false),
     originalPos(0, 0),
-    dragStartPos(0, 0)
+    dragStartPos(0, 0),
+    m_background(nullptr),
+    m_banner(nullptr),
+    m_icon(nullptr),
+    m_frame(nullptr),
+    m_nameImage(nullptr),
+    m_nameText(nullptr),
+    m_typeText(nullptr),
+    m_descriptionText(nullptr),
+    m_energyText(nullptr),
+    m_valueText(nullptr)
 {
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
-    setFlag(QGraphicsItem::ItemIsMovable, false);
-    setScale(0.8);
+    setFlag(QGraphicsItem::ItemIsMovable, true);
+    setScale(0.5);
+}
+
+QRectF Card::boundingRect() const
+{
+    qreal cardWidth = 299;
+    qreal cardHeight = 418;
+
+    qreal offsetX = (512 - cardWidth) / 2;
+    qreal offsetY = (512 - cardHeight) / 2;
+
+    return QRectF(offsetX, offsetY, cardWidth, cardHeight);
 }
 
 Card::Card(const Card& other)
-    : QGraphicsPixmapItem(other.parentItem()),
+    : QGraphicsItemGroup(other.parentItem()),
     ID(other.ID),
     name(other.name),
     description(other.description),
@@ -50,16 +72,25 @@ Card::Card(const Card& other)
     playable(false),
     m_isDragged(false),
     originalPos(other.originalPos),
-    dragStartPos(0, 0)
+    dragStartPos(0, 0),
+    m_background(nullptr),
+    m_banner(nullptr),
+    m_icon(nullptr),
+    m_frame(nullptr),
+    m_nameImage(nullptr),
+    m_nameText(nullptr),
+    m_typeText(nullptr),
+    m_descriptionText(nullptr),
+    m_energyText(nullptr),
+    m_valueText(nullptr)
 {
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
-    setFlag(QGraphicsItem::ItemIsMovable, false);
-    setScale(0.8);
-    setPixmap(other.pixmap());
+    setFlag(QGraphicsItem::ItemIsMovable, true);
+    setScale(0.5);
 }
 
-int Card::getCurrentCost( player* player) const {
+int Card::getCurrentCost(player* player) const {
     Q_UNUSED(player);
     return energy_cost;
 }
@@ -75,11 +106,13 @@ bool Card::canPlay(player* player) const {
 void Card::Set_Hovered(bool hovered) {
     this->hovered = hovered;
     if (hovered) {
-        setScale(0.9);
         setZValue(10);
+        setPos(x(), y() - 20);
+        setScale(0.55);
     } else {
-        setScale(0.8);
         setZValue(0);
+        setPos(originalPos);
+        setScale(0.5);
     }
 }
 
@@ -111,12 +144,26 @@ QString Card::getCardTypeFolder() const {
     }
 }
 
-QString Card::getCardImagePath() const {
-    QString cardName = getCardNameFormatted();
-    QString typePath = getCardTypePath();
-    QString typeFolder = getCardTypeFolder();
+QString Card::getRarityString() const {
+    switch (rarity) {
+    case BASIC:   return "basic";
+    case COMMON:  return "common";
+    case UNCOMMON:return "uncommon";
+    case RARE:    return "rare";
+    case SPECIAL: return "special";
+    default:      return "common";
+    }
+}
 
-    return QString(":/%1/%2/%3.jpg").arg(typePath).arg(typeFolder).arg(cardName);
+QString Card::getColorString() const {
+    switch (type) {
+    case ATTACK: return "red";
+    case SKILL:  return "blue";
+    case POWER:  return "gold";
+    case STATUS: return "gray";
+    case CURSE:  return "purple";
+    default:     return "red";
+    }
 }
 
 QString Card::getDisplayName() const {
@@ -133,98 +180,238 @@ QColor Card::getNameColor() const {
     return Qt::white;
 }
 
+QString Card::getTypeString() const {
+    switch (type) {
+    case ATTACK: return "Attack";
+    case SKILL:  return "Skill";
+    case POWER:  return "Power";
+    case STATUS: return "Status";
+    case CURSE:  return "Curse";
+    default:     return "Unknown";
+    }
+}
+
+void Card::loadBackground()
+{
+    if (m_background) {
+        removeFromGroup(m_background);
+        delete m_background;
+        m_background = nullptr;
+    }
+
+    QString cardName = getCardNameFormatted();
+    QString typeFolder = getCardTypeFolder();
+    QString typePath = getCardTypePath();
+    QString color = getColorString();
+
+    QString bgPath = QString(":/form/%1/form/512_bg_%2_%3.png")
+                         .arg(typeFolder)
+                         .arg(typePath)
+                         .arg(color);
+
+    QPixmap pixmap(bgPath);
+    if (!pixmap.isNull()) {
+        m_background = new QGraphicsPixmapItem(pixmap, this);
+        m_background->setPos(0, 0);
+        addToGroup(m_background);
+    }
+}
+
+void Card::loadBanner()
+{
+    if (m_banner) {
+        removeFromGroup(m_banner);
+        delete m_banner;
+        m_banner = nullptr;
+    }
+
+    QString cardName = getCardNameFormatted();
+    QString typeFolder = getCardTypeFolder();
+    QString rarityStr = getRarityString();
+
+    QString bannerPath = QString(":/form/%1/form/512_banner_%2.png")
+                             .arg(typeFolder)
+                             .arg(rarityStr);
+
+    QPixmap pixmap(bannerPath);
+    if (!pixmap.isNull()) {
+        m_banner = new QGraphicsPixmapItem(pixmap, this);
+        m_banner->setPos(0, 0);
+        addToGroup(m_banner);
+    }
+}
+
+void Card::loadIcon()
+{
+    if (m_icon) {
+        removeFromGroup(m_icon);
+        delete m_icon;
+        m_icon = nullptr;
+    }
+
+    QString cardName = getCardNameFormatted();
+    QString typeFolder = getCardTypeFolder();
+    QString color = getColorString();
+
+    QString iconPath = QString(":/form/%1/form/512_card_%2_orb.png")
+                           .arg(typeFolder)
+                           .arg(color);
+
+    QPixmap pixmap(iconPath);
+    if (!pixmap.isNull()) {
+        QPixmap scaledPixmap = pixmap.scaled(pixmap.width() * 1.3, pixmap.height() * 1.3, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        m_icon = new QGraphicsPixmapItem(scaledPixmap, this);
+        m_icon->setPos(25, 10);
+        addToGroup(m_icon);
+    }
+}
+
+void Card::loadFrame()
+{
+    if (m_frame) {
+        removeFromGroup(m_frame);
+        delete m_frame;
+        m_frame = nullptr;
+    }
+
+    QString cardName = getCardNameFormatted();
+    QString typeFolder = getCardTypeFolder();
+    QString typePath = getCardTypePath();
+    QString rarityStr = getRarityString();
+
+    QString framePath = QString(":/form/%1/form/512_frame_%2_%3.png")
+                            .arg(typeFolder)
+                            .arg(typePath)
+                            .arg(rarityStr);
+
+    QPixmap pixmap(framePath);
+    if (!pixmap.isNull()) {
+        m_frame = new QGraphicsPixmapItem(pixmap, this);
+        m_frame->setPos(0, 0);
+        addToGroup(m_frame);
+    }
+}
+
+void Card::loadNameImage()
+{
+    if (m_nameImage) {
+        removeFromGroup(m_nameImage);
+        delete m_nameImage;
+        m_nameImage = nullptr;
+    }
+
+    QString cardName = getCardNameFormatted();
+    QString typeFolder = getCardTypeFolder();
+
+    QString namePath = QString(":/attackcard/%1/%2/%3.png")
+                           .arg(typeFolder)
+                           .arg(cardName)
+                           .arg(cardName.toLower());
+
+    QPixmap pixmap(namePath);
+    if (!pixmap.isNull()) {
+        m_nameImage = new QGraphicsPixmapItem(pixmap, this);
+        int x = (CARD_WIDTH - pixmap.width()) / 2;
+        int y = (CARD_HEIGHT - pixmap.height()) / 2 - 80;
+        m_nameImage->setPos(x, y);
+        addToGroup(m_nameImage);
+    }
+}
+
+void Card::loadTexts()
+{
+    if (m_nameText) { removeFromGroup(m_nameText); delete m_nameText; m_nameText = nullptr; }
+    if (m_typeText) { removeFromGroup(m_typeText); delete m_typeText; m_typeText = nullptr; }
+    if (m_descriptionText) { removeFromGroup(m_descriptionText); delete m_descriptionText; m_descriptionText = nullptr; }
+    if (m_energyText) { removeFromGroup(m_energyText); delete m_energyText; m_energyText = nullptr; }
+    if (m_valueText) { removeFromGroup(m_valueText); delete m_valueText; m_valueText = nullptr; }
+
+    QFont nameFont("Vazirmatn", 20, QFont::Bold);
+    QFont typeFont("Vazirmatn", 11, QFont::Bold);
+    QFont descFont("Vazirmatn", 14);
+    QFont valueFont("Vazirmatn", 18, QFont::Bold);
+
+    QFontMetrics fm(nameFont);
+    int nameWidth = fm.horizontalAdvance(getDisplayName());
+    int nameX = (CARD_WIDTH - nameWidth) / 2;
+    m_nameText = new QGraphicsTextItem(getDisplayName(), this);
+    m_nameText->setFont(nameFont);
+    m_nameText->setDefaultTextColor(getNameColor());
+    m_nameText->setPos(nameX, 55);
+    addToGroup(m_nameText);
+
+    QFontMetrics fmType(typeFont);
+    int typeWidth = fmType.horizontalAdvance(getTypeString());
+    int typeX = (CARD_WIDTH - typeWidth) / 2;
+    int typeY = (CARD_HEIGHT - fmType.height()) / 2 +17;
+    m_typeText = new QGraphicsTextItem(getTypeString(), this);
+    m_typeText->setFont(typeFont);
+    m_typeText->setDefaultTextColor(Qt::black);
+    m_typeText->setPos(typeX, typeY);
+    addToGroup(m_typeText);
+
+    QStringList words = description.split(" ");
+    QString formattedText;
+
+    for (int i = 0; i < words.size(); ++i) {
+        QString word = words[i];
+
+        if (is_Upgrade) {
+            bool isNumber;
+            word.toInt(&isNumber);
+            if (isNumber) {
+                word = "<font color='#00ff64'>" + word + "</font>";
+            }
+        }
+
+        formattedText += word;
+        if (i < words.size() - 1) {
+            formattedText += " ";
+        }
+    }
+
+    m_descriptionText = new QGraphicsTextItem(formattedText, this);
+    m_descriptionText->setFont(descFont);
+    m_descriptionText->setDefaultTextColor(Qt::white);
+    m_descriptionText->setTextWidth(180);
+
+    if (is_Upgrade) {
+        m_descriptionText->setHtml(formattedText);
+    }
+
+    int descX = (CARD_WIDTH - 180) / 2;
+    int descY = typeY + fmType.height() + 20;
+
+    m_descriptionText->setPos(descX, descY);
+    addToGroup(m_descriptionText);
+
+    m_energyText = new QGraphicsTextItem(QString::number(energy_cost), this);
+    m_energyText->setFont(valueFont);
+    m_energyText->setDefaultTextColor(Qt::black);
+    m_energyText->setPos(120, 48);
+    addToGroup(m_energyText);
+}
+
 void Card::Load_Card_Image(bool upgraded) {
     if (upgraded) {
         is_Upgrade = true;
     }
 
-    QString path = getCardImagePath();
-    QPixmap pixmap(path);
+    if (m_background) { removeFromGroup(m_background); delete m_background; m_background = nullptr; }
+    if (m_banner) { removeFromGroup(m_banner); delete m_banner; m_banner = nullptr; }
+    if (m_icon) { removeFromGroup(m_icon); delete m_icon; m_icon = nullptr; }
+    if (m_frame) { removeFromGroup(m_frame); delete m_frame; m_frame = nullptr; }
+    if (m_nameImage) { removeFromGroup(m_nameImage); delete m_nameImage; m_nameImage = nullptr; }
 
-    if (!pixmap.isNull()) {
-        setPixmap(pixmap);
-        setScale(0.8);
-    } else {
-        QPixmap fallback(CARD_WIDTH, CARD_HEIGHT);
-        fallback.fill(QColor(60, 60, 60));
+    loadBackground();
+    loadNameImage();
+    loadFrame();
+    loadBanner();
+    loadIcon();
+    loadTexts();
 
-        QPainter painter(&fallback);
-        painter.setRenderHint(QPainter::Antialiasing);
-
-        QColor borderColor;
-        if (is_Upgrade) {
-            borderColor = QColor(255, 215, 0);
-        } else {
-            switch (type) {
-            case ATTACK: borderColor = QColor(200, 50, 50); break;
-            case SKILL:  borderColor = QColor(50, 150, 200); break;
-            case POWER:  borderColor = QColor(200, 150, 50); break;
-            case STATUS: borderColor = QColor(100, 100, 100); break;
-            case CURSE:  borderColor = QColor(150, 50, 150); break;
-            default:     borderColor = QColor(100, 100, 100); break;
-            }
-        }
-
-        painter.setPen(QPen(borderColor, 3));
-        painter.setBrush(QColor(40, 40, 40));
-        painter.drawRoundedRect(3, 3, CARD_WIDTH - 6, CARD_HEIGHT - 6, 8, 8);
-
-        painter.setPen(getNameColor());
-        QFont font("Vazirmatn", 10, QFont::Bold);
-        painter.setFont(font);
-        painter.drawText(QRect(0, 10, CARD_WIDTH, 30), Qt::AlignCenter, getDisplayName());
-
-        painter.setPen(Qt::white);
-        painter.setBrush(QColor(50, 50, 200));
-        painter.drawEllipse(15, 50, 25, 25);
-        painter.setPen(Qt::white);
-        painter.drawText(QRect(15, 45, 25, 25), Qt::AlignCenter, QString::number(energy_cost));
-
-        if (damage > 0) {
-            painter.setPen(Qt::white);
-            painter.setBrush(QColor(200, 50, 50));
-            painter.drawEllipse(CARD_WIDTH - 40, 50, 25, 25);
-            painter.setPen(Qt::white);
-            painter.drawText(QRect(CARD_WIDTH - 40, 45, 25, 25), Qt::AlignCenter, QString::number(damage));
-        } else if (block > 0) {
-            painter.setPen(Qt::white);
-            painter.setBrush(QColor(50, 150, 200));
-            painter.drawEllipse(CARD_WIDTH - 40, 50, 25, 25);
-            painter.setPen(Qt::white);
-            painter.drawText(QRect(CARD_WIDTH - 40, 45, 25, 25), Qt::AlignCenter, QString::number(block));
-        }
-
-        painter.setPen(Qt::lightGray);
-        QFont descFont("Vazirmatn", 7);
-        painter.setFont(descFont);
-
-        QStringList lines;
-        QString currentLine;
-        for (int i = 0; i < description.length(); ++i) {
-            currentLine += description[i];
-            if (currentLine.length() > 20 && description[i] == ' ') {
-                lines.append(currentLine.trimmed());
-                currentLine.clear();
-            }
-        }
-        if (!currentLine.isEmpty()) {
-            lines.append(currentLine.trimmed());
-        }
-
-        int yPos = CARD_HEIGHT - 20 * lines.size() - 10;
-        for (const QString& line : lines) {
-            painter.drawText(QRect(10, yPos, CARD_WIDTH - 20, 20), Qt::AlignCenter, line);
-            yPos += 20;
-        }
-
-        if (is_Upgrade) {
-            painter.setPen(QColor(255, 215, 0));
-            painter.setFont(QFont("Vazirmatn", 8, QFont::Bold));
-            painter.drawText(QRect(0, CARD_HEIGHT - 20, CARD_WIDTH, 18), Qt::AlignCenter, "★ UPGRADED");
-        }
-
-        setPixmap(fallback);
-        setScale(0.8);
+    if (!m_background && !m_banner && !m_frame && !m_icon && !m_nameImage) {
+        return;
     }
 }
 
@@ -236,18 +423,17 @@ void Card::mousePressEvent(QGraphicsSceneMouseEvent* event) {
         emit Card_Drag_Started(this);
         event->accept();
     }
-    QGraphicsPixmapItem::mousePressEvent(event);
+    QGraphicsItemGroup::mousePressEvent(event);
 }
 
 void Card::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
     if (m_isDragged) {
-        QPointF newPos = pos() + (event->pos() - dragStartPos);
-        setPos(newPos);
+        setPos(mapToParent(event->pos() - dragStartPos));
         emit Card_Drag_Moved(this);
         setCursor(Qt::ClosedHandCursor);
         event->accept();
     }
-    QGraphicsPixmapItem::mouseMoveEvent(event);
+    QGraphicsItemGroup::mouseMoveEvent(event);
 }
 
 void Card::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
@@ -262,7 +448,15 @@ void Card::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
             if (targetEnemy) {
                 emit Card_Dropped_On_Enemy(this, targetEnemy);
                 event->accept();
-                QGraphicsPixmapItem::mouseReleaseEvent(event);
+                QGraphicsItemGroup::mouseReleaseEvent(event);
+                return;
+            }
+
+            player* targetPlayer = dynamic_cast<player*>(droppedOn);
+            if (targetPlayer) {
+                emit Card_Dropped_On_Player(this);
+                event->accept();
+                QGraphicsItemGroup::mouseReleaseEvent(event);
                 return;
             }
         }
@@ -271,14 +465,14 @@ void Card::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
         Reset_Position();
         event->accept();
     }
-    QGraphicsPixmapItem::mouseReleaseEvent(event);
+    QGraphicsItemGroup::mouseReleaseEvent(event);
 }
 
 void Card::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
     Set_Hovered(true);
     setCursor(Qt::OpenHandCursor);
     event->accept();
-    QGraphicsPixmapItem::hoverEnterEvent(event);
+    QGraphicsItemGroup::hoverEnterEvent(event);
 }
 
 void Card::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
@@ -287,5 +481,5 @@ void Card::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
         setCursor(Qt::ArrowCursor);
     }
     event->accept();
-    QGraphicsPixmapItem::hoverLeaveEvent(event);
+    QGraphicsItemGroup::hoverLeaveEvent(event);
 }
