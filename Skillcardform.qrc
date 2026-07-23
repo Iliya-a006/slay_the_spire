@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/form">
+        <file>SKILL_CARDS/form/512_banner_basic.png</file>
+        <file>SKILL_CARDS/form/512_banner_common.png</file>
+        <file>SKILL_CARDS/form/512_banner_rare.png</file>
+        <file>SKILL_CARDS/form/512_banner_uncommon.png</file>
+        <file>SKILL_CARDS/form/512_bg_skill_red.png</file>
+        <file>SKILL_CARDS/form/512_card_red_orb.png</file>
+        <file>SKILL_CARDS/form/512_frame_skill_basic.png</file>
+        <file>SKILL_CARDS/form/512_frame_skill_common.png</file>
+        <file>SKILL_CARDS/form/512_frame_skill_rare.png</file>
+        <file>SKILL_CARDS/form/512_frame_skill_uncommon.png</file>
+    </qresource>
+</RCC>

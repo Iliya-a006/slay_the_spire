@@ -13,10 +13,10 @@
 #include <QFont>
 #include <QList>
 #include <QPixmap>
-#include <QPainterPath>
 #include <QLabel>
 #include <QCursor>
 #include <QGraphicsTextItem>
+#include <QRegularExpression>
 
 enum Card_Type {
     ATTACK,
@@ -83,6 +83,7 @@ public:
     void Reset_Position() { setPos(originalPos); }
 
     virtual void Load_Card_Image(bool upgraded = false);
+    virtual QString getCardTypeFolder() const;
 
 signals:
     void Card_Drag_Started(Card* card);
@@ -100,9 +101,7 @@ protected:
 
     QString getCardNameFormatted() const;
     QString getCardTypePath() const;
-    QString getCardTypeFolder() const;
     QString getRarityString() const;
-    QString getColorString() const;
 
     QGraphicsPixmapItem* m_background;
     QGraphicsPixmapItem* m_banner;
@@ -110,7 +109,6 @@ protected:
     QGraphicsPixmapItem* m_frame;
     QGraphicsPixmapItem* m_nameImage;
 
-    // ===== متن‌های کارت =====
     QGraphicsTextItem* m_nameText;
     QGraphicsTextItem* m_typeText;
     QGraphicsTextItem* m_descriptionText;

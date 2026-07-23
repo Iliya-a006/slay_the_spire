@@ -10,6 +10,7 @@ public:
 
     virtual int calculate_damage(const player* player) const;
     virtual void applay_damage(player* player,QList <Enemy*>& enemies,int damage);
+    QString getCardTypeFolder() const override;
 };
 
 #endif // ATTACK_CARDS_H

@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/skill">
+        <file>SKILL_CARDS/defend/defend.png</file>
+        <file>SKILL_CARDS/dualwield/dualwield.png</file>
+        <file>SKILL_CARDS/entrench/entrench.png</file>
+        <file>SKILL_CARDS/exhume/exhume.png</file>
+        <file>SKILL_CARDS/impervious/impervious.png</file>
+        <file>SKILL_CARDS/limitbreak/limitbreak.png</file>
+        <file>SKILL_CARDS/offering/offering.png</file>
+        <file>SKILL_CARDS/shrugitoff/shrugitoff.png</file>
+        <file>SKILL_CARDS/truegrit/truegrit.png</file>
+        <file>SKILL_CARDS/warcry/warcry.png</file>
+    </qresource>
+</RCC>

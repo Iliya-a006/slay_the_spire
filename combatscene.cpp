@@ -115,7 +115,7 @@ void CombatScene::setupPlayerAvatar()
     m_playerAvatar->setScale(0.8);
 
     int avatarX = 50;
-    int avatarY = (ScreenSize::getHeigth() / 2) - 100;
+    int avatarY = (ScreenSize::getHeigth() / 2) - 130;
     m_playerAvatar->setPos(avatarX, avatarY);
     m_scene->addItem(m_playerAvatar);
 }
@@ -126,7 +126,7 @@ void CombatScene::setupHPBar()
     if (!p) return;
 
     int avatarX = 50;
-    int avatarY = (ScreenSize::getHeigth() / 2) - 100;
+    int avatarY = (ScreenSize::getHeigth() / 2) - 130;
     int avatarHeight = 80;
 
     m_hpBarBg = new QGraphicsRectItem();
@@ -184,7 +184,7 @@ void CombatScene::setupEnergyLabel()
     if (!p) return;
 
     int avatarX = 50;
-    int avatarY = (ScreenSize::getHeigth() / 2) - 100;
+    int avatarY = (ScreenSize::getHeigth() / 2) - 130;
     int avatarHeight = 80;
 
     m_energyText = new QGraphicsTextItem();
@@ -282,9 +282,14 @@ void CombatScene::setupPlayerCards()
             if (c->canPlay(p)) {
                 int cost = c->getCurrentCost(p);
                 if (p->GETER_ENERGY() >= cost) {
-                    QList<Enemy*> enemies;
-                    enemies.append(e);
-                    c->play(p, enemies);
+                    if (c->GETER_TYPE() == ATTACK) {
+                        QList<Enemy*> enemies;
+                        enemies.append(e);
+                        c->play(p, enemies);
+                    } else {
+                        QList<Enemy*> empty;
+                        c->play(p, empty);
+                    }
                     p->SPEND_ENERGY(cost);
                     p->REMOVE_FROM_HAND(c);
                     updateUI();
@@ -292,8 +297,8 @@ void CombatScene::setupPlayerCards()
             }
         });
 
-        connect(card, &Card::Card_Dropped_On_Player, this, [=](Card* c) {
-            if (c->canPlay(p)) {
+        connect(card, &Card::Card_Dropped, this, [=](Card* c) {
+            if (c->canPlay(p) && c->GETER_TYPE() == SKILL) {
                 int cost = c->getCurrentCost(p);
                 if (p->GETER_ENERGY() >= cost) {
                     QList<Enemy*> empty;
