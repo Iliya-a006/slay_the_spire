@@ -7,7 +7,7 @@ Whirlwind::Whirlwind(QGraphicsItem *parent) : Attack_Cards(parent) {
     energy_cost = 0;
     rarity = UNCOMMON;
     damage = 5;
-    description = "Deal 5 damage to all enemies X times. X = all current energy.";
+    description = "Deal " + QString::number(damage) + " damage to ALL enemies X times.";
     is_Exhaust = false;
     is_Ethereal = false;
     is_Retain = false;
@@ -36,7 +36,8 @@ Card* Whirlwind::upgrade() {
     Whirlwind* upgraded = new Whirlwind(*this);
     upgraded->damage += 3;
     upgraded->is_Upgrade = true;
-    upgraded->description = "Deal 8 damage to all enemies X times. X = all current energy.";
+    upgraded->description = "Deal " + QString::number(upgraded->damage) +
+                            " damage to ALL enemies X times.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

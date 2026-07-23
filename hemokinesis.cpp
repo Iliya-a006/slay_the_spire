@@ -7,7 +7,7 @@ Hemokinesis::Hemokinesis(QGraphicsItem *parent) : Attack_Cards(parent) {
     energy_cost = 1;
     rarity = UNCOMMON;
     damage = 15;
-    description = "Lose 2 HP. Deal 15 damage.";
+    description = "Lose 2 HP.\nDeal " + QString::number(damage) + " damage.";
     is_Exhaust = false;
     is_Ethereal = false;
     is_Retain = false;
@@ -27,7 +27,7 @@ Card* Hemokinesis::upgrade() {
     Hemokinesis* upgraded = new Hemokinesis(*this);
     upgraded->damage += 5;
     upgraded->is_Upgrade = true;
-    upgraded->description = "Lose 2 HP. Deal 20 damage.";
+    upgraded->description = "Lose 2 HP.\nDeal " + QString::number(upgraded->damage) + " damage.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

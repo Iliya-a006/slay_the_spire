@@ -7,7 +7,7 @@ Bludgeon::Bludgeon(QGraphicsItem *parent) : Attack_Cards(parent) {
     energy_cost = 3;
     rarity = RARE;
     damage = 32;
-    description = "Deal 32 damage.";
+    description = "Deal " + QString::number(damage) + " damage.";
     is_Exhaust = false;
     is_Ethereal = false;
     is_Retain = false;
@@ -26,7 +26,7 @@ Card* Bludgeon::upgrade() {
     Bludgeon* upgraded = new Bludgeon(*this);
     upgraded->damage += 10;
     upgraded->is_Upgrade = true;
-    upgraded->description = "Deal 42 damage.";
+    upgraded->description = "Deal " + QString::number(upgraded->damage) + " damage.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

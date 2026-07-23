@@ -1,8 +1,7 @@
 #ifndef ENEMYSCENE_H
 #define ENEMYSCENE_H
 
-#include <QWidget>
-#include "roomscene.h"
+#include "combatscene.h"
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
 #include <QPushButton>
@@ -11,7 +10,7 @@
 #include "card.h"
 #include "enemy.h"
 
-class EnemyScene : public RoomScene
+class EnemyScene : public CombatScene
 {
     Q_OBJECT
 
@@ -19,10 +18,9 @@ public:
     explicit EnemyScene(QWidget *parent = nullptr);
     ~EnemyScene();
 
-    void resetRoom() override;
-    void setupCombat();
+    void setupCombat() override;
     void setEnemy(Enemy* enemy);
-    void updateUI();
+    void updateUI() override;
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
@@ -31,37 +29,14 @@ private slots:
     void onEndTurnClicked();
 
 private:
-
-    QGraphicsPixmapItem* m_playerAvatar;
-    QVector<Card*> m_cardItems;
-
     Enemy* m_currentEnemy;
     QGraphicsPixmapItem* m_enemyItem;
     QGraphicsTextItem* m_enemyHPText;
     QGraphicsTextItem* m_enemyIntentText;
 
-    QGraphicsRectItem* m_hpBarBg;
-    QGraphicsRectItem* m_hpBar;
-    QGraphicsTextItem* m_hpText;
-
-    QGraphicsTextItem* m_energyText;
-
-    QPushButton* m_endTurnButton;
-
-    void setupPlayerAvatar();
-    void setupPlayerCards();
-    void setupHPBar();
-    void setupEnergyLabel();
-    void setupEndTurnButton();
     void setupEnemy();
-    void updateHPBar();
-    void updateEnergyLabel();
     void updateEnemyUI();
-    void clearCards();
     void endTurn();
-    void playCard(Card* card);
-
-    void connectPlayerSignals();
 };
 
 #endif // ENEMYSCENE_H

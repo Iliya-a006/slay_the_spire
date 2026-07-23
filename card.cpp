@@ -6,7 +6,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsTextItem>
-
+#include <QRegularExpression>
 Card::Card(QGraphicsItem *parent)
     : QGraphicsItemGroup(parent),
     ID(-1),
@@ -48,8 +48,8 @@ QRectF Card::boundingRect() const
     qreal cardWidth = 299;
     qreal cardHeight = 418;
 
-    qreal offsetX = (512 - cardWidth) / 2;   // 106.5
-    qreal offsetY = (512 - cardHeight) / 2;  // 47
+    qreal offsetX = (512 - cardWidth) / 2;
+    qreal offsetY = (512 - cardHeight) / 2;
 
     return QRectF(offsetX, offsetY, cardWidth, cardHeight);
 }
@@ -322,7 +322,7 @@ void Card::loadTexts()
 {
     if (m_nameText) { removeFromGroup(m_nameText); delete m_nameText; m_nameText = nullptr; }
     if (m_typeText) { removeFromGroup(m_typeText); delete m_typeText; m_typeText = nullptr; }
-    // if (m_descriptionText) { removeFromGroup(m_descriptionText); delete m_descriptionText; m_descriptionText = nullptr; }
+    if (m_descriptionText) { removeFromGroup(m_descriptionText); delete m_descriptionText; m_descriptionText = nullptr; }
     if (m_energyText) { removeFromGroup(m_energyText); delete m_energyText; m_energyText = nullptr; }
     if (m_valueText) { removeFromGroup(m_valueText); delete m_valueText; m_valueText = nullptr; }
 
@@ -350,57 +350,46 @@ void Card::loadTexts()
     m_typeText->setPos(typeX, typeY);
     addToGroup(m_typeText);
 
-    // QStringList words = description.split(" ");
-    // QStringList lines;
-    // QString currentLine;
-    // int maxCharsPerLine = 14;
+    QStringList words = description.split(" ");
+    QString formattedText;
 
-    // for (const QString& word : words) {
-    //     if (currentLine.isEmpty()) {
-    //         currentLine = word;
-    //     } else if (currentLine.length() + word.length() + 1 <= maxCharsPerLine) {
-    //         currentLine += " " + word;
-    //     } else {
-    //         lines.append(currentLine);
-    //         currentLine = word;
-    //     }
-    // }
-    // if (!currentLine.isEmpty()) {
-    //     lines.append(currentLine);
-    // }
+    for (int i = 0; i < words.size(); ++i) {
+        QString word = words[i];
 
-    // QString formattedDesc = lines.join("\n");
+        if (is_Upgrade) {
+            bool isNumber;
+            word.toInt(&isNumber);
+            if (isNumber) {
+                word = "<font color='#00ff64'>" + word + "</font>";
+            }
+        }
 
-    // QFontMetrics fmDesc(descFont);
-    // int descWidth = fmDesc.horizontalAdvance(formattedDesc);
-    // int descX = (CARD_WIDTH - descWidth) / 2 + 30;
-    // if (descX < 0) descX = 10;
-    // int descY = typeY + fmType.height() + 20;
-    // m_descriptionText = new QGraphicsTextItem(formattedDesc, this);
-    // m_descriptionText->setFont(descFont);
-    // m_descriptionText->setDefaultTextColor(Qt::white);
-    // m_descriptionText->setPos(descX, descY);
-    // addToGroup(m_descriptionText);
+        formattedText += word;
+        if (i < words.size() - 1) {
+            formattedText += " ";
+        }
+    }
+
+    m_descriptionText = new QGraphicsTextItem(formattedText, this);
+    m_descriptionText->setFont(descFont);
+    m_descriptionText->setDefaultTextColor(Qt::white);
+    m_descriptionText->setTextWidth(180);
+
+    if (is_Upgrade) {
+        m_descriptionText->setHtml(formattedText);
+    }
+
+    int descX = (CARD_WIDTH - 180) / 2;
+    int descY = typeY + fmType.height() + 20;
+
+    m_descriptionText->setPos(descX, descY);
+    addToGroup(m_descriptionText);
 
     m_energyText = new QGraphicsTextItem(QString::number(energy_cost), this);
     m_energyText->setFont(valueFont);
     m_energyText->setDefaultTextColor(Qt::black);
     m_energyText->setPos(120, 48);
     addToGroup(m_energyText);
-
-    // if (damage > 0) {
-    //     m_valueText = new QGraphicsTextItem(QString::number(damage), this);
-    //     m_valueText->setFont(valueFont);
-    //     m_valueText->setDefaultTextColor(Qt::white);
-    //     m_valueText->setPos(CARD_WIDTH - 75, 70);
-    //     addToGroup(m_valueText);
-    // } else if (block > 0) {
-    //     m_valueText = new QGraphicsTextItem(QString::number(block), this);
-    //     m_valueText->setFont(valueFont);
-    //     m_valueText->setDefaultTextColor(Qt::white);
-    //     m_valueText->setPos(CARD_WIDTH - 75, 70);
-    //     addToGroup(m_valueText);
-    // }
 }
 
 void Card::Load_Card_Image(bool upgraded) {
