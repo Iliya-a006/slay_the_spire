@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <qpushbutton.h>
 
 namespace Ui {
 class Map1;
@@ -29,6 +30,7 @@ private:
     static Map1* m_instance;
     QGraphicsScene* m_scene;
     QGraphicsView* m_view;
+    QPushButton* backButton;
 
     QVector<QVector<Room*>> floors;
     QVector<QVector<int>> floorsCode;

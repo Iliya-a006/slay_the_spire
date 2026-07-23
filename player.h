@@ -36,6 +36,7 @@ public:
     void setOldName(QString n){oldUsername = n;}
     void setOldPassword(QString p){oldPassword = p;}
     int& GETER_SETER_ENERGY() { return energy; }
+    void changeGold(int amount){gold += amount;}
 
     static player* instance();
 

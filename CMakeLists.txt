@@ -73,6 +73,16 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         roomscene.h roomscene.cpp
         combatscene.h combatscene.cpp
         avatar.qrc
+        event.h event.cpp
+        goldenidolevent.h goldenidolevent.cpp
+        goldenshrineevent.h goldenshrineevent.cpp
+        labevent.h labevent.cpp
+        serpantevent.h serpantevent.cpp
+        facetraderevent.h facetraderevent.cpp
+        joustevent.h joustevent.cpp
+        ominousforgeevent.h ominousforgeevent.cpp
+        augmenterevent.h augmenterevent.cpp
+        EventPics.qrc
         Attackcardform.qrc
         attackcard.qrc
 

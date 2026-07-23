@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/prefix1">
+        <file>eventPictures/augmenter.png</file>
+        <file>eventPictures/faceTrader.png</file>
+        <file>eventPictures/goldenIdol.png</file>
+        <file>eventPictures/goldnShrine.png</file>
+        <file>eventPictures/joust.png</file>
+        <file>eventPictures/lab.png</file>
+        <file>eventPictures/ominousForge.png</file>
+        <file>eventPictures/serpant.png</file>
+    </qresource>
+</RCC>

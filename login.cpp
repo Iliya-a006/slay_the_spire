@@ -26,7 +26,7 @@ login::login(QWidget *parent)
     vLayout->addLayout(hLayout);
     vLayout->addStretch();
     frame->setFrameShape(QFrame::Box);
-    frame->setStyleSheet("QFrame { border-image: url(:/prefix1/images/whitepic.png) 0 0 0 0 stretch stretch; }");
+    frame->setStyleSheet("QFrame { background-color: white; border-radius: 10px; }");
 
     nameLabel = new QLabel(frame);
     nameLabel->setGeometry(50, 50, 300, 25);
@@ -50,13 +50,13 @@ login::login(QWidget *parent)
     Password_CheckBox=new QCheckBox(frame);
     Password_CheckBox->setGeometry(50, 225, 200, 30);
     Password_CheckBox->setText("Show Password");
-    Password_CheckBox->setStyleSheet("QCheckBox {font-size:16px;");
+    Password_CheckBox->setStyleSheet("QCheckBox {font-size:16px;}");
     Password_CheckBox->setToolTip("Show/Hide Password");
 
     Confirm_CheckBox=new QCheckBox(frame);
     Confirm_CheckBox->setGeometry(50, 345, 200, 30);
     Confirm_CheckBox->setText("Show Password");
-    Confirm_CheckBox->setStyleSheet("QCheckBox {font-size:16px;");
+    Confirm_CheckBox->setStyleSheet("QCheckBox {font-size:16px;}");
     Confirm_CheckBox->setToolTip("Show/Hide Password");
     Confirm_CheckBox->hide();
 
