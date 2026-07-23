@@ -7,7 +7,7 @@ BloodForBlood::BloodForBlood(QGraphicsItem *parent) : Attack_Cards(parent) {
     energy_cost = 4;
     rarity = UNCOMMON;
     damage = 18;
-    description = "Deal 18 damage. Costs 1 less for every time you took unblocked damage.";
+    description = "Costs 1 less R\nfor each time you lose HP this combat.\nDeal " + QString::number(damage) + " damage.";
     is_Exhaust = false;
     is_Ethereal = false;
     is_Retain = false;
@@ -31,7 +31,7 @@ Card* BloodForBlood::upgrade() {
     BloodForBlood* upgraded = new BloodForBlood(*this);
     upgraded->damage += 6;
     upgraded->is_Upgrade = true;
-    upgraded->description = "Deal 24 damage. Costs 1 less for every time you took unblocked damage.";
+    upgraded->description = "Costs 1 less R\nfor each time you lose HP this combat.\nDeal " + QString::number(upgraded->damage) + " damage.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

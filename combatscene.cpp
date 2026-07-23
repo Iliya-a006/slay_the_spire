@@ -261,11 +261,11 @@ void CombatScene::setupPlayerCards()
 
     int cardWidth = 100;
     int cardHeight = 140;
-    int cardSpacing = 80;  // فاصله بین کارت‌ها
+    int cardSpacing = 60;
 
     int totalWidth = hand.size() * (cardWidth + cardSpacing) - cardSpacing;
     int startX = (ScreenSize::getWidth() - totalWidth) / 2;
-    int yPos = ScreenSize::getHeigth() - cardHeight - 220;
+    int yPos = ScreenSize::getHeigth() - cardHeight - 170;
 
     for (int i = 0; i < hand.size(); ++i) {
         Card* card = hand[i];
