@@ -74,7 +74,22 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         combatscene.h combatscene.cpp
         avatar.qrc
         Attackcardform.qrc
-        attackcard.qrc
+
+        Skillcardform.qrc
+        skillcard.h skillcard.cpp
+        defend.h defend.cpp
+        exhume.h exhume.cpp
+        limitbreak.h limitbreak.cpp
+        offering.h offering.cpp
+        impervious.h impervious.cpp
+        dualwield.h dualwield.cpp
+        entrench.h entrench.cpp
+        warcry.h warcry.cpp
+        truegrit.h truegrit.cpp
+        shrugitoff.h shrugitoff.cpp
+        attack.qrc
+        skill.qrc
+
 
 
 

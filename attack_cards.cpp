@@ -19,3 +19,6 @@ void Attack_Cards::applay_damage(player* player,QList<Enemy*>&enemies,int damage
         e->takeDamage(damage);
     }
 }
+QString Attack_Cards::getCardTypeFolder() const {
+    return "ATTACK_CARDS";
+}

@@ -31,7 +31,6 @@ public:
     Enemy(const Enemy& other);
     virtual ~Enemy() = default;
 
-    // ===== Getterها =====
     QString getName() const { return name; }
     int getHP() const { return currentHP; }
     int getMaxHP() const { return maxHP; }

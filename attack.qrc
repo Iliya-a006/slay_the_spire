@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/attack">
+        <file>ATTACK_CARDS/bloodforblood/bloodforblood.png</file>
+        <file>ATTACK_CARDS/bludgeon/bludgeon.png</file>
+        <file>ATTACK_CARDS/carnage/carnage.png</file>
+        <file>ATTACK_CARDS/feed/feed.png</file>
+        <file>ATTACK_CARDS/hemokinesis/hemokinesis.png</file>
+        <file>ATTACK_CARDS/immolate/immolate.png</file>
+        <file>ATTACK_CARDS/reaper/reaper.png</file>
+        <file>ATTACK_CARDS/strike/strike.png</file>
+        <file>ATTACK_CARDS/twinstrike/twinstrike.png</file>
+        <file>ATTACK_CARDS/whirlwind/whirlwind.png</file>
+    </qresource>
+</RCC>

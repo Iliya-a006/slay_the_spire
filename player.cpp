@@ -1,5 +1,15 @@
 #include "player.h"
 #include "strike.h"
+#include "defend.h"
+#include"dualwield.h"
+#include"entrench.h"
+#include"exhume.h"
+#include"impervious.h"
+#include"limitbreak.h"
+#include"offering.h"
+#include"shrugitoff.h"
+#include"truegrit.h"
+#include"warcry.h"
 #include "twinstrike.h"
 #include "bloodforblood.h"
 #include "hemokinesis.h"
@@ -175,19 +185,25 @@ void player::initializeDeck()
     allCards.append(new Immolate());
     allCards.append(new Reaper());
     allCards.append(new Feed());
-
-    // ===== رندوم کردن =====
+    allCards.append(new Defend());
+    allCards.append(new Exhume());
+    allCards.append(new LimitBreak());
+    allCards.append(new Offering());
+    allCards.append(new Impervious());
+    allCards.append(new DualWield());
+    allCards.append(new Entrench());
+    allCards.append(new Warcry());
+    allCards.append(new TrueGrit());
+    allCards.append(new ShrugItOff());
     std::random_device rd;
     std::mt19937 g(rd());
     std::shuffle(allCards.begin(), allCards.end(), g);
 
-    // ===== ۵ کارت اول به دست =====
     int cardCount = qMin(5, allCards.size());
     for (int i = 0; i < cardCount; ++i) {
         hand.append(allCards[i]);
     }
 
-    // ===== بقیه به drawPile =====
     for (int i = cardCount; i < allCards.size(); ++i) {
         drawPile.append(allCards[i]);
     }

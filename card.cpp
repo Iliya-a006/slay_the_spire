@@ -133,16 +133,6 @@ QString Card::getCardTypePath() const {
     }
 }
 
-QString Card::getCardTypeFolder() const {
-    switch (type) {
-    case ATTACK: return "ATTACK_CARDS";
-    case SKILL:  return "SKILL_CARDS";
-    case POWER:  return "POWER_CARDS";
-    case STATUS: return "STATUS_CARDS";
-    case CURSE:  return "CURSE_CARDS";
-    default:     return "ATTACK_CARDS";
-    }
-}
 
 QString Card::getRarityString() const {
     switch (rarity) {
@@ -155,16 +145,6 @@ QString Card::getRarityString() const {
     }
 }
 
-QString Card::getColorString() const {
-    switch (type) {
-    case ATTACK: return "red";
-    case SKILL:  return "blue";
-    case POWER:  return "gold";
-    case STATUS: return "gray";
-    case CURSE:  return "purple";
-    default:     return "red";
-    }
-}
 
 QString Card::getDisplayName() const {
     if (is_Upgrade) {
@@ -202,13 +182,11 @@ void Card::loadBackground()
     QString cardName = getCardNameFormatted();
     QString typeFolder = getCardTypeFolder();
     QString typePath = getCardTypePath();
-    QString color = getColorString();
+    QString color;
 
-    QString bgPath = QString(":/form/%1/form/512_bg_%2_%3.png")
+    QString bgPath = QString(":/form/%1/form/512_bg_%2_red.png")
                          .arg(typeFolder)
-                         .arg(typePath)
-                         .arg(color);
-
+                         .arg(typePath);
     QPixmap pixmap(bgPath);
     if (!pixmap.isNull()) {
         m_background = new QGraphicsPixmapItem(pixmap, this);
@@ -251,12 +229,9 @@ void Card::loadIcon()
 
     QString cardName = getCardNameFormatted();
     QString typeFolder = getCardTypeFolder();
-    QString color = getColorString();
 
-    QString iconPath = QString(":/form/%1/form/512_card_%2_orb.png")
-                           .arg(typeFolder)
-                           .arg(color);
-
+    QString iconPath = QString(":/form/%1/form/512_card_red_orb.png")
+                           .arg(typeFolder);
     QPixmap pixmap(iconPath);
     if (!pixmap.isNull()) {
         QPixmap scaledPixmap = pixmap.scaled(pixmap.width() * 1.3, pixmap.height() * 1.3, Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -301,11 +276,12 @@ void Card::loadNameImage()
     }
 
     QString cardName = getCardNameFormatted();
+    QString typePath = getCardTypePath();
     QString typeFolder = getCardTypeFolder();
 
-    QString namePath = QString(":/attackcard/%1/%2/%3.png")
+    QString namePath = QString(":/%1/%2/%3/%3.png")
+                           .arg(typePath)
                            .arg(typeFolder)
-                           .arg(cardName)
                            .arg(cardName.toLower());
 
     QPixmap pixmap(namePath);
@@ -414,7 +390,16 @@ void Card::Load_Card_Image(bool upgraded) {
         return;
     }
 }
-
+QString Card::getCardTypeFolder() const {
+    switch (type) {
+    case ATTACK: return "ATTACK_CARDS";
+    case SKILL:  return "SKILL_CARDS";
+    case POWER:  return "POWER_CARDS";
+    case STATUS: return "STATUS_CARDS";
+    case CURSE:  return "CURSE_CARDS";
+    default:     return "ATTACK_CARDS";
+    }
+}
 void Card::mousePressEvent(QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
         dragStartPos = event->pos();
