@@ -3,6 +3,8 @@
 
 #include "roomscene.h"
 #include <QWidget>
+#include <qlabel.h>
+#include <qpushbutton.h>
 
 class CampScene : public RoomScene
 {
@@ -13,6 +15,15 @@ public:
     ~CampScene();
 
     void resetRoom() override;
+
+private:
+    QPushButton* restButton;
+    QPushButton* smithButton;
+    QPushButton* recallButton;
+    QLabel* titleLabel;
+    QLabel* restLabel;
+    QLabel* smithLabel;
+    QLabel* recallLabel;
 };
 
 #endif // CAMPSCENE_H

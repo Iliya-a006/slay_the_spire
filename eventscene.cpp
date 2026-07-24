@@ -111,8 +111,6 @@ void EventScene::showEvent()
     pictureLabel->setAlignment(Qt::AlignCenter);
     pictureLabel->move(0, 0);
     pictureLabel->setPixmap(QPixmap(event->picture));
-    QPixmap pic(event->picture);
-    qDebug() << "Path:" << event->picture << "isNull:" << pic.isNull();
 
     nameLabel->move(500, 0);
     nameLabel->setFixedWidth(500);

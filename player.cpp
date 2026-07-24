@@ -270,6 +270,8 @@ bool player::findPlayer(QString name, QString pass)
 
 void player::saveFile()
 {
+    if (!m_instance)
+        return;
     QVector<player> players;
     player p;
 
@@ -337,6 +339,12 @@ void player::TAKE_DAMAGE(int damage) {
 
 void player::LOSE_HP(int amount) {
     HP = qMax(0, HP - amount);
+    emit hpChanged(HP, maxHP);
+}
+
+void player::INCREASE_HP(int amount)
+{
+    HP += qMin(amount, maxHP - HP);
     emit hpChanged(HP, maxHP);
 }
 

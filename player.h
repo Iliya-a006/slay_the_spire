@@ -71,6 +71,7 @@ public:
     bool IS_HAND_FULL() const { return hand.size() >= 10; }
 
     void LOSE_HP(int amount);
+    void INCREASE_HP(int amount);
     void INCREASE_MAXHP(int amount);
     void SET_MAXHP(int newMax);
 

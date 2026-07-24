@@ -364,6 +364,8 @@ void Map1::roadCreator()
 
 void Map1::saveMap()
 {
+    if(!player::instance())
+        return;
     QFile file("maps.bin");
     if (!file.open(QIODevice::ReadOnly))
         return;
