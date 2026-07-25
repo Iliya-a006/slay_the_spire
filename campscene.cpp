@@ -1,4 +1,5 @@
 #include "campscene.h"
+#include <qboxlayout.h>
 #include <qgraphicsitem.h>
 #include <qgraphicsview.h>
 #include "player.h"
@@ -121,6 +122,13 @@ CampScene::CampScene(QWidget *parent)
     leaveButton->move(ScreenSize::getWidth()/2 - 50, ScreenSize::getHeigth()/2 - 50);
 
 
+    listScene = new QGraphicsScene(this);
+    listView  = new QGraphicsView(listScene, this);
+    listScene->setBackgroundBrush(QColor(178, 235, 230));
+    listView->setGeometry(ScreenSize::getWidth()/2 - 402, ScreenSize::getHeigth()/2 - 250, 805, 500);
+    listView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+
     connect(restButton, &QPushButton::clicked, this, [this](){
         hideOptions();
         restOption();
@@ -152,6 +160,8 @@ void CampScene::resetRoom()
     restLabel->show();
     smithLabel->show();
     recallLabel->show();
+    listScene->clear();
+    listView->hide();
 
     restButton->setDisabled(false);
     recallButton->setDisabled(true);
@@ -171,7 +181,36 @@ void CampScene::restOption()
 
 void CampScene::smithOption()
 {
-    // upgrade a card
+    listView->show();
+
+    //
+    // Card* card = player::instance()->GETER_DRAWPILE().last();
+    // card->Load_Card_Image();
+    // card->Set_Position(1, 1);
+    // card->Set_Original_Position(1, 1);
+    // m_scene->addItem(card);
+    //
+
+    QVector<Card*> allCards;
+    allCards += player::instance()->GETER_DRAWPILE();
+    allCards += player::instance()->GETER_DISCARDPILE();
+    allCards += player::instance()->GETER_EXHAUSTPILE();
+    allCards += player::instance()->GETER_HAND();
+
+    listScene->setSceneRect(0, 0, listView->width(), (allCards.size()/4 + 1)*230 + 35);
+    int count=0, x, y;
+    for (auto card : allCards){
+        x = (count%4 * 180);
+        y = (count/4 * 230);
+        card->Load_Card_Image();
+        card->Set_Position(x, y);
+        card->Set_Original_Position(x, y);
+        listScene->addItem(card);
+        count++;
+    }
+
+
+
 
     showLeavePage(   "upgraded!");
 }

@@ -21,11 +21,15 @@ private:
     QPushButton* smithButton;
     QPushButton* recallButton;
     QPushButton* leaveButton;
+    QPushButton* upgradeButton;
+    QPushButton* nextButton;
     QLabel* titleLabel;
     QLabel* restLabel;
     QLabel* smithLabel;
     QLabel* recallLabel;
     QLabel* leaveLabel;
+    QGraphicsScene* listScene;
+    QGraphicsView* listView;
 
     void restOption();
     void smithOption();

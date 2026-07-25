@@ -147,4 +147,5 @@ QScrollArea* leaderBoard::createScrollableList(const QVector<std::array<QString,
 
 leaderBoard::~leaderBoard()
 {
+
 }
