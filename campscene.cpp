@@ -1,6 +1,7 @@
 #include "campscene.h"
 #include <qgraphicsitem.h>
 #include <qgraphicsview.h>
+#include "player.h"
 #include "screensize.h"
 
 CampScene::CampScene(QWidget *parent)
@@ -54,7 +55,7 @@ CampScene::CampScene(QWidget *parent)
     titleLabel = new QLabel("Time for a break...", this);
     restLabel = new QLabel("Rest", this);
     smithLabel = new QLabel("Smith", this);
-    recallLabel = new QLabel("Recall", this);
+    recallLabel = new QLabel("Lift", this);
 
     titleLabel->setFixedSize(250, 40);
     restLabel->setFixedSize(70, 30);
@@ -81,21 +82,125 @@ CampScene::CampScene(QWidget *parent)
                              "font-weight: bold;"
                              "padding: 5px;");
 
-    titleLabel->move(ScreenSize::getWidth()/2 - ScreenSize::getWidth()/10 - 115,
-                     ScreenSize::getHeigth()/2 - ScreenSize::getHeigth()/4.6 - 60);
-    restLabel->move(ScreenSize::getWidth()/2 - ScreenSize::getWidth()/10 - 25,
-                    ScreenSize::getHeigth()/2 - ScreenSize::getHeigth()/4.6 + 80);
-    smithLabel->move(ScreenSize::getWidth()/2 + ScreenSize::getWidth()/10 - 25,
-                     ScreenSize::getHeigth()/2 - ScreenSize::getHeigth()/4.6 + 80);
-    recallLabel->move(ScreenSize::getWidth()/2 - 25,
-                      ScreenSize::getHeigth()/2 + 80);
+    titleLabel->move(restButton->x() - 58,
+                     restButton->y() - 60);
+    restLabel->move(restButton->x() + 32,
+                    restButton->y() + 80);
+    smithLabel->move(smithButton->x() + 32,
+                     smithButton->y() + 80);
+    recallLabel->move(recallButton->x() + 32,
+                      recallButton->y() + 80);
 
+
+    leaveLabel = new QLabel(this);
+    leaveButton = new QPushButton("Leave", this);
+    leaveButton->setFixedSize(100, 40);
+    leaveLabel->setStyleSheet("background-color: #FDFBF5;"
+                              "color: #2E8B57;"
+                              "font-size: 26px;"
+                              "font-weight: bold;"
+                              "font-family: 'Segoe Print';"
+                              "border: 2px solid #2E8B57;"
+                              "border-radius: 10px;"
+                              "padding: 10px;");
+    leaveButton->setStyleSheet("QPushButton {"
+                               "    background-color: #F5E6C8;"
+                               "    color: #D2691E;"
+                               "    font-size: 18px;"
+                               "    font-weight: bold;"
+                               "    border: 1px solid #D2691E;"
+                               "    border-radius: 6px;"
+                               "    padding: 5px;"
+                               "}"
+                               "QPushButton:hover {"
+                               "    background-color: #EFD9A8;"
+                               "}"
+                               "QPushButton:pressed {"
+                               "    background-color: #E5C68A;"
+                               "}");
+    leaveButton->move(ScreenSize::getWidth()/2 - 50, ScreenSize::getHeigth()/2 - 50);
+
+
+    connect(restButton, &QPushButton::clicked, this, [this](){
+        hideOptions();
+        restOption();
+    });
+    connect(smithButton, &QPushButton::clicked, this, [this](){
+        hideOptions();
+        smithOption();
+    });
+    connect(recallButton, &QPushButton::clicked, this, [this](){
+        hideOptions();
+        recallOption();
+    });
+    connect(leaveButton, &QPushButton::clicked, this, [this](){
+        emit roomExited(true);
+    });
+
+}
+
+
+
+void CampScene::resetRoom()
+{
+    leaveLabel->hide();
+    leaveButton->hide();
+    restButton->show();
+    smithButton->show();
+    recallButton->show();
+    titleLabel->show();
+    restLabel->show();
+    smithLabel->show();
+    recallLabel->show();
+
+    restButton->setDisabled(false);
+    //recallButton->setDisabled(true);
+    // relic coffee dripper : restButton->setDisabled(true);
+    // relic Girya : recallButton->setDisabled(false);
 
 
 }
 
-void CampScene::resetRoom()
+void CampScene::restOption()
 {
+    int heal = player::instance()->GETER_MAXHP()/5;
+    player::instance()->INCREASE_HP(heal);
+
+    showLeavePage("Your HP increased by " + QString::number(heal) + "!");
+}
+
+void CampScene::smithOption()
+{
+    // upgrade a card
+
+    showLeavePage(   "upgraded!");
+}
+
+void CampScene::recallOption()
+{
+    // player recieves a permanent strength
+
+    showLeavePage("You recieved a permanent 'strength'!");
+}
+
+void CampScene::hideOptions()
+{
+    restButton->hide();
+    smithButton->hide();
+    recallButton->hide();
+    titleLabel->hide();
+    restLabel->hide();
+    smithLabel->hide();
+    recallLabel->hide();
+}
+
+void CampScene::showLeavePage(QString text)
+{
+    leaveLabel->show();
+    leaveButton->show();
+    leaveLabel->setText(text);
+    leaveLabel->adjustSize();
+    leaveLabel->move(ScreenSize::getWidth()/2 - leaveLabel->width()/2, ScreenSize::getHeigth()/2 - 150);
 
 }
 

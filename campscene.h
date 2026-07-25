@@ -20,10 +20,18 @@ private:
     QPushButton* restButton;
     QPushButton* smithButton;
     QPushButton* recallButton;
+    QPushButton* leaveButton;
     QLabel* titleLabel;
     QLabel* restLabel;
     QLabel* smithLabel;
     QLabel* recallLabel;
+    QLabel* leaveLabel;
+
+    void restOption();
+    void smithOption();
+    void recallOption();
+    void hideOptions();
+    void showLeavePage(QString text);
 };
 
 #endif // CAMPSCENE_H

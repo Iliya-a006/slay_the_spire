@@ -49,14 +49,14 @@ public:
     int GETER_DEXTERITY() const { return dexterity; }
     int GETER_UNBLOCKEDDAMAGETAKEN() const { return unblockedDamageTaken; }
 
-    QVector<Card*>& GETٍER_HAND() { return hand; }
-    QVector<Card*>& GETٍER_DRAWPILE() { return drawPile; }
-    QVector<Card*>& GETٍER_DISCARDPILE() { return discardPile; }
-    QVector<Card*>& GETٍER_EXHAUSTPILE() { return exhaustPile; }
+    QVector<Card*>& GETER_HAND() { return hand; }
+    QVector<Card*>& GETER_DRAWPILE() { return drawPile; }
+    QVector<Card*>& GETER_DISCARDPILE() { return discardPile; }
+    QVector<Card*>& GETER_EXHAUSTPILE() { return exhaustPile; }
 
-    void SETٍER_BLOCK(int amount) { block = qMax(0, amount); }
-    void SETٍER_STRENGtH(int amount) { strength = amount; }
-    void SETٍER_DEXTERITY(int amount) { dexterity = amount; }
+    void SETER_BLOCK(int amount) { block = qMax(0, amount); }
+    void SETER_STRENGtH(int amount) { strength = amount; }
+    void SETER_DEXTERITY(int amount) { dexterity = amount; }
 
     void ADD_BLOCK(int amount);
     void ADD_STRENGtH(int amount) { strength += amount; }
