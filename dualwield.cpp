@@ -19,7 +19,7 @@ DualWield::DualWield(const DualWield& other) : SkillCard(other) {}
 
 void DualWield::play(player* player, QList<Enemy*>& enemies) {
     Q_UNUSED(enemies);
-    QVector<Card*>& hand = player->GETٍER_HAND();
+    QVector<Card*>& hand = player->GETER_HAND();
     if (!hand.isEmpty()) {
         Card* card = hand.first();
         for (int i = 0; i < 2; ++i) {

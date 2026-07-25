@@ -154,7 +154,7 @@ void CampScene::resetRoom()
     recallLabel->show();
 
     restButton->setDisabled(false);
-    //recallButton->setDisabled(true);
+    recallButton->setDisabled(true);
     // relic coffee dripper : restButton->setDisabled(true);
     // relic Girya : recallButton->setDisabled(false);
 

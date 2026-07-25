@@ -19,7 +19,7 @@ Exhume::Exhume(const Exhume& other) : SkillCard(other) {}
 
 void Exhume::play(player* player, QList<Enemy*>& enemies) {
     Q_UNUSED(enemies);
-    QVector<Card*>& exhaustPile = player->GETٍER_EXHAUSTPILE();
+    QVector<Card*>& exhaustPile = player->GETER_EXHAUSTPILE();
     if (!exhaustPile.isEmpty()) {
         Card* card = exhaustPile.takeLast();
         player->ADD_TO_HAND(card);

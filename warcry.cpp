@@ -20,7 +20,7 @@ Warcry::Warcry(const Warcry& other) : SkillCard(other) {}
 void Warcry::play(player* player, QList<Enemy*>& enemies) {
     Q_UNUSED(enemies);
     player->DRAW_CARD(1);
-    QVector<Card*>& hand = player->GETٍER_HAND();
+    QVector<Card*>& hand = player->GETER_HAND();
     if (!hand.isEmpty()) {
         Card* card = hand.takeLast();
         player->ADD_TO_DRAWPILE(card);

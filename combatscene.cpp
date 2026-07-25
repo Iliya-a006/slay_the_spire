@@ -256,7 +256,7 @@ void CombatScene::setupPlayerCards()
 
     clearCards();
 
-    QVector<Card*>& hand = p->GETٍER_HAND();
+    QVector<Card*>& hand = p->GETER_HAND();
     if (hand.isEmpty()) return;
 
     int cardWidth = 100;
