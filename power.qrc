@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/power">
+        <file>POWER_CARDS/barricade/barricade.png</file>
+        <file>POWER_CARDS/berserk/berserk.png</file>
+        <file>POWER_CARDS/brutality/brutality.png</file>
+        <file>POWER_CARDS/darkembrace/darkembrace.png</file>
+        <file>POWER_CARDS/demonform/demonform.png</file>
+        <file>POWER_CARDS/feelnopain/feelnopain.png</file>
+        <file>POWER_CARDS/inflame/inflame.png</file>
+        <file>POWER_CARDS/metallicize/metallicize.png</file>
+    </qresource>
+</RCC>

@@ -1,5 +1,5 @@
 #include "immolate.h"
-//#include "burn.h"
+#include "burn.h"
 #include"enemy.h"
 Immolate::Immolate(QGraphicsItem *parent) : Attack_Cards(parent) {
     ID = 8;
@@ -24,7 +24,7 @@ void Immolate::play(player* player, QList<Enemy*>& enemies) {
         e->takeDamage(dmg);
     }
     for (int i = 0; i < 2; ++i) {
-        //player->ADD_TO_DISCARDPILE(new Burn());
+        player->ADD_TO_DISCARDPILE(new class Burn());
     }
 }
 
