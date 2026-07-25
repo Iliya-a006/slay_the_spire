@@ -20,11 +20,19 @@
 #include "reaper.h"
 #include "feed.h"
 #include <QFile>
+#include "inflame.h"
+#include "metallicize.h"
+#include "demonform.h"
+#include "brutality.h"
+#include "feelnopain.h"
+#include "barricade.h"
+#include "darkembrace.h"
+#include "berserk.h"
+#include <QFile>
 #include <QDataStream>
 #include <algorithm>
 #include <random>
 #include <QPainter>
-
 player::player(QGraphicsItem *parent)
     : QObject(nullptr),
     QGraphicsPixmapItem(parent)
@@ -175,6 +183,7 @@ void player::initializeDeck()
     exhaustPile.clear();
 
     QVector<Card*> allCards;
+
     allCards.append(new Strike());
     allCards.append(new TwinStrike());
     allCards.append(new BloodForBlood());
@@ -185,6 +194,7 @@ void player::initializeDeck()
     allCards.append(new Immolate());
     allCards.append(new Reaper());
     allCards.append(new Feed());
+
     allCards.append(new Defend());
     allCards.append(new Exhume());
     allCards.append(new LimitBreak());
@@ -195,6 +205,17 @@ void player::initializeDeck()
     allCards.append(new Warcry());
     allCards.append(new TrueGrit());
     allCards.append(new ShrugItOff());
+
+    allCards.append(new Inflame());
+    allCards.append(new class Metallicize());
+    allCards.append(new class DemonForm());
+    allCards.append(new class Brutality());
+    allCards.append(new class FeelNoPain());
+    allCards.append(new class Barricade());
+    allCards.append(new class DarkEmbrace());
+    allCards.append(new class Berserk());
+
+
     std::random_device rd;
     std::mt19937 g(rd());
     std::shuffle(allCards.begin(), allCards.end(), g);
@@ -397,12 +418,18 @@ void player::SHUFFLE_DISCARDPILE(){
 void player::START_TURN()
 {
     energy = 3;
+
+    buffManager.applyStartOfTurnEffects(energy, HP);
+
+    energy = qMax(0, energy);
+    if (energy < 0) energy = 0;
     emit energyChanged(energy);
+    emit hpChanged(HP, maxHP);
 
     buffManager.decreaseTurns();
 
     DRAW_CARD(5);
-    if (!barricadeActive) {
+    if (!buffManager.has(Barricade)) {
         block = 0;
         emit blockChanged(block);
     }
@@ -429,11 +456,15 @@ void player::DRAW_CARD(int count){
     emit handUpdated();
 }
 
-void player::END_TURN(){
+void player::END_TURN()
+{
     energy = 0;
     emit energyChanged(energy);
 
-    buffManager.applyMetallicizeAtEndOfTurn(block);
+    int handSize = hand.size();
+    buffManager.applyEndOfTurnEffects(block, HP, handSize);
+    emit hpChanged(HP, maxHP);
+    emit blockChanged(block);
 
     QVector<Card*> retainCards;
     QVector<Card*> discardCards;
@@ -461,7 +492,7 @@ void player::END_TURN(){
         exhaustPile.append(card);
     }
 
-    if(!barricadeActive){
+    if (!buffManager.has(Barricade)) {
         block = 0;
         emit blockChanged(block);
     }

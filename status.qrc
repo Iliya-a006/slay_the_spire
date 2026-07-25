@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/status">
+        <file>STATUS_CARDS/burn/burn.png</file>
+        <file>STATUS_CARDS/dazed/dazed.png</file>
+        <file>STATUS_CARDS/slimed/slimed.png</file>
+        <file>STATUS_CARDS/wound/wound.png</file>
+    </qresource>
+</RCC>
