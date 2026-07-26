@@ -82,6 +82,9 @@ public:
     void Set_Original_Position(qreal x, qreal y) { originalPos = QPointF(x, y); }
     void Reset_Position() { setPos(originalPos); }
 
+    void Set_Draggable(bool draggable) { m_draggable = draggable; }
+    bool Is_Draggable() const { return m_draggable; }
+
     virtual void Load_Card_Image(bool upgraded = false);
     virtual QString getCardTypeFolder() const;
 
@@ -91,6 +94,7 @@ signals:
     void Card_Dropped(Card* card);
     void Card_Dropped_On_Enemy(Card* card, Enemy* enemy);
     void Card_Dropped_On_Player(Card* card);
+    void Card_Clicked(Card* card);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
@@ -139,6 +143,7 @@ protected:
     bool hovered;
     bool playable;
     bool m_isDragged;
+    bool m_draggable;
 
     QPointF originalPos;
     QPointF dragStartPos;

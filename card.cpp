@@ -24,6 +24,7 @@ Card::Card(QGraphicsItem *parent)
     hovered(false),
     playable(false),
     m_isDragged(false),
+    m_draggable(true),
     originalPos(0, 0),
     dragStartPos(0, 0),
     m_background(nullptr),
@@ -71,6 +72,7 @@ Card::Card(const Card& other)
     hovered(false),
     playable(false),
     m_isDragged(false),
+    m_draggable(true),
     originalPos(other.originalPos),
     dragStartPos(0, 0),
     m_background(nullptr),
@@ -410,12 +412,17 @@ QString Card::getCardTypeFolder() const {
     default:     return "ATTACK_CARDS";
     }
 }
+
 void Card::mousePressEvent(QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
-        dragStartPos = event->pos();
-        m_isDragged = true;
-        setCursor(Qt::ClosedHandCursor);
-        emit Card_Drag_Started(this);
+        if (m_draggable) {
+            dragStartPos = event->pos();
+            m_isDragged = true;
+            setCursor(Qt::ClosedHandCursor);
+            emit Card_Drag_Started(this);
+        } else {
+            emit Card_Clicked(this);
+        }
         event->accept();
     }
     QGraphicsItemGroup::mousePressEvent(event);
