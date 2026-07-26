@@ -23,7 +23,7 @@ void TrueGrit::play(player* player, QList<Enemy*>& enemies) {
     int blk = calculateBlock(player);
     applyBlock(player, blk);
 
-    QVector<Card*>& hand = player->GETٍER_HAND();
+    QVector<Card*>& hand = player->GETER_HAND();
     if (!hand.isEmpty()) {
         int randomIndex = QRandomGenerator::global()->bounded(hand.size());
         Card* card = hand.takeAt(randomIndex);

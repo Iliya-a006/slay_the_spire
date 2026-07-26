@@ -364,6 +364,8 @@ void Map1::roadCreator()
 
 void Map1::saveMap()
 {
+    if(!player::instance())
+        return;
     QFile file("maps.bin");
     if (!file.open(QIODevice::ReadOnly))
         return;
@@ -409,6 +411,7 @@ void Map1::saveMap()
 void Map1::onRoomExited(bool result)
 {
     if (result){
+        // end Act and end game check
         route.push_back(selectedIndex);
         RedX* redx = new RedX();
         redx->setPos(floors[player::instance()->getFloor()][selectedIndex]->x, floors[player::instance()->getFloor()][selectedIndex]->y);

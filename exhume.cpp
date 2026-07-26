@@ -20,7 +20,7 @@ Exhume::Exhume(const Exhume& other) : SkillCard(other) {}
 
 void Exhume::play(player* player, QList<Enemy*>& enemies) {
     Q_UNUSED(enemies);
-    QVector<Card*>& exhaustPile = player->GETٍER_EXHAUSTPILE();
+    QVector<Card*>& exhaustPile = player->GETER_EXHAUSTPILE();
     if (exhaustPile.isEmpty()) return;
     std::random_device rd;
     std::mt19937 g(rd());

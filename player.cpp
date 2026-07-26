@@ -291,6 +291,8 @@ bool player::findPlayer(QString name, QString pass)
 
 void player::saveFile()
 {
+    if (!m_instance)
+        return;
     QVector<player> players;
     player p;
 
@@ -361,6 +363,12 @@ void player::LOSE_HP(int amount) {
     emit hpChanged(HP, maxHP);
 }
 
+void player::INCREASE_HP(int amount)
+{
+    HP += qMin(amount, maxHP - HP);
+    emit hpChanged(HP, maxHP);
+}
+
 void player::INCREASE_MAXHP(int amount) {
     maxHP += amount;
     HP += amount;
@@ -413,6 +421,23 @@ void player::SHUFFLE_DISCARDPILE(){
     std::random_device rand;
     std::mt19937 g(rand());
     std::shuffle(discardPile.begin(), discardPile.end(), g);
+}
+
+void player::REPLACE_CARD(Card* oldCard, Card* newCard)
+{
+    auto tryReplace = [&](QVector<Card*>& pile) -> bool {
+        int idx = pile.indexOf(oldCard);
+        if (idx != -1) {
+            pile[idx] = newCard;
+            return true;
+        }
+        return false;
+    };
+
+    if (tryReplace(drawPile))    return;
+    if (tryReplace(discardPile)) return;
+    if (tryReplace(exhaustPile)) return;
+    if (tryReplace(hand))        return;
 }
 
 void player::START_TURN()

@@ -19,6 +19,9 @@
         <file>images/RestMapIcon.png</file>
         <file>images/ShopMapIcon.png</file>
         <file>images/RedX_blood.png</file>
+        <file>images/recall.jpg</file>
+        <file>images/rest.jpg</file>
+        <file>images/smith.jpg</file>
     </qresource>
     <qresource prefix="/characters">
         <file>images/vendor.png</file>

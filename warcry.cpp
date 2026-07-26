@@ -20,14 +20,13 @@ Warcry::Warcry(const Warcry& other) : SkillCard(other) {}
 
 void Warcry::play(player* player, QList<Enemy*>& enemies) {
     Q_UNUSED(enemies);
-
     // ===== کشیدن کارت =====
     if (is_Upgrade) {
         player->DRAW_CARD(2);
     } else {
         player->DRAW_CARD(1);
     }
-    QVector<Card*>& hand = player->GETٍER_HAND();
+    QVector<Card*>& hand = player->GETER_HAND();
     if (!hand.isEmpty()) {
         int randomIndex = QRandomGenerator::global()->bounded(hand.size());
         Card* card = hand.takeAt(randomIndex);
