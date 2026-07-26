@@ -202,18 +202,19 @@ CampScene::CampScene(QWidget *parent)
     });
     connect(upgradeButton, &QPushButton::clicked, this, [this](){
         if (m_selectedCard) {
-            // upgrade Card
-            // Card* upgradedCard = m_selectedCard->upgrade();
-            // player::instance()->REPLACE_CARD(m_selectedCard, upgradedCard);
-            //
-            m_selectedCard->Load_Card_Image(true);
-            showLeavePage("Your '" + m_selectedCard->GETER_NAME() + "' card upgraded!");
+            Card* upgradedCard = m_selectedCard->upgrade();
+
+            player::instance()->REPLACE_CARD(m_selectedCard, upgradedCard);
+
+            listScene->removeItem(m_selectedCard);
+            m_selectedCard->disconnect(this);
+            delete m_selectedCard;
+
+            showLeavePage("Your '" + upgradedCard->GETER_NAME() + "' card upgraded!");
             m_selectedCard = nullptr;
-            //
         }
     });
 }
-
 
 
 void CampScene::resetRoom()

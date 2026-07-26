@@ -482,3 +482,8 @@ void Card::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
     event->accept();
     QGraphicsItemGroup::hoverLeaveEvent(event);
 }
+
+void Card::Set_Draggable(bool draggable) {
+    m_draggable = draggable;
+    setFlag(QGraphicsItem::ItemIsMovable, draggable);
+}

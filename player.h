@@ -90,6 +90,7 @@ public:
     void ADD_TO_EXHAUSTPILE(Card* card);
     void SHUFFLE_DRAWPILE();
     void SHUFFLE_DISCARDPILE();
+    void REPLACE_CARD(Card* oldCard, Card* newCard);
 
     void initializeDeck();
 

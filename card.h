@@ -82,7 +82,7 @@ public:
     void Set_Original_Position(qreal x, qreal y) { originalPos = QPointF(x, y); }
     void Reset_Position() { setPos(originalPos); }
 
-    void Set_Draggable(bool draggable) { m_draggable = draggable; }
+    void Set_Draggable(bool draggable);
     bool Is_Draggable() const { return m_draggable; }
 
     virtual void Load_Card_Image(bool upgraded = false);

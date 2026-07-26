@@ -423,6 +423,23 @@ void player::SHUFFLE_DISCARDPILE(){
     std::shuffle(discardPile.begin(), discardPile.end(), g);
 }
 
+void player::REPLACE_CARD(Card* oldCard, Card* newCard)
+{
+    auto tryReplace = [&](QVector<Card*>& pile) -> bool {
+        int idx = pile.indexOf(oldCard);
+        if (idx != -1) {
+            pile[idx] = newCard;
+            return true;
+        }
+        return false;
+    };
+
+    if (tryReplace(drawPile))    return;
+    if (tryReplace(discardPile)) return;
+    if (tryReplace(exhaustPile)) return;
+    if (tryReplace(hand))        return;
+}
+
 void player::START_TURN()
 {
     energy = 3;
