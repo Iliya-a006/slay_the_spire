@@ -16,7 +16,7 @@ DualWield::DualWield(QGraphicsItem *parent) : SkillCard(parent) {
     is_Upgrade = false;
     Load_Card_Image();
 }
-
+DualWield::DualWield(const DualWield& other) : SkillCard(other) {}
 void DualWield::play(player* player, QList<Enemy*>& enemies) {
     Q_UNUSED(enemies);
     QVector<Card*>& hand = player->GETER_HAND();
