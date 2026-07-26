@@ -23,9 +23,11 @@ void Immolate::play(player* player, QList<Enemy*>& enemies) {
     for (Enemy* e : enemies) {
         e->takeDamage(dmg);
     }
-    for (int i = 0; i < 2; ++i) {
-        player->ADD_TO_DISCARDPILE(new class Burn());
+    class Burn* burn=new class Burn();
+    if(this->is_Upgrade==true){
+        burn->upgrade();
     }
+    player->ADD_TO_DISCARDPILE(burn);
 }
 
 Card* Immolate::upgrade() {

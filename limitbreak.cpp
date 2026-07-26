@@ -7,7 +7,7 @@ LimitBreak::LimitBreak(QGraphicsItem *parent) : SkillCard(parent) {
     energy_cost = 1;
     rarity = RARE;
     block = 0;
-    description = "Double your Strength - Exhaust.";
+    description = "Double your Strength.\nExhaust.";
     is_Exhaust = true;
     is_Ethereal = false;
     is_Retain = false;
@@ -26,7 +26,7 @@ void LimitBreak::play(player* player, QList<Enemy*>& enemies) {
 Card* LimitBreak::upgrade() {
     LimitBreak* upgraded = new LimitBreak(*this);
     upgraded->is_Upgrade = true;
-    upgraded->description = "Double your Strength - Exhaust.";
+    upgraded->description = "Double your Strength.\nExhaust.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

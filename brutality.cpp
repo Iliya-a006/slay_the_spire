@@ -7,7 +7,7 @@ Brutality::Brutality(QGraphicsItem *parent) : PowerCard(parent) {
     name = "Brutality";
     energy_cost = 0;
     rarity = RARE;
-    description = "At the start of your turn lose 1 HP and draw 1 card.";
+    description = "At the start of your\nturn, lose 1 HP and\ndraw 1 card.";
     is_Exhaust = true;
     is_Ethereal = false;
     is_Retain = false;
@@ -29,7 +29,7 @@ void Brutality::applyPower(player* player) {
 Card* Brutality::upgrade() {
     Brutality* upgraded = new Brutality(*this);
     upgraded->is_Upgrade = true;
-    upgraded->description = "At the start of your turn lose 1 HP and draw 1 card.";
+    upgraded->description = "At the start of your\nturn, lose 1 HP and\ndraw 1 card.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

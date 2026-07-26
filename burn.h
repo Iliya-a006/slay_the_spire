@@ -13,6 +13,11 @@ public:
     void play(player* player, QList<Enemy*>& enemies) override;
     Card* upgrade() override;
     Card* clone() const override;
+
+    int getBurnDamage() const { return burnDamage; }
+    void setBurnDamage(int dmg);
+private:
+    int burnDamage=2;
 };
 
 #endif // BURN_H

@@ -331,41 +331,38 @@ void Card::loadTexts()
     QFontMetrics fmType(typeFont);
     int typeWidth = fmType.horizontalAdvance(getTypeString());
     int typeX = (CARD_WIDTH - typeWidth) / 2;
-    int typeY = (CARD_HEIGHT - fmType.height()) / 2 +17;
+    int typeY = (CARD_HEIGHT - fmType.height()) / 2 + 17;
     m_typeText = new QGraphicsTextItem(getTypeString(), this);
     m_typeText->setFont(typeFont);
     m_typeText->setDefaultTextColor(Qt::black);
     m_typeText->setPos(typeX, typeY);
     addToGroup(m_typeText);
 
-    QStringList words = description.split(" ");
-    QString formattedText;
+    QString formattedText = description;
 
-    for (int i = 0; i < words.size(); ++i) {
-        QString word = words[i];
+    if (is_Upgrade) {
+        QStringList words = description.split(" ");
+        QStringList formattedWords;
 
-        if (is_Upgrade) {
+        for (const QString& word : words) {
             bool isNumber;
             word.toInt(&isNumber);
             if (isNumber) {
-                word = "<font color='#00ff64'>" + word + "</font>";
+                formattedWords << "<font color='#00ff64'>" + word + "</font>";
+            } else {
+                formattedWords << word;
             }
         }
-
-        formattedText += word;
-        if (i < words.size() - 1) {
-            formattedText += " ";
-        }
+        formattedText = formattedWords.join(" ");
     }
 
-    m_descriptionText = new QGraphicsTextItem(formattedText, this);
+    QString htmlText = "<div style='text-align: center;'>" + formattedText + "</div>";
+
+    m_descriptionText = new QGraphicsTextItem(htmlText, this);
     m_descriptionText->setFont(descFont);
     m_descriptionText->setDefaultTextColor(Qt::white);
     m_descriptionText->setTextWidth(180);
-
-    if (is_Upgrade) {
-        m_descriptionText->setHtml(formattedText);
-    }
+    m_descriptionText->setHtml(htmlText);
 
     int descX = (CARD_WIDTH - 180) / 2;
     int descY = typeY + fmType.height() + 20;
