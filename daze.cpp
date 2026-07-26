@@ -6,7 +6,7 @@ Daze::Daze(QGraphicsItem *parent) : StatusCard(parent) {
     name = "Daze";
     energy_cost = -1;
     rarity = COMMON;
-    description = "Unplayable - Ethereal.";
+    description = "Unplayable.\nEthereal.";
     is_Exhaust = false;
     is_Ethereal = true;
     is_Retain = false;

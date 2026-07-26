@@ -8,7 +8,7 @@ Berserk::Berserk(QGraphicsItem *parent) : PowerCard(parent) {
     name = "Berserk";
     energy_cost = 0;
     rarity = RARE;
-    description = "Gain 2 Vulnerable - At the start of your turn get 1 extra Energy.";
+    description = "Gain 2 Vulnerable.\nAt the start of your\nturn, get 1 extra Energy.";
     is_Exhaust = true;
     is_Ethereal = false;
     is_Retain = false;
@@ -24,14 +24,15 @@ void Berserk::play(player* player, QList<Enemy*>& enemies) {
 }
 
 void Berserk::applyPower(player* player) {
-    player->ADD_BUFF(Vulnerable, 2, 2);
+    if(this->is_Upgrade){player->ADD_BUFF(BuffType::Vulnerable,1,2);}
+    else{player->ADD_BUFF(BuffType::Vulnerable, 2, 2);}
     player->ADD_BUFF(BuffType::Berserk, 1, -1);
 }
 
 Card* Berserk::upgrade() {
     Berserk* upgraded = new Berserk(*this);
     upgraded->is_Upgrade = true;
-    upgraded->description = "Gain 2 Vulnerable - At the start of your turn get 1 extra Energy.";
+    upgraded->description = "Gain 2 Vulnerable.\nAt the start of your\nturn, get 1 extra Energy.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

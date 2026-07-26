@@ -5,9 +5,9 @@
 DemonForm::DemonForm(QGraphicsItem *parent) : PowerCard(parent) {
     ID = 23;
     name = "Demon Form";
-    energy_cost = 3;
+    energy_cost = 2;
     rarity = RARE;
-    description = "At the start of your turn gain 3 Strength.";
+    description = "At the start of your turn gain "+QString::number(3)+" Strength.";
     is_Exhaust = true;
     is_Ethereal = false;
     is_Retain = false;
@@ -23,14 +23,15 @@ void DemonForm::play(player* player, QList<Enemy*>& enemies) {
 }
 
 void DemonForm::applyPower(player* player) {
-    player->ADD_BUFF(BuffType::DemonForm, 3, -1);
+    if(this->is_Upgrade){player->ADD_BUFF(BuffType::DemonForm, 3, -1);}
+    else{player->ADD_BUFF(BuffType::DemonForm, 2, -1);}
 }
 
 Card* DemonForm::upgrade() {
     DemonForm* upgraded = new DemonForm(*this);
     upgraded->energy_cost = 2;
     upgraded->is_Upgrade = true;
-    upgraded->description = "At the start of your turn gain 3 Strength.";
+    upgraded->description = "At the start of your turn gain "+QString::number(3)+" Strength.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

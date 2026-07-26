@@ -7,7 +7,7 @@ DarkEmbrace::DarkEmbrace(QGraphicsItem *parent) : PowerCard(parent) {
     name = "Dark Embrace";
     energy_cost = 2;
     rarity = UNCOMMON;
-    description = "Every time a card is Exhausted, draw a card.";
+    description = "Whenever a card is Exhausted,\ndraw 1 card.";
     is_Exhaust = true;
     is_Ethereal = false;
     is_Retain = false;
@@ -30,7 +30,7 @@ Card* DarkEmbrace::upgrade() {
     DarkEmbrace* upgraded = new DarkEmbrace(*this);
     upgraded->energy_cost = 1;
     upgraded->is_Upgrade = true;
-    upgraded->description = "Every time a card is Exhausted, draw a card.";
+    upgraded->description = "Whenever a card is Exhausted,\ndraw 1 card.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

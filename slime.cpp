@@ -6,7 +6,7 @@ Slime::Slime(QGraphicsItem *parent) : StatusCard(parent) {
     name = "Slime";
     energy_cost = 1;
     rarity = COMMON;
-    description = "Has no effect - Exhaust.";
+    description = "Exhaust.";
     is_Exhaust = true;
     is_Ethereal = false;
     is_Retain = false;
