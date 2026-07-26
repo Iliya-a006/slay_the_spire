@@ -99,6 +99,24 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         shrugitoff.h shrugitoff.cpp
         attack.qrc
         skill.qrc
+        Powercardform.qrc
+        power.qrc
+        Statuscardform.qrc
+        status.qrc
+        powercard.h powercard.cpp
+        inflame.h inflame.cpp
+        metallicize.h metallicize.cpp
+        demonform.h demonform.cpp
+        brutality.h brutality.cpp
+        feelnopain.h feelnopain.cpp
+        barricade.h barricade.cpp
+        darkembrace.h darkembrace.cpp
+        berserk.h berserk.cpp
+        daze.h daze.cpp
+        statuscard.h statuscard.cpp
+        slime.h slime.cpp
+        wound.h wound.cpp
+        burn.h burn.cpp
 
 
 

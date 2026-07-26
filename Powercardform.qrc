@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/form">
+        <file>POWER_CARDS/form/512_bg_power_red.png</file>
+        <file>POWER_CARDS/form/512_banner_uncommon.png</file>
+        <file>POWER_CARDS/form/512_banner_rare.png</file>
+        <file>POWER_CARDS/form/512_card_red_orb.png</file>
+        <file>POWER_CARDS/form/512_frame_power_rare.png</file>
+        <file>POWER_CARDS/form/512_frame_power_uncommon.png</file>
+    </qresource>
+</RCC>

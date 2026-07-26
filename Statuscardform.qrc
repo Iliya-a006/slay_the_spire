@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/form">
+        <file>STATUS_CARDS/form/512_banner_common.png</file>
+        <file>STATUS_CARDS/form/512_bg_status_gray.png</file>
+        <file>STATUS_CARDS/form/512_card_colorless_orb.png</file>
+        <file>STATUS_CARDS/form/512_frame_status_common.png</file>
+    </qresource>
+</RCC>

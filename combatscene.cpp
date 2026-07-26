@@ -298,7 +298,7 @@ void CombatScene::setupPlayerCards()
         });
 
         connect(card, &Card::Card_Dropped, this, [=](Card* c) {
-            if (c->canPlay(p) && c->GETER_TYPE() == SKILL) {
+            if (c->canPlay(p) && (c->GETER_TYPE() == SKILL || c->GETER_TYPE() == POWER)) {
                 int cost = c->getCurrentCost(p);
                 if (p->GETER_ENERGY() >= cost) {
                     QList<Enemy*> empty;

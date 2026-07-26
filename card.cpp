@@ -183,10 +183,15 @@ void Card::loadBackground()
     QString typeFolder = getCardTypeFolder();
     QString typePath = getCardTypePath();
     QString color;
+    if(typePath=="status"){
+        color="gray";
+    }else{
+        color="red";
+    }
 
-    QString bgPath = QString(":/form/%1/form/512_bg_%2_red.png")
+    QString bgPath = QString(":/form/%1/form/512_bg_%2_%3.png")
                          .arg(typeFolder)
-                         .arg(typePath);
+                         .arg(typePath).arg(color);
     QPixmap pixmap(bgPath);
     if (!pixmap.isNull()) {
         m_background = new QGraphicsPixmapItem(pixmap, this);
@@ -229,9 +234,14 @@ void Card::loadIcon()
 
     QString cardName = getCardNameFormatted();
     QString typeFolder = getCardTypeFolder();
-
-    QString iconPath = QString(":/form/%1/form/512_card_red_orb.png")
-                           .arg(typeFolder);
+    QString color;
+    if(typeFolder=="STATUS_CARDS"){
+        color="colorless";
+    }else{
+        color="red";
+    }
+    QString iconPath = QString(":/form/%1/form/512_card_%2_orb.png")
+                           .arg(typeFolder).arg(color);
     QPixmap pixmap(iconPath);
     if (!pixmap.isNull()) {
         QPixmap scaledPixmap = pixmap.scaled(pixmap.width() * 1.3, pixmap.height() * 1.3, Qt::KeepAspectRatio, Qt::SmoothTransformation);

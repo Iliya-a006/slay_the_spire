@@ -1,4 +1,5 @@
 #include "buff_debuff.h"
+#include <algorithm>
 
 void BuffDebuffManager::add(BuffType type, int value, int turns) {
     for (auto& b : buffs) {
@@ -71,16 +72,24 @@ QString BuffDebuffManager::getDescription() const {
         case Strength: name = "Strength"; break;
         case Dexterity: name = "Dexterity"; break;
         case Metallicize: name = "Metallicize"; break;
+        case Barricade: name = "Barricade"; break;
+        case FeelNoPain: name = "Feel No Pain"; break;
+        case DarkEmbrace: name = "Dark Embrace"; break;
+        case Berserk: name = "Berserk"; break;
+        case Brutality: name = "Brutality"; break;
+        case DemonForm: name = "Demon Form"; break;
         case Vulnerable: name = "Vulnerable"; break;
         case Weak: name = "Weak"; break;
         case Frail: name = "Frail"; break;
+        case Entangle: name = "Entangle"; break;
+        case Burn: name = "Burn"; break;
+        case Regret: name = "Regret"; break;
         default: name = "Unknown"; break;
         }
         desc.append(QString("%1: %2").arg(name).arg(b.value));
     }
     return desc.join(", ");
 }
-
 
 int BuffDebuffManager::applyVulnerableToDamage(int damage) const {
     if (has(Vulnerable)) {
@@ -91,7 +100,6 @@ int BuffDebuffManager::applyVulnerableToDamage(int damage) const {
     }
     return damage;
 }
-
 
 int BuffDebuffManager::applyWeakToDamage(int damage) const {
     if (has(Weak)) {
@@ -119,5 +127,39 @@ void BuffDebuffManager::applyMetallicizeAtEndOfTurn(int& block) {
     if (has(Metallicize)) {
         int metalValue = getTotalValue(Metallicize);
         block += metalValue;
+    }
+}
+
+void BuffDebuffManager::applyEndOfTurnEffects(int& block, int& hp, int handSize) {
+    applyMetallicizeAtEndOfTurn(block);
+
+    if (has(Burn)) {
+        int burnValue = getTotalValue(Burn);
+        hp -= burnValue;
+        if (hp < 0) hp = 0;
+    }
+
+    if (has(Regret)) {
+        int regretValue = getTotalValue(Regret);
+        hp -= regretValue * handSize;
+        if (hp < 0) hp = 0;
+    }
+}
+
+void BuffDebuffManager::applyStartOfTurnEffects(int& energy, int& hp) {
+    if (has(Berserk)) {
+        int berserkValue = getTotalValue(Berserk);
+        energy += berserkValue;
+    }
+
+    if (has(Brutality)) {
+        int brutalityValue = getTotalValue(Brutality);
+        hp -= brutalityValue;
+        if (hp < 0) hp = 0;
+    }
+
+    if (has(DemonForm)) {
+        int demonValue = getTotalValue(DemonForm);
+        add(Strength, demonValue, -1);
     }
 }
