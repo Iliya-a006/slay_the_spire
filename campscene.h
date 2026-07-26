@@ -28,6 +28,7 @@ private:
     QLabel* smithLabel;
     QLabel* recallLabel;
     QLabel* leaveLabel;
+    QLabel* chooseLabel;
     QGraphicsScene* listScene;
     QGraphicsView* listView;
 

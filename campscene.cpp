@@ -129,6 +129,64 @@ CampScene::CampScene(QWidget *parent)
     listView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 
+    chooseLabel = new QLabel("Choose a card to upgrade", this);
+    nextButton = new QPushButton("Next", this);
+    upgradeButton = new QPushButton("Upgrade", this);
+
+    chooseLabel->setFixedSize(500, 60);
+    nextButton->setFixedSize(80, 40);
+    upgradeButton->setFixedSize(120, 60);
+
+    chooseLabel->setStyleSheet("background-color: #F5E6C8;"
+                               "color: black;"
+                               "font-size: 36px;"
+                               "font-weight: bold;"
+                               "font-family: 'Segoe Print';"
+                               "border-radius: 6px;"
+                               "padding: 5px;");
+    nextButton->setStyleSheet(R"(
+    QPushButton {
+        background-color: rgba(10, 35, 40, 180);
+        border: 2px solid #2ec4b6;
+        border-radius: 8px;
+        color: #a8e6e0;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px;
+    }
+    QPushButton:hover {
+        background-color: rgba(46, 196, 182, 220);
+        color: white;
+    }
+    QPushButton:pressed {
+        background-color: rgba(20, 120, 110, 255);
+    }
+    )");
+    upgradeButton->setStyleSheet(R"(
+    QPushButton {
+        background-color: rgba(10, 35, 40, 180);
+        border: 2px solid #2ec4b6;
+        border-radius: 8px;
+        color: #a8e6e0;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px;
+    }
+    QPushButton:hover {
+        background-color: rgba(46, 196, 182, 220);
+        color: white;
+    }
+    QPushButton:pressed {
+        background-color: rgba(20, 120, 110, 255);
+    }
+    )");
+
+
+    chooseLabel->move(ScreenSize::getWidth()/2 - 240, listView->y() - 60);
+    nextButton->move(listView->x() + listView->width() + 90, listView->y());
+    upgradeButton->move(listView->x() + listView->width() + 70, listView->y() + 60);
+
+
     connect(restButton, &QPushButton::clicked, this, [this](){
         hideOptions();
         restOption();
@@ -144,7 +202,13 @@ CampScene::CampScene(QWidget *parent)
     connect(leaveButton, &QPushButton::clicked, this, [this](){
         emit roomExited(true);
     });
-
+    connect(nextButton, &QPushButton::clicked, this, [this](){
+        showLeavePage("No card was upgraded.");
+    });
+    connect(upgradeButton, &QPushButton::clicked, this, [this](){
+       /////////
+       showLeavePage(   "upgraded!");
+    });
 }
 
 
@@ -160,8 +224,13 @@ void CampScene::resetRoom()
     restLabel->show();
     smithLabel->show();
     recallLabel->show();
-    listScene->clear();
     listView->hide();
+    chooseLabel->hide();
+    nextButton->hide();
+    upgradeButton->hide();
+    for (QGraphicsItem *item : listScene->items()) {
+        listScene->removeItem(item);
+    }
 
     restButton->setDisabled(false);
     recallButton->setDisabled(true);
@@ -182,14 +251,9 @@ void CampScene::restOption()
 void CampScene::smithOption()
 {
     listView->show();
-
-    //
-    // Card* card = player::instance()->GETER_DRAWPILE().last();
-    // card->Load_Card_Image();
-    // card->Set_Position(1, 1);
-    // card->Set_Original_Position(1, 1);
-    // m_scene->addItem(card);
-    //
+    chooseLabel->show();
+    nextButton->show();
+    upgradeButton->show();
 
     QVector<Card*> allCards;
     allCards += player::instance()->GETER_DRAWPILE();
@@ -212,7 +276,7 @@ void CampScene::smithOption()
 
 
 
-    showLeavePage(   "upgraded!");
+
 }
 
 void CampScene::recallOption()
@@ -235,6 +299,10 @@ void CampScene::hideOptions()
 
 void CampScene::showLeavePage(QString text)
 {
+    listView->hide();
+    chooseLabel->hide();
+    upgradeButton->hide();
+    nextButton->hide();
     leaveLabel->show();
     leaveButton->show();
     leaveLabel->setText(text);
