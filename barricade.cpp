@@ -7,7 +7,7 @@ Barricade::Barricade(QGraphicsItem *parent) : PowerCard(parent) {
     name = "Barricade";
     energy_cost = 3;
     rarity = RARE;
-    description = "Block is not removed at the start of your turn.";
+    description = "Block is not removed at\nthe start of your turn.";
     is_Exhaust = true;
     is_Ethereal = false;
     is_Retain = false;
@@ -30,7 +30,7 @@ Card* Barricade::upgrade() {
     Barricade* upgraded = new Barricade(*this);
     upgraded->energy_cost = 2;
     upgraded->is_Upgrade = true;
-    upgraded->description = "Block is not removed at the start of your turn.";
+    upgraded->description = "Block is not removed at\nthe start of your turn.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

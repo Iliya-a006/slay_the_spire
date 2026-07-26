@@ -6,7 +6,7 @@ Inflame::Inflame(QGraphicsItem *parent) : PowerCard(parent) {
     name = "Inflame";
     energy_cost = 1;
     rarity = UNCOMMON;
-    description = "Gain 2 Strength.";
+    description = "Gain "+QString::number(2)+" Strength.";
     is_Exhaust = true;
     is_Ethereal = false;
     is_Retain = false;
@@ -22,13 +22,17 @@ void Inflame::play(player* player, QList<Enemy*>& enemies) {
 }
 
 void Inflame::applyPower(player* player) {
-    player->ADD_BUFF(BuffType::Strength, 2, -1);
+    if (is_Upgrade) {
+        player->ADD_BUFF(BuffType::Strength, 3, -1);
+    } else {
+        player->ADD_BUFF(BuffType::Strength, 2, -1);
+    }
 }
 
 Card* Inflame::upgrade() {
     Inflame* upgraded = new Inflame(*this);
     upgraded->is_Upgrade = true;
-    upgraded->description = "Gain 3 Strength.";
+    upgraded->description = "Gain "+QString::number(3)+" Strength.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

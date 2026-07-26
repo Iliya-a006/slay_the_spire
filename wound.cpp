@@ -6,7 +6,7 @@ Wound::Wound(QGraphicsItem *parent) : StatusCard(parent) {
     name = "Wound";
     energy_cost = -1;
     rarity = COMMON;
-    description = "Unplayable - Has no effect.";
+    description = "Unplayable.";
     is_Exhaust = false;
     is_Ethereal = false;
     is_Retain = false;
