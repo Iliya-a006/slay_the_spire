@@ -23,7 +23,7 @@ ShopScene::ShopScene(QWidget *parent)
 
 void ShopScene::resetRoom()
 {
-    // called after each room entry
+
 }
 
 ShopScene::~ShopScene()

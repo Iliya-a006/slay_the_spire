@@ -13,8 +13,8 @@ ShopRoom::ShopRoom(int index, QGraphicsItem *parent) : Room(index, parent){
 
 void ShopRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if(!this->accessible)
-        return;
+    // if(!this->accessible)
+    //     return;
 
     Map1::selectedIndex = this->index;
     QWidget *widget = MainWindow::m_stack->widget((int)Page::Shop);
