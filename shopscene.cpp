@@ -51,6 +51,7 @@ ShopScene::ShopScene(QWidget *parent)
 void ShopScene::resetRoom()
 {
     clicked = false;
+    m_selectedCard = nullptr;
     showItems();
     shopView->hide();
 }
@@ -65,7 +66,7 @@ void ShopScene::onVendorClicked()
 
 void ShopScene::showItems()
 {
-    // delete
+    deleteScene();
 
 
     availableCards.resize(7);
@@ -136,7 +137,18 @@ Card* ShopScene::pickRandomCard()
 
 void ShopScene::onCardClicked(Card* card)
 {
+    if (m_selectedCard == card) {
+        return;
+    }
 
+    if (m_selectedCard) {
+        m_selectedCard->setOpacity(1.0);
+    }
+
+    m_selectedCard = card;
+    card->setOpacity(0.6);
+
+    //upgradeButton->setDisabled(false);
 }
 
 int ShopScene::costCalculation(Card* card)
@@ -167,6 +179,53 @@ int ShopScene::costCalculation(Card* card)
 void ShopScene::onRemovalClicked()
 {
 
+}
+
+void ShopScene::deleteScene()
+{
+    for (auto* card : availableCards) {
+        if (card) {
+            disconnect(card, nullptr, this, nullptr);
+            shopScene->removeItem(card);
+            delete card;
+        }
+    }
+    availableCards.clear();
+
+    for (auto* item : cardsCost) {
+        if (item) {
+            shopScene->removeItem(item);
+            delete item;
+        }
+    }
+    cardsCost.clear();
+
+    for (auto* item : cardsCoinItems) {
+        if (item) {
+            shopScene->removeItem(item);
+            delete item;
+        }
+    }
+    cardsCoinItems.clear();
+
+    if (removal) {
+        disconnect(removal, nullptr, this, nullptr);
+        shopScene->removeItem(removal);
+        delete removal;
+        removal = nullptr;
+    }
+
+    if (removalText) {
+        shopScene->removeItem(removalText);
+        delete removalText;
+        removalText = nullptr;
+    }
+
+    if (removalCoinItem) {
+        shopScene->removeItem(removalCoinItem);
+        delete removalCoinItem;
+        removalCoinItem = nullptr;
+    }
 }
 
 ShopScene::~ShopScene()

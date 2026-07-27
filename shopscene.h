@@ -46,6 +46,7 @@ public:
     void resetRoom() override;
 
 private:
+    Card* m_selectedCard;
     Vendor* vendor;
     bool clicked;
     QGraphicsScene* shopScene;
@@ -61,6 +62,7 @@ private:
     void showItems();
     Card* pickRandomCard();
     int costCalculation(Card* card);
+    void deleteScene();
 
 private slots:
     void onVendorClicked();
