@@ -117,6 +117,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         slime.h slime.cpp
         wound.h wound.cpp
         burn.h burn.cpp
+        chest.h chest.cpp
 
 
 
