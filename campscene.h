@@ -33,6 +33,7 @@ private:
     QGraphicsScene* listScene;
     QGraphicsView* listView;
 
+
     Card* m_selectedCard = nullptr;
 
     void restOption();

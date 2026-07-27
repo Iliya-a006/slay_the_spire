@@ -5,6 +5,7 @@
 #include "player.h"
 #include "screensize.h"
 
+
 CampScene::CampScene(QWidget *parent)
     : RoomScene(parent)
 {
