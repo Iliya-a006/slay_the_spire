@@ -5,6 +5,7 @@
 #include "player.h"
 #include "screensize.h"
 
+
 CampScene::CampScene(QWidget *parent)
     : RoomScene(parent)
 {
@@ -261,7 +262,6 @@ void CampScene::smithOption()
     m_selectedCard = nullptr;
     upgradeButton->setDisabled(true);
 
-    QVector<Card*> allCards;
     allCards += player::instance()->GETER_DRAWPILE();
     allCards += player::instance()->GETER_DISCARDPILE();
     allCards += player::instance()->GETER_EXHAUSTPILE();

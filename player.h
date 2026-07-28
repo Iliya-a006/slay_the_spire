@@ -35,6 +35,8 @@ public:
     void plusFloor(){++floor;}
     void setOldName(QString n){oldUsername = n;}
     void setOldPassword(QString p){oldPassword = p;}
+    int getRemovalUsed(){return removalUsed;}
+    void setRemovalUsed(int r){removalUsed = r;}
     int& GETER_SETER_ENERGY() { return energy; }
     void changeGold(int amount){gold += amount;}
 
@@ -122,6 +124,7 @@ private:
     int HP;
     int energy;
     int mapID = -1;
+    int removalUsed;
     int block = 0;
     int strength = 0;
     int dexterity = 0;
