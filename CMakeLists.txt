@@ -120,6 +120,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         chest.h chest.cpp
         vendor.h vendor.cpp
         cardremoval.h cardremoval.cpp
+        topbar.h topbar.cpp
 
 
 

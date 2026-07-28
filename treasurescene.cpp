@@ -125,6 +125,8 @@ void TreasureScene::resetRoom()
     nextbutton->hide();
     recieved = false;
     is_end = false;
+
+    this->updateBar();
 }
 
 void TreasureScene::onChestClicked()

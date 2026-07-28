@@ -18,6 +18,8 @@ protected:
     QGraphicsScene* m_scene;
     QGraphicsView* m_view;
 
+    void updateBar();
+
 signals:
     void roomExited(bool result);
 };

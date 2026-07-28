@@ -5,7 +5,7 @@
 JoustEvent::JoustEvent()
 {
     this->name = "The Joust";
-    this->description = "As you make your way through the large buildings you come across a long narrow bridge and spot knights on either side, facing one another. You approach...\n\nKnight: 'HALT!' A knight forcefully gestures you to stop with its giant lance.\n\nKnight: 'Today is the day I must settle the score with the murderer of my beloved pet, Noodles. Until then, you may not pass.'\n\nKnight: 'Fellow witness, why don't you bet on who you think will emerge victorious?'";
+    this->description = "As you make your way through the large buildings you come across a long narrow bridge and spot knights on either side, facing one another. You approach...\n\nKnight: 'HALT!' A knight forcefully gestures you to stop with its giant lance.\n\nKnight: 'Today is the day I must settle the score with the murderer of my beloved pet, Noodles. Until then, you may not pass.'";
     this->picture = ":/prefix1/eventPictures/joust.png";
 
     EventOption murderer = {"Murderer",

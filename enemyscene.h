@@ -37,6 +37,7 @@ private:
     void setupEnemy();
     void updateEnemyUI();
     void endTurn();
+
 };
 
 #endif // ENEMYSCENE_H

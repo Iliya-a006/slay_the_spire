@@ -4,6 +4,8 @@
 #include "Page.h"
 #include "mainwindow.h"
 #include "screensize.h"
+#include "topbar.h"
+#include "player.h"
 
 startMenu::startMenu(QWidget *parent)
     : QWidget(parent)
@@ -46,7 +48,6 @@ startMenu::startMenu(QWidget *parent)
     connect(backButton, &QPushButton::clicked, this, [](){
         MainWindow::changeStack((int)Page::MainMenu);
     });
-
 }
 
 startMenu::~startMenu()

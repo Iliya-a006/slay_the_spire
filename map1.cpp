@@ -19,6 +19,7 @@
 #include "screensize.h"
 #include "redx.h"
 #include "mainwindow.h"
+#include "topbar.h"
 
 Map1::Map1(QWidget *parent)
     : QWidget(parent)
@@ -72,6 +73,7 @@ Map1::Map1(QWidget *parent)
 
     loadMap();
     printMap();
+
 }
 
 int Map1::selectedIndex;

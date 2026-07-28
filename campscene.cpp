@@ -241,7 +241,7 @@ void CampScene::resetRoom()
     // relic coffee dripper : restButton->setDisabled(true);
     // relic Girya : recallButton->setDisabled(false);
 
-
+    this->updateBar();
 }
 
 void CampScene::restOption()

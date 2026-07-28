@@ -191,6 +191,8 @@ void ShopScene::resetRoom()
     showItems();
     shopView->hide();
     cardsView->hide();
+
+    this->updateBar();
 }
 
 void ShopScene::onVendorClicked()

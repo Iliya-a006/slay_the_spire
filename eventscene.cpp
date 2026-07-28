@@ -68,6 +68,8 @@ void EventScene::resetRoom()
     buttons.clear();
     leaveButton->hide();
     showEvent();
+
+    this->updateBar();
 }
 
 void EventScene::showEvent()
