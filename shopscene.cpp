@@ -39,12 +39,18 @@ ShopScene::ShopScene(QWidget *parent)
 
     shopScene = new QGraphicsScene(this);
     shopView  = new QGraphicsView(shopScene, this);
+    cardsScene = new QGraphicsScene(this);
+    cardsView = new QGraphicsView(cardsScene, this);
 
     shopScene->setBackgroundBrush(QColor(178, 235, 230));
     shopScene->setSceneRect(0, 0, 930, 570);
     shopView->setGeometry(ScreenSize::getWidth()/2 - 465, ScreenSize::getHeigth()/2 - 285, 930, 570);
     shopView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     shopView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    cardsScene->setBackgroundBrush(QColor(178, 235, 230));
+    cardsView->setGeometry(ScreenSize::getWidth()/2 - 402, ScreenSize::getHeigth()/2 - 250, 805, 500);
+    cardsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 
 
@@ -70,7 +76,15 @@ ShopScene::ShopScene(QWidget *parent)
     }
     )");
     connect(leaveButton, &QPushButton::clicked, this, [this](){
-        emit roomExited(true);
+        if (in_removal){
+            in_removal = false;
+            cardsView->hide();
+            shopView->show();
+            removeButton->hide();
+            buyButton->show();
+        }
+        else
+            emit roomExited(true);
     });
 
     buyButton = new QPushButton("Buy", this);
@@ -112,6 +126,47 @@ ShopScene::ShopScene(QWidget *parent)
         }
     });
 
+    removeButton = new QPushButton("Remove", this);
+    removeButton->setFixedSize(120, 40);
+    removeButton->move(shopView->x() + shopView->width() + 50, shopView->y() + 60);
+    removeButton->setStyleSheet(leaveButton->styleSheet());
+    connect(removeButton, &QPushButton::clicked, this, [this](){
+        if (m_selectedCard){
+            if (player::instance()->GETER_GOLD() < removalText->toPlainText().toInt()){
+                redLabel->show();
+                QTimer::singleShot(3000, this, [this](){
+                    redLabel->hide();
+                });
+                return;
+            }
+            player::instance()->changeGold(-removalText->toPlainText().toInt());
+            player::instance()->setRemovalUsed(player::instance()->getRemovalUsed()+1);
+            removalText->setPlainText(QString::number(50 + player::instance()->getRemovalUsed()*25));
+
+            player::instance()->GETER_DRAWPILE().removeAll(m_selectedCard);
+            player::instance()->GETER_DISCARDPILE().removeAll(m_selectedCard);
+            player::instance()->GETER_EXHAUSTPILE().removeAll(m_selectedCard);
+            player::instance()->GETER_HAND().removeAll(m_selectedCard);
+
+            disconnect(m_selectedCard, nullptr, this, nullptr);
+            cardsScene->removeItem(m_selectedCard);
+            allCards.removeAll(m_selectedCard);
+            delete m_selectedCard;
+            m_selectedCard = nullptr;
+
+            int count = 0, x, y;
+            for (auto card : allCards) {
+                x = (count % 4) * 180;
+                y = (count / 4) * 230;
+                card->Set_Position(x, y);
+                card->Set_Original_Position(x, y);
+                ++count;
+            }
+            cardsScene->setSceneRect(0, 0, cardsView->width(),
+                                     (allCards.size() / 4 + 1) * 230 + 35);
+        }
+    });
+
     redLabel = new QLabel("You have not enough gold!", this);
     redLabel->setFixedSize(500, 60);
     redLabel->move(ScreenSize::getWidth()/2 - redLabel->width()/2, 100);
@@ -129,10 +184,13 @@ void ShopScene::resetRoom()
 {
     buyButton->hide();
     redLabel->hide();
+    removeButton->hide();
     clicked = false;
+    in_removal = false;
     m_selectedCard = nullptr;
     showItems();
     shopView->hide();
+    cardsView->hide();
 }
 
 void ShopScene::onVendorClicked()
@@ -229,6 +287,20 @@ void ShopScene::onCardClicked(Card* card)
     card->setOpacity(0.6);
 }
 
+void ShopScene::onCardClickedForUpgrade(Card* card)
+{
+    if (m_selectedCard == card) {
+        return;
+    }
+
+    if (m_selectedCard) {
+        m_selectedCard->setOpacity(1.0);
+    }
+
+    m_selectedCard = card;
+    card->setOpacity(0.6);
+}
+
 int ShopScene::costCalculation(Card* card)
 {
     Card_Rarity r = card->GETER_RARITY();
@@ -256,7 +328,40 @@ int ShopScene::costCalculation(Card* card)
 
 void ShopScene::onRemovalClicked()
 {
+    if (player::instance()->GETER_GOLD() < removalText->toPlainText().toInt()){
+        redLabel->show();
+        QTimer::singleShot(3000, this, [this](){
+            redLabel->hide();
+        });
+        return;
+    }
+    shopView->hide();
+    buyButton->hide();
+    cardsView->show();
+    removeButton->show();
+    m_selectedCard->setOpacity(1.0);
+    m_selectedCard = nullptr;
+    in_removal = true;
 
+    clearCardsScene();
+    allCards += player::instance()->GETER_DRAWPILE();
+    allCards += player::instance()->GETER_DISCARDPILE();
+    allCards += player::instance()->GETER_EXHAUSTPILE();
+    allCards += player::instance()->GETER_HAND();
+
+    cardsScene->setSceneRect(0, 0, cardsView->width(), (allCards.size()/4 + 1)*230 + 35);
+    int count=0, x, y;
+    for (auto card : allCards){
+        x = (count%4 * 180);
+        y = (count/4 * 230);
+        card->Load_Card_Image();
+        card->Set_Position(x, y);
+        card->Set_Original_Position(x, y);
+        card->Set_Draggable(false);
+        cardsScene->addItem(card);
+        connect(card, &Card::Card_Clicked, this, &ShopScene::onCardClickedForUpgrade, Qt::UniqueConnection);
+        count++;
+    }
 }
 
 void ShopScene::deleteScene()
@@ -304,6 +409,17 @@ void ShopScene::deleteScene()
         delete removalCoinItem;
         removalCoinItem = nullptr;
     }
+}
+
+void ShopScene::clearCardsScene()
+{
+    for (auto* card : allCards) {
+        if (card) {
+            disconnect(card, nullptr, this, nullptr);
+            cardsScene->removeItem(card);
+        }
+    }
+    allCards.clear();
 }
 
 ShopScene::~ShopScene()

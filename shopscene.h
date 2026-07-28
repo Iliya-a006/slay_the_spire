@@ -47,30 +47,37 @@ public:
     void resetRoom() override;
 
 private:
-    Vendor* vendor;
+    Vendor* vendor = nullptr;
     bool clicked;
-    QGraphicsScene* shopScene;
-    QGraphicsView* shopView;
+    bool in_removal = false;
+    QGraphicsScene* shopScene = nullptr;
+    QGraphicsScene* cardsScene = nullptr;
+    QGraphicsView* shopView = nullptr;
+    QGraphicsView* cardsView = nullptr;
     QVector<Card*> availableCards;
-    Card* m_selectedCard;
-    CardRemoval* removal;
+    QVector<Card*> allCards;
+    Card* m_selectedCard = nullptr;
+    CardRemoval* removal = nullptr;
     QVector<QGraphicsTextItem*> cardsCost;
-    QGraphicsTextItem* removalText;
+    QGraphicsTextItem* removalText = nullptr;
     QVector<QGraphicsPixmapItem*> cardsCoinItems;
-    QGraphicsPixmapItem* removalCoinItem;
-    QGraphicsPixmapItem* removeItem;
-    QPushButton* leaveButton;
-    QPushButton* buyButton;
-    QLabel* redLabel;
+    QGraphicsPixmapItem* removalCoinItem = nullptr;
+    QGraphicsPixmapItem* removeItem = nullptr;
+    QPushButton* leaveButton = nullptr;
+    QPushButton* buyButton = nullptr;
+    QPushButton* removeButton = nullptr;
+    QLabel* redLabel = nullptr;
 
     void showItems();
     Card* pickRandomCard();
     int costCalculation(Card* card);
     void deleteScene();
+    void clearCardsScene();
 
 private slots:
     void onVendorClicked();
     void onCardClicked(Card* card);
+    void onCardClickedForUpgrade(Card* card);
     void onRemovalClicked();
 
 public:
