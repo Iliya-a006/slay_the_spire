@@ -206,7 +206,7 @@ void ShopScene::showItems()
     QGraphicsPixmapItem* coinItem = shopScene->addPixmap(coin);
     coinItem->setPos(removalText->x() + 40, removalText->y());
     coinItem->setScale(0.1);
-    //removalCoinItem = coinItem;
+    removalCoinItem = coinItem;
 }
 
 Card* ShopScene::pickRandomCard()
@@ -227,8 +227,6 @@ void ShopScene::onCardClicked(Card* card)
 
     m_selectedCard = card;
     card->setOpacity(0.6);
-
-    //upgradeButton->setDisabled(false);
 }
 
 int ShopScene::costCalculation(Card* card)
