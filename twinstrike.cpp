@@ -1,6 +1,7 @@
 #include "twinstrike.h"
-#include"player.h"
-#include"enemy.h"
+#include "player.h"
+#include "enemy.h"
+
 TwinStrike::TwinStrike(QGraphicsItem *parent) : Attack_Cards(parent) {
     ID = 2;
     name = "Twin Strike";
@@ -18,6 +19,7 @@ TwinStrike::TwinStrike(QGraphicsItem *parent) : Attack_Cards(parent) {
 TwinStrike::TwinStrike(const TwinStrike& other) : Attack_Cards(other) {}
 
 void TwinStrike::play(player* player, QList<Enemy*>& enemies) {
+    if (enemies.isEmpty()) return;
     int dmg = calculate_damage(player);
     for (int i = 0; i < 2; ++i) {
         applay_damage(player, enemies, dmg);

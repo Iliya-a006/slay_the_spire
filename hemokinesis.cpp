@@ -1,6 +1,7 @@
 #include "hemokinesis.h"
-#include"player.h"
+#include "player.h"
 #include "enemy.h"
+
 Hemokinesis::Hemokinesis(QGraphicsItem *parent) : Attack_Cards(parent) {
     ID = 4;
     name = "Hemokinesis";
@@ -18,6 +19,7 @@ Hemokinesis::Hemokinesis(QGraphicsItem *parent) : Attack_Cards(parent) {
 Hemokinesis::Hemokinesis(const Hemokinesis& other) : Attack_Cards(other) {}
 
 void Hemokinesis::play(player* player, QList<Enemy*>& enemies) {
+    if (enemies.isEmpty()) return;
     player->LOSE_HP(2);
     int dmg = calculate_damage(player);
     applay_damage(player, enemies, dmg);
