@@ -28,6 +28,12 @@ CombatScene::CombatScene(QWidget *parent)
     m_scene->setBackgroundBrush(Qt::transparent);
 
     m_playerAvatar = nullptr;
+    m_currentEnemy = nullptr;
+    m_enemyItem = nullptr;
+    m_enemyHPText = nullptr;
+    m_enemyIntentText = nullptr;
+    m_enemyHpBarBg = nullptr;
+    m_enemyHpBar = nullptr;
     m_hpBarBg = nullptr;
     m_hpBar = nullptr;
     m_hpText = nullptr;
@@ -38,6 +44,8 @@ CombatScene::CombatScene(QWidget *parent)
 CombatScene::~CombatScene()
 {
     clearCards();
+    deleteEnemy();
+
     if (m_playerAvatar) {
         m_scene->removeItem(m_playerAvatar);
         delete m_playerAvatar;
@@ -67,6 +75,25 @@ CombatScene::~CombatScene()
         delete m_endTurnButton;
         m_endTurnButton = nullptr;
     }
+    if (m_enemyHpBarBg) {
+        m_scene->removeItem(m_enemyHpBarBg);
+        delete m_enemyHpBarBg;
+        m_enemyHpBarBg = nullptr;
+    }
+    if (m_enemyHpBar) {
+        m_scene->removeItem(m_enemyHpBar);
+        delete m_enemyHpBar;
+        m_enemyHpBar = nullptr;
+    }
+}
+
+void CombatScene::setEnemy(Enemy* enemy)
+{
+    deleteEnemy();
+    m_currentEnemy = enemy;
+    if (enemy) {
+        connect(enemy, &Enemy::enemyDied, this, &CombatScene::onEnemyDied);
+    }
 }
 
 void CombatScene::setupCombat()
@@ -76,6 +103,7 @@ void CombatScene::setupCombat()
     setupHPBar();
     setupEnergyLabel();
     setupEndTurnButton();
+    setupEnemy();
     setupPlayerCards();
     updateUI();
 }
@@ -110,12 +138,23 @@ void CombatScene::setupPlayerAvatar()
         m_playerAvatar = nullptr;
     }
 
-    m_playerAvatar = new QGraphicsPixmapItem();
-    m_playerAvatar->setPixmap(p->pixmap());
-    m_playerAvatar->setScale(0.8);
+    const int ITEM_SIZE = 180;  // از 120 به 180 بزرگتر
+    const int MARGIN = 50;
 
-    int avatarX = 50;
-    int avatarY = (ScreenSize::getHeigth() / 2) - 130;
+    m_playerAvatar = new QGraphicsPixmapItem();
+
+    QPixmap avatarPixmap = p->pixmap();
+    if (!avatarPixmap.isNull()) {
+        QPixmap scaledPixmap = avatarPixmap.scaled(ITEM_SIZE, ITEM_SIZE,
+                                                   Qt::KeepAspectRatio,
+                                                   Qt::SmoothTransformation);
+        m_playerAvatar->setPixmap(scaledPixmap);
+    } else {
+        m_playerAvatar->setPixmap(avatarPixmap);
+    }
+
+    int avatarX = MARGIN;
+    int avatarY = (ScreenSize::getHeigth() / 2) - (ITEM_SIZE / 2);
     m_playerAvatar->setPos(avatarX, avatarY);
     m_scene->addItem(m_playerAvatar);
 }
@@ -125,25 +164,30 @@ void CombatScene::setupHPBar()
     player* p = player::instance();
     if (!p) return;
 
-    int avatarX = 50;
-    int avatarY = (ScreenSize::getHeigth() / 2) - 130;
-    int avatarHeight = 80;
+    const int ITEM_SIZE = 180;
+    const int MARGIN = 50;
 
+    int avatarX = MARGIN;
+    int avatarY = (ScreenSize::getHeigth() / 2) - (ITEM_SIZE / 2);
+
+    // ===== پس‌زمینه HP Bar =====
     m_hpBarBg = new QGraphicsRectItem();
-    m_hpBarBg->setRect(avatarX, avatarY + avatarHeight + 10, 100, 15);
+    m_hpBarBg->setRect(avatarX, avatarY + ITEM_SIZE + 10, 180, 20);
     m_hpBarBg->setBrush(Qt::black);
     m_hpBarBg->setPen(QPen(Qt::gray, 1));
     m_scene->addItem(m_hpBarBg);
 
+    // ===== خود HP Bar =====
     m_hpBar = new QGraphicsRectItem();
-    m_hpBar->setRect(avatarX + 2, avatarY + avatarHeight + 12, 96, 11);
+    m_hpBar->setRect(avatarX + 3, avatarY + ITEM_SIZE + 13, 174, 14);
     m_hpBar->setBrush(Qt::green);
     m_hpBar->setPen(Qt::NoPen);
     m_scene->addItem(m_hpBar);
 
+    // ===== متن HP =====
     m_hpText = new QGraphicsTextItem();
-    m_hpText->setPos(avatarX + 20, avatarY + avatarHeight + 8);
-    QFont font("Vazirmatn", 10, QFont::Bold);
+    m_hpText->setPos(avatarX + 40, avatarY + ITEM_SIZE + 8);
+    QFont font("Vazirmatn", 12, QFont::Bold);
     m_hpText->setFont(font);
     m_hpText->setDefaultTextColor(Qt::white);
     m_scene->addItem(m_hpText);
@@ -161,7 +205,7 @@ void CombatScene::updateHPBar()
     int maxHP = p->GETER_MAXHP();
 
     float percent = (float)currentHP / maxHP;
-    int barWidth = 96 * percent;
+    int barWidth = 174 * percent;
 
     QRectF rect = m_hpBar->rect();
     rect.setWidth(barWidth);
@@ -183,13 +227,15 @@ void CombatScene::setupEnergyLabel()
     player* p = player::instance();
     if (!p) return;
 
-    int avatarX = 50;
-    int avatarY = (ScreenSize::getHeigth() / 2) - 130;
-    int avatarHeight = 80;
+    const int ITEM_SIZE = 180;
+    const int MARGIN = 50;
+
+    int avatarX = MARGIN;
+    int avatarY = (ScreenSize::getHeigth() / 2) - (ITEM_SIZE / 2);
 
     m_energyText = new QGraphicsTextItem();
-    m_energyText->setPos(avatarX + 110, avatarY + avatarHeight + 8);
-    QFont font("Vazirmatn", 12, QFont::Bold);
+    m_energyText->setPos(avatarX + ITEM_SIZE + 15, avatarY + ITEM_SIZE + 8);
+    QFont font("Vazirmatn", 14, QFont::Bold);
     m_energyText->setFont(font);
     m_energyText->setDefaultTextColor(Qt::yellow);
     m_scene->addItem(m_energyText);
@@ -249,6 +295,191 @@ void CombatScene::endTurn()
     updateUI();
 }
 
+void CombatScene::setupEnemy()
+{
+    if (!m_currentEnemy) return;
+
+    clearEnemy();
+
+    const int ITEM_SIZE = 180;  // از 120 به 180 بزرگتر
+    const int MARGIN = 50;
+
+    int avatarX = MARGIN;
+    int avatarY = (ScreenSize::getHeigth() / 2) - (ITEM_SIZE / 2);
+
+    int enemyX = ScreenSize::getWidth() - MARGIN - ITEM_SIZE;
+    int enemyY = avatarY-30;
+
+    // ===== تصویر دشمن =====
+    m_enemyItem = new QGraphicsPixmapItem();
+
+    QPixmap enemyPixmap = m_currentEnemy->pixmap();
+    if (!enemyPixmap.isNull()) {
+        QPixmap scaledPixmap = enemyPixmap.scaled(ITEM_SIZE, ITEM_SIZE,
+                                                  Qt::KeepAspectRatio,
+                                                  Qt::SmoothTransformation);
+        m_enemyItem->setPixmap(scaledPixmap);
+    } else {
+        QPixmap fallback(ITEM_SIZE, ITEM_SIZE);
+        fallback.fill(QColor(200, 50, 50));
+        QPainter painter(&fallback);
+        painter.setPen(Qt::white);
+        painter.setFont(QFont("Arial", 12, QFont::Bold));
+        painter.drawText(fallback.rect(), Qt::AlignCenter,
+                         m_currentEnemy->getName());
+        m_enemyItem->setPixmap(fallback);
+    }
+
+    m_enemyItem->setPos(enemyX, enemyY);
+    m_scene->addItem(m_enemyItem);
+
+    // ===== HP Bar دشمن =====
+    // پس‌زمینه HP Bar
+    m_enemyHpBarBg = new QGraphicsRectItem();
+    m_enemyHpBarBg->setRect(enemyX, enemyY + ITEM_SIZE + 10, 180, 20);
+    m_enemyHpBarBg->setBrush(Qt::black);
+    m_enemyHpBarBg->setPen(QPen(Qt::gray, 1));
+    m_scene->addItem(m_enemyHpBarBg);
+
+    // خود HP Bar
+    m_enemyHpBar = new QGraphicsRectItem();
+    m_enemyHpBar->setRect(enemyX + 3, enemyY + ITEM_SIZE + 13, 174, 14);
+    m_enemyHpBar->setBrush(Qt::red);
+    m_enemyHpBar->setPen(Qt::NoPen);
+    m_scene->addItem(m_enemyHpBar);
+
+    // ===== متن HP دشمن =====
+    m_enemyHPText = new QGraphicsTextItem();
+    m_enemyHPText->setPos(enemyX + 40, enemyY + ITEM_SIZE + 8);
+    QFont font("Vazirmatn", 12, QFont::Bold);
+    m_enemyHPText->setFont(font);
+    m_enemyHPText->setDefaultTextColor(Qt::white);
+    m_scene->addItem(m_enemyHPText);
+
+    // ===== Intent دشمن =====
+    m_enemyIntentText = new QGraphicsTextItem();
+    QFont intentFont("Vazirmatn", 13, QFont::Bold);
+    m_enemyIntentText->setFont(intentFont);
+    m_enemyIntentText->setDefaultTextColor(Qt::yellow);
+    m_enemyIntentText->setPos(enemyX - 30, enemyY + ITEM_SIZE + 45);
+    m_scene->addItem(m_enemyIntentText);
+
+    disconnect(m_currentEnemy, &Enemy::intentChanged, this, nullptr);
+    disconnect(m_currentEnemy, &Enemy::hpChanged, this, nullptr);
+
+    connect(m_currentEnemy, &Enemy::intentChanged, this, [=](const Intent& intent) {
+        updateEnemyUI();
+    });
+    connect(m_currentEnemy, &Enemy::hpChanged, this, [=](int newHP, int maxHP) {
+        updateEnemyUI();
+    });
+
+    m_currentEnemy->getNextIntent();
+    updateEnemyUI();
+}
+
+void CombatScene::clearEnemy()
+{
+    if (m_enemyItem) {
+        m_scene->removeItem(m_enemyItem);
+        delete m_enemyItem;
+        m_enemyItem = nullptr;
+    }
+    if (m_enemyHPText) {
+        m_scene->removeItem(m_enemyHPText);
+        delete m_enemyHPText;
+        m_enemyHPText = nullptr;
+    }
+    if (m_enemyIntentText) {
+        m_scene->removeItem(m_enemyIntentText);
+        delete m_enemyIntentText;
+        m_enemyIntentText = nullptr;
+    }
+    if (m_enemyHpBarBg) {
+        m_scene->removeItem(m_enemyHpBarBg);
+        delete m_enemyHpBarBg;
+        m_enemyHpBarBg = nullptr;
+    }
+    if (m_enemyHpBar) {
+        m_scene->removeItem(m_enemyHpBar);
+        delete m_enemyHpBar;
+        m_enemyHpBar = nullptr;
+    }
+}
+
+void CombatScene::deleteEnemy()
+{
+    clearEnemy();
+    if (m_currentEnemy) {
+        delete m_currentEnemy;
+        m_currentEnemy = nullptr;
+    }
+}
+
+void CombatScene::updateEnemyUI()
+{
+    if (!m_currentEnemy) return;
+
+    int currentHP = m_currentEnemy->getHP();
+    int maxHP = m_currentEnemy->getMaxHP();
+
+    // ===== آپدیت متن HP =====
+    if (m_enemyHPText) {
+        m_enemyHPText->setPlainText(QString("%1/%2").arg(currentHP).arg(maxHP));
+    }
+
+    // ===== آپدیت HP Bar =====
+    if (m_enemyHpBar) {
+        float percent = (float)currentHP / maxHP;
+        int barWidth = 174 * percent;
+
+        QRectF rect = m_enemyHpBar->rect();
+        rect.setWidth(barWidth);
+        m_enemyHpBar->setRect(rect);
+
+        if (percent > 0.5) {
+            m_enemyHpBar->setBrush(Qt::green);
+        } else if (percent > 0.25) {
+            m_enemyHpBar->setBrush(Qt::yellow);
+        } else {
+            m_enemyHpBar->setBrush(Qt::red);
+        }
+    }
+
+    // ===== آپدیت Intent =====
+    if (m_enemyIntentText) {
+        Intent intent = m_currentEnemy->getCurrentIntent();
+        QString intentText;
+        switch (intent.type) {
+        case Intent::ATTACK: intentText = "⚔️ Attack: " + QString::number(intent.value); break;
+        case Intent::DEFEND: intentText = "🛡️ Defend: " + QString::number(intent.value); break;
+        case Intent::BUFF:   intentText = "✨ Buff"; break;
+        case Intent::DEBUFF: intentText = "💀 Debuff"; break;
+        case Intent::MIXED:  intentText = "⚡ Mixed"; break;
+        default: intentText = "❓ Unknown";
+        }
+        m_enemyIntentText->setPlainText(intentText);
+    }
+}
+
+void CombatScene::onEnemyDied(Enemy* enemy)
+{
+    if (m_currentEnemy == enemy) {
+        if (m_enemyHPText) {
+            m_enemyHPText->setPlainText("💀");
+        }
+        if (m_enemyHpBar) {
+            m_enemyHpBar->setRect(m_enemyHpBar->rect().x(),
+                                  m_enemyHpBar->rect().y(),
+                                  0,
+                                  m_enemyHpBar->rect().height());
+        }
+        if (m_enemyIntentText) {
+            m_enemyIntentText->setPlainText("💀 Defeated!");
+        }
+    }
+}
+
 void CombatScene::setupPlayerCards()
 {
     player* p = player::instance();
@@ -279,7 +510,7 @@ void CombatScene::setupPlayerCards()
         card->setFlag(QGraphicsItem::ItemIsMovable, true);
 
         connect(card, &Card::Card_Dropped_On_Enemy, this, [=](Card* c, Enemy* e) {
-            if (c->canPlay(p)) {
+            if (c->canPlay(p) && m_currentEnemy == e) {
                 int cost = c->getCurrentCost(p);
                 if (p->GETER_ENERGY() >= cost) {
                     if (c->GETER_TYPE() == ATTACK) {
@@ -301,8 +532,11 @@ void CombatScene::setupPlayerCards()
             if (c->canPlay(p) && (c->GETER_TYPE() == SKILL || c->GETER_TYPE() == POWER)) {
                 int cost = c->getCurrentCost(p);
                 if (p->GETER_ENERGY() >= cost) {
-                    QList<Enemy*> empty;
-                    c->play(p, empty);
+                    QList<Enemy*> enemies;
+                    if (m_currentEnemy) {
+                        enemies.append(m_currentEnemy);
+                    }
+                    c->play(p, enemies);
                     p->SPEND_ENERGY(cost);
                     p->REMOVE_FROM_HAND(c);
                     updateUI();
@@ -328,11 +562,19 @@ void CombatScene::updateUI()
 {
     player* p = player::instance();
     if (p && m_playerAvatar) {
-        m_playerAvatar->setPixmap(p->pixmap());
+        QPixmap avatarPixmap = p->pixmap();
+        if (!avatarPixmap.isNull()) {
+            const int ITEM_SIZE = 180;
+            QPixmap scaledPixmap = avatarPixmap.scaled(ITEM_SIZE, ITEM_SIZE,
+                                                       Qt::KeepAspectRatio,
+                                                       Qt::SmoothTransformation);
+            m_playerAvatar->setPixmap(scaledPixmap);
+        }
     }
 
     updateHPBar();
     updateEnergyLabel();
+    updateEnemyUI();
     clearCards();
     setupPlayerCards();
 }

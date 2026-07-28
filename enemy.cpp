@@ -18,7 +18,8 @@ Enemy::Enemy(const Enemy& other)
     maxHP(other.maxHP),
     currentHP(other.currentHP),
     block(other.block),
-    buffManager(other.buffManager)
+    buffManager(other.buffManager),
+    m_imagePath(other.m_imagePath)
 {
     setAcceptHoverEvents(true);
     setScale(0.8);
@@ -51,7 +52,6 @@ void Enemy::heal(int amount) {
 
 void Enemy::startTurn() {
     buffManager.decreaseTurns();
-
     buffManager.applyMetallicizeAtEndOfTurn(block);
     emit blockChanged(block);
 }
@@ -61,15 +61,28 @@ void Enemy::endTurn() {
     emit blockChanged(block);
 }
 
-void Enemy::loadImage(const QString& path) {
-    QPixmap pixmap(path);
+void Enemy::loadImage() {
+    if (m_imagePath.isEmpty()) {
+        loadFallbackImage();
+        return;
+    }
+
+    QPixmap pixmap(m_imagePath);
     if (!pixmap.isNull()) {
         setPixmap(pixmap);
         setScale(0.8);
+    } else {
+        loadFallbackImage();
     }
 }
 
-QString Enemy::getDefaultImagePath() const {
-    QString formattedName = name.toLower().replace(" ", "_");
-    return QString(":/enemies/%1.jpg").arg(formattedName);
+void Enemy::loadFallbackImage() {
+    QPixmap fallback(100, 100);
+    fallback.fill(QColor(200, 50, 50));
+    QPainter painter(&fallback);
+    painter.setPen(Qt::white);
+    painter.setFont(QFont("Arial", 12, QFont::Bold));
+    painter.drawText(fallback.rect(), Qt::AlignCenter, name);
+    setPixmap(fallback);
+    setScale(0.8);
 }

@@ -36,6 +36,7 @@ public:
     int getMaxHP() const { return maxHP; }
     int getBlock() const { return block; }
     void setBlock(int amount) { block = qMax(0, amount); }
+    Intent getCurrentIntent() const { return currentIntent; }
 
     virtual void takeDamage(int amount);
     virtual void gainBlock(int amount);
@@ -56,8 +57,9 @@ public:
     virtual void startTurn();
     virtual void endTurn();
 
-    virtual void loadImage(const QString& path);
-    virtual QString getDefaultImagePath() const;
+    virtual QString getImagePath() const = 0;
+    virtual void loadImage();
+    void setImagePath(const QString& path) { m_imagePath = path; }
 
 signals:
     void hpChanged(int newHP, int maxHP);
@@ -72,6 +74,8 @@ protected:
     int block;
     BuffDebuffManager buffManager;
     Intent currentIntent;
+    QString m_imagePath;
+    void loadFallbackImage();
 };
 
 #endif // ENEMY_H
