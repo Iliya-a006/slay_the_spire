@@ -258,9 +258,23 @@ void player::readFromStream(QDataStream &in)
 
 bool player::appendPlayer(QString name, QString pass)
 {
+    QFile file("players.bin");
+    if (file.open(QIODevice::ReadOnly)) {
+        QDataStream in(&file);
+        in.setVersion(QDataStream::Qt_6_5);
+        player p;
+        while (!in.atEnd()) {
+            p.readFromStream(in);
+            if (p.username == name) {
+                file.close();
+                return false;
+            }
+        }
+        file.close();
+    }
+
     instance()->username = name;
     instance()->password = pass;
-    QFile file("players.bin");
     if (!file.open(QIODevice::Append))
         return false;
     QDataStream out(&file);

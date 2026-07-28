@@ -417,7 +417,12 @@ void Map1::saveMap()
 void Map1::onRoomExited(bool result)
 {
     if (result){
-        // end Act and end game check
+        if (!accessibleRooms[0]->nextRooms.size()){
+            nextAct();
+            return;
+        }
+
+
         route.push_back(selectedIndex);
         RedX* redx = new RedX();
         redx->setPos(floors[player::instance()->getFloor()][selectedIndex]->x, floors[player::instance()->getFloor()][selectedIndex]->y);
@@ -437,15 +442,12 @@ void Map1::onRoomExited(bool result)
         MainWindow::changeStack((int)Page::Map1);
     }
     else{
+        player::instance()->setFloor(0);
         m_scene->clear();
+        setupBackground();
+        accessibleRooms.clear();
         mapCoder();
         route.clear();
-        for (auto &floor : floors) {
-            for (Room *room : floor) {
-                delete room;
-            }
-            floor.clear();
-        }
         floors.clear();
         floors.resize(11);
         for (int i=0; i<11; ++i)
@@ -453,11 +455,38 @@ void Map1::onRoomExited(bool result)
         saveMap();
         printMap();
 
-        player::instance()->setFloor(0);
         MainWindow::changeStack((int)Page::MainMenu);
     }
 }
 
+void Map1::nextAct()
+{
+    player::instance()->plusAct();
+    player::instance()->setFloor(0);
+    mapCoder();
+    route.clear();
+    m_scene->clear();
+    setupBackground();
+    accessibleRooms.clear();
+    floors.clear();
+    floors.resize(11);
+    for (int i=0; i<11; ++i)
+        floors[i].resize(floorsCode[i].size());
+    saveMap();
+    printMap();
+    MainWindow::changeStack((int)Page::Map1);
+}
+
+void Map1::setupBackground()
+{
+    QSize s = ScreenSize::getSize();
+    s.setHeight(ScreenSize::getHeigth() * 2);
+    QPixmap bg(":/prefix1/images/paperBg3.png");
+    QPixmap scaledBg = bg.scaled(s, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    QGraphicsPixmapItem *bgItem = m_scene->addPixmap(scaledBg);
+    bgItem->setZValue(-100);
+    bgItem->setPos(0, 0);
+}
 
 
 Map1::~Map1()
