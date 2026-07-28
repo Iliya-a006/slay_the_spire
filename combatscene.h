@@ -63,6 +63,8 @@ protected:
 
     void resizeEvent(QResizeEvent* event) override;
 
+    virtual void resetRoom();
+
 private slots:
     void onEndTurnClicked();
     void onEnemyDied(Enemy* enemy);

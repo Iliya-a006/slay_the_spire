@@ -41,6 +41,11 @@ CombatScene::CombatScene(QWidget *parent)
     m_endTurnButton = nullptr;
 }
 
+void CombatScene::resetRoom()
+{
+
+}
+
 CombatScene::~CombatScene()
 {
     clearCards();

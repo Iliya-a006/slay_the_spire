@@ -14,6 +14,8 @@ public:
     void setupCombat() override;
     void updateUI() override;
 
+    void resetRoom() override;
+
 protected:
     void resizeEvent(QResizeEvent* event) override;
 
