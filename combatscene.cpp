@@ -138,7 +138,7 @@ void CombatScene::setupPlayerAvatar()
         m_playerAvatar = nullptr;
     }
 
-    const int ITEM_SIZE = 180;  // از 120 به 180 بزرگتر
+    const int ITEM_SIZE = 180;
     const int MARGIN = 50;
 
     m_playerAvatar = new QGraphicsPixmapItem();
@@ -170,21 +170,21 @@ void CombatScene::setupHPBar()
     int avatarX = MARGIN;
     int avatarY = (ScreenSize::getHeigth() / 2) - (ITEM_SIZE / 2);
 
-    // ===== پس‌زمینه HP Bar =====
+
     m_hpBarBg = new QGraphicsRectItem();
     m_hpBarBg->setRect(avatarX, avatarY + ITEM_SIZE + 10, 180, 20);
     m_hpBarBg->setBrush(Qt::black);
     m_hpBarBg->setPen(QPen(Qt::gray, 1));
     m_scene->addItem(m_hpBarBg);
 
-    // ===== خود HP Bar =====
+
     m_hpBar = new QGraphicsRectItem();
     m_hpBar->setRect(avatarX + 3, avatarY + ITEM_SIZE + 13, 174, 14);
     m_hpBar->setBrush(Qt::green);
     m_hpBar->setPen(Qt::NoPen);
     m_scene->addItem(m_hpBar);
 
-    // ===== متن HP =====
+
     m_hpText = new QGraphicsTextItem();
     m_hpText->setPos(avatarX + 40, avatarY + ITEM_SIZE + 8);
     QFont font("Vazirmatn", 12, QFont::Bold);
@@ -301,7 +301,7 @@ void CombatScene::setupEnemy()
 
     clearEnemy();
 
-    const int ITEM_SIZE = 180;  // از 120 به 180 بزرگتر
+    const int ITEM_SIZE = 180;
     const int MARGIN = 50;
 
     int avatarX = MARGIN;
@@ -310,7 +310,6 @@ void CombatScene::setupEnemy()
     int enemyX = ScreenSize::getWidth() - MARGIN - ITEM_SIZE;
     int enemyY = avatarY-30;
 
-    // ===== تصویر دشمن =====
     m_enemyItem = new QGraphicsPixmapItem();
 
     QPixmap enemyPixmap = m_currentEnemy->pixmap();
@@ -333,22 +332,21 @@ void CombatScene::setupEnemy()
     m_enemyItem->setPos(enemyX, enemyY);
     m_scene->addItem(m_enemyItem);
 
-    // ===== HP Bar دشمن =====
-    // پس‌زمینه HP Bar
+
     m_enemyHpBarBg = new QGraphicsRectItem();
     m_enemyHpBarBg->setRect(enemyX, enemyY + ITEM_SIZE + 10, 180, 20);
     m_enemyHpBarBg->setBrush(Qt::black);
     m_enemyHpBarBg->setPen(QPen(Qt::gray, 1));
     m_scene->addItem(m_enemyHpBarBg);
 
-    // خود HP Bar
+
     m_enemyHpBar = new QGraphicsRectItem();
     m_enemyHpBar->setRect(enemyX + 3, enemyY + ITEM_SIZE + 13, 174, 14);
     m_enemyHpBar->setBrush(Qt::red);
     m_enemyHpBar->setPen(Qt::NoPen);
     m_scene->addItem(m_enemyHpBar);
 
-    // ===== متن HP دشمن =====
+
     m_enemyHPText = new QGraphicsTextItem();
     m_enemyHPText->setPos(enemyX + 40, enemyY + ITEM_SIZE + 8);
     QFont font("Vazirmatn", 12, QFont::Bold);
@@ -356,7 +354,7 @@ void CombatScene::setupEnemy()
     m_enemyHPText->setDefaultTextColor(Qt::white);
     m_scene->addItem(m_enemyHPText);
 
-    // ===== Intent دشمن =====
+
     m_enemyIntentText = new QGraphicsTextItem();
     QFont intentFont("Vazirmatn", 13, QFont::Bold);
     m_enemyIntentText->setFont(intentFont);
@@ -423,12 +421,12 @@ void CombatScene::updateEnemyUI()
     int currentHP = m_currentEnemy->getHP();
     int maxHP = m_currentEnemy->getMaxHP();
 
-    // ===== آپدیت متن HP =====
+
     if (m_enemyHPText) {
         m_enemyHPText->setPlainText(QString("%1/%2").arg(currentHP).arg(maxHP));
     }
 
-    // ===== آپدیت HP Bar =====
+
     if (m_enemyHpBar) {
         float percent = (float)currentHP / maxHP;
         int barWidth = 174 * percent;
@@ -446,7 +444,7 @@ void CombatScene::updateEnemyUI()
         }
     }
 
-    // ===== آپدیت Intent =====
+
     if (m_enemyIntentText) {
         Intent intent = m_currentEnemy->getCurrentIntent();
         QString intentText;
