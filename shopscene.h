@@ -34,6 +34,7 @@
 #include "warcry.h"
 #include "whirlwind.h"
 #include <QWidget>
+#include <qpushbutton.h>
 
 class ShopScene : public RoomScene
 {
@@ -46,18 +47,21 @@ public:
     void resetRoom() override;
 
 private:
-    Card* m_selectedCard;
     Vendor* vendor;
     bool clicked;
     QGraphicsScene* shopScene;
     QGraphicsView* shopView;
     QVector<Card*> availableCards;
+    Card* m_selectedCard;
     CardRemoval* removal;
     QVector<QGraphicsTextItem*> cardsCost;
     QGraphicsTextItem* removalText;
     QVector<QGraphicsPixmapItem*> cardsCoinItems;
     QGraphicsPixmapItem* removalCoinItem;
     QGraphicsPixmapItem* removeItem;
+    QPushButton* leaveButton;
+    QPushButton* buyButton;
+    QLabel* redLabel;
 
     void showItems();
     Card* pickRandomCard();

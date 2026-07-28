@@ -4,6 +4,7 @@
 #include "screensize.h"
 #include "vendor.h"
 #include <QRandomGenerator>
+#include <qtimer.h>
 #include "player.h"
 
 ShopScene::ShopScene(QWidget *parent)
@@ -36,7 +37,6 @@ ShopScene::ShopScene(QWidget *parent)
     connect(vendor, &Vendor::VendorClicked, this, &ShopScene::onVendorClicked);
 
 
-
     shopScene = new QGraphicsScene(this);
     shopView  = new QGraphicsView(shopScene, this);
 
@@ -46,10 +46,89 @@ ShopScene::ShopScene(QWidget *parent)
     shopView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     shopView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+
+
+    leaveButton = new QPushButton("Leave", this);
+    leaveButton->setFixedSize(100, 40);
+    leaveButton->move(shopView->x() + shopView->width() + 50, shopView->y());
+    leaveButton->setStyleSheet(R"(
+    QPushButton {
+        background-color: rgba(40, 20, 15, 180);
+        border: 2px solid #c97a3d;
+        border-radius: 8px;
+        color: #f0d78c;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px;
+    }
+    QPushButton:hover {
+        background-color: rgba(201, 122, 61, 220);
+        color: white;
+    }
+    QPushButton:pressed {
+        background-color: rgba(150, 90, 40, 255);
+    }
+    )");
+    connect(leaveButton, &QPushButton::clicked, this, [this](){
+        emit roomExited(true);
+    });
+
+    buyButton = new QPushButton("Buy", this);
+    buyButton->setFixedSize(60, 50);
+    buyButton->move(shopView->x() + shopView->width() + 50, shopView->y() + 60);
+    buyButton->setStyleSheet(leaveButton->styleSheet());
+    connect(buyButton, &QPushButton::clicked, this, [this](){
+        if (m_selectedCard){
+            int i, cost;
+            for (i=0; i < availableCards.size(); ++i){
+                if (availableCards[i] == m_selectedCard){
+                    break;
+                }
+            }
+            if (i == availableCards.size()) {return;}
+            cost = cardsCost[i]->toPlainText().toInt();
+            if (player::instance()->GETER_GOLD() >= cost){
+                disconnect(availableCards[i], nullptr, this, nullptr);
+                m_selectedCard->setOpacity(1.0);
+                m_selectedCard = nullptr;
+
+                shopScene->removeItem(availableCards[i]);
+                shopScene->removeItem(cardsCost[i]);
+                shopScene->removeItem(cardsCoinItems[i]);
+                player::instance()->changeGold(-cost);
+                player::instance()->ADD_TO_DRAWPILE(availableCards[i]);
+                delete cardsCost[i];
+                delete cardsCoinItems[i];
+                availableCards.remove(i);
+                cardsCost.remove(i);
+                cardsCoinItems.remove(i);
+            }
+            else{
+                redLabel->show();
+                QTimer::singleShot(3000, this, [this](){
+                    redLabel->hide();
+                });
+            }
+        }
+    });
+
+    redLabel = new QLabel("You have not enough gold!", this);
+    redLabel->setFixedSize(500, 60);
+    redLabel->move(ScreenSize::getWidth()/2 - redLabel->width()/2, 100);
+    redLabel->setStyleSheet("background-color: #F8D7DA;"
+                            "color: #721C24;"
+                            "font-size: 24px;"
+                            "font-weight: bold;"
+                            "font-family: 'Segoe Print';"
+                            "border-radius: 6px;"
+                            "padding: 5px;"
+                            "border: 1px solid #F5C2C7;");
 }
 
 void ShopScene::resetRoom()
 {
+    buyButton->hide();
+    redLabel->hide();
     clicked = false;
     m_selectedCard = nullptr;
     showItems();
@@ -62,6 +141,7 @@ void ShopScene::onVendorClicked()
         return;
     clicked = true;
     shopView->show();
+    buyButton->show();
 }
 
 void ShopScene::showItems()
