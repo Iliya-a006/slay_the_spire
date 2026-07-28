@@ -4,6 +4,7 @@
 #include <qgraphicsview.h>
 #include "player.h"
 #include "screensize.h"
+#include "topbar.h"
 
 
 CampScene::CampScene(QWidget *parent)
@@ -248,6 +249,7 @@ void CampScene::restOption()
 {
     int heal = player::instance()->GETER_MAXHP()/5;
     player::instance()->INCREASE_HP(heal);
+    TopBar::instance()->setHP(player::instance()->GETER_HP(), player::instance()->GETER_MAXHP());
 
     showLeavePage("Your HP increased by " + QString::number(heal) + "!");
 }

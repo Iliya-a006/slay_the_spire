@@ -1,5 +1,6 @@
 #include "goldenidolevent.h"
 #include "player.h"
+#include "topbar.h"
 
 GoldenIdolEvent::GoldenIdolEvent()
 {
@@ -12,6 +13,7 @@ GoldenIdolEvent::GoldenIdolEvent()
                          [](){
                              // recieve relic Golden Idol
                              player::instance()->SET_MAXHP(player::instance()->GETER_MAXHP() - 5);
+                             TopBar::instance()->setHP(player::instance()->GETER_HP(), player::instance()->GETER_MAXHP());
                          }};
     this->addOption(steal);
 

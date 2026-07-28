@@ -1,6 +1,7 @@
 #include "joustevent.h"
 #include <QRandomGenerator>
 #include "player.h"
+#include "topbar.h"
 
 JoustEvent::JoustEvent()
 {
@@ -15,6 +16,7 @@ JoustEvent::JoustEvent()
                                 int chance = QRandomGenerator::global()->bounded(10);
                                 if (chance < 7)
                                     player::instance()->changeGold(100);
+                                TopBar::instance()->setGold(player::instance()->GETER_GOLD());
                             }};
     this->addOption(murderer);
 
@@ -25,6 +27,7 @@ JoustEvent::JoustEvent()
                              int chance = QRandomGenerator::global()->bounded(10);
                              if (chance < 3)
                                  player::instance()->changeGold(250);
+                             TopBar::instance()->setGold(player::instance()->GETER_GOLD());
                          }};
     this->addOption(owner);
 }
