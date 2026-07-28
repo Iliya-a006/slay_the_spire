@@ -121,6 +121,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         normalenemies.qrc
         cultist.h cultist.cpp
         normalenemy.h normalenemy.cpp
+        vendor.h vendor.cpp
+        cardremoval.h cardremoval.cpp
 
 
 

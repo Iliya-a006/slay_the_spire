@@ -25,6 +25,7 @@
         <file>images/LargeChest.png</file>
         <file>images/coin.png</file>
         <file>images/gold.png</file>
+        <file>images/card_removal_service.png</file>
     </qresource>
     <qresource prefix="/characters">
         <file>images/vendor.png</file>

@@ -36,10 +36,12 @@ private:
     QVector<QVector<int>> floorsCode;
     QVector<int> route;
     QVector<Room*> accessibleRooms;
+    void setupBackground();
     void mapCoder();
     void loadMap();
     void printMap();
     void roadCreator();
+    void nextAct();
     int roomHeigth(int floor);
     int roomWidth(int type);
     Room* roomCreator(int roomType, int roomIndex);

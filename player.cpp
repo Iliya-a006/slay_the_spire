@@ -33,6 +33,7 @@
 #include <algorithm>
 #include <random>
 #include <QPainter>
+
 player::player(QGraphicsItem *parent)
     : QObject(nullptr),
     QGraphicsPixmapItem(parent)
@@ -44,6 +45,7 @@ player::player(QGraphicsItem *parent)
     HP = maxHP;
     energy = 3;
     mapID = -1;
+    removalUsed = 0;
     block = 0;
     strength = 0;
     dexterity = 0;
@@ -71,6 +73,7 @@ player::player(const player& other)
     HP = other.HP;
     energy = other.energy;
     mapID = other.mapID;
+    removalUsed = other.removalUsed;
     block = other.block;
     strength = other.strength;
     dexterity = other.dexterity;
@@ -108,6 +111,7 @@ player& player::operator=(const player& other)
     HP = other.HP;
     energy = other.energy;
     mapID = other.mapID;
+    removalUsed = other.removalUsed;
     block = other.block;
     strength = other.strength;
     dexterity = other.dexterity;
@@ -244,13 +248,13 @@ void player::RESETCOMBATSTATS() {
 
 void player::writeToStream(QDataStream &out) const
 {
-    out << username << password << gold << Act << floor << maxHP << HP << mapID;
+    out << username << password << gold << Act << floor << maxHP << HP << mapID << removalUsed;
     out << potions << relics;
 }
 
 void player::readFromStream(QDataStream &in)
 {
-    in >> username >> password >> gold >> Act >> floor >> maxHP >> HP >> mapID;
+    in >> username >> password >> gold >> Act >> floor >> maxHP >> HP >> mapID >> removalUsed;
     in >> potions >> relics;
     HP=maxHP;
     emit hpChanged(HP,maxHP);
@@ -258,9 +262,23 @@ void player::readFromStream(QDataStream &in)
 
 bool player::appendPlayer(QString name, QString pass)
 {
+    QFile file("players.bin");
+    if (file.open(QIODevice::ReadOnly)) {
+        QDataStream in(&file);
+        in.setVersion(QDataStream::Qt_6_5);
+        player p;
+        while (!in.atEnd()) {
+            p.readFromStream(in);
+            if (p.username == name) {
+                file.close();
+                return false;
+            }
+        }
+        file.close();
+    }
+
     instance()->username = name;
     instance()->password = pass;
-    QFile file("players.bin");
     if (!file.open(QIODevice::Append))
         return false;
     QDataStream out(&file);
