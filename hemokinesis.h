@@ -2,6 +2,7 @@
 #define HEMOKINESIS_H
 
 #include "attack_cards.h"
+
 class Hemokinesis : public Attack_Cards
 {
 public:

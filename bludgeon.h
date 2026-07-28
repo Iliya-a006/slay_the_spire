@@ -3,7 +3,6 @@
 
 #include "attack_cards.h"
 
-
 class Bludgeon : public Attack_Cards
 {
 public:

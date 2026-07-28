@@ -1,6 +1,7 @@
 #include "bloodforblood.h"
-#include"player.h"
+#include "player.h"
 #include "enemy.h"
+
 BloodForBlood::BloodForBlood(QGraphicsItem *parent) : Attack_Cards(parent) {
     ID = 3;
     name = "Blood for Blood";
@@ -17,12 +18,13 @@ BloodForBlood::BloodForBlood(QGraphicsItem *parent) : Attack_Cards(parent) {
 
 BloodForBlood::BloodForBlood(const BloodForBlood& other) : Attack_Cards(other) {}
 
-int BloodForBlood::getCurrentCost( player* player) const {
+int BloodForBlood::getCurrentCost(player* player) const {
     int reduction = player->GETER_UNBLOCKEDDAMAGETAKEN();
     return qMax(1, energy_cost - reduction);
 }
 
 void BloodForBlood::play(player* player, QList<Enemy*>& enemies) {
+    if (enemies.isEmpty()) return;
     int dmg = calculate_damage(player);
     applay_damage(player, enemies, dmg);
 }

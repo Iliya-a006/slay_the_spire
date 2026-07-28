@@ -3,7 +3,6 @@
 
 #include "attack_cards.h"
 
-
 class Carnage : public Attack_Cards
 {
 public:

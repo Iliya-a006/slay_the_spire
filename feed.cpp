@@ -1,6 +1,7 @@
 #include "feed.h"
 #include "player.h"
-#include"enemy.h"
+#include "enemy.h"
+
 Feed::Feed(QGraphicsItem *parent) : Attack_Cards(parent) {
     ID = 10;
     name = "Feed";
@@ -32,8 +33,7 @@ Card* Feed::upgrade() {
     Feed* upgraded = new Feed(*this);
     upgraded->damage += 4;
     upgraded->is_Upgrade = true;
-    upgraded->description = "Deal " + QString::number(upgraded->damage) +
-                            " damage.\nIf Fatal, raise your Max HP by 4.\nExhaust.";
+    upgraded->description = "Deal " + QString::number(upgraded->damage) + " damage.\nIf Fatal, raise your Max HP by 4.\nExhaust.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

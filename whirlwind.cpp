@@ -1,6 +1,7 @@
 #include "whirlwind.h"
-#include"player.h"
-#include"enemy.h"
+#include "player.h"
+#include "enemy.h"
+
 Whirlwind::Whirlwind(QGraphicsItem *parent) : Attack_Cards(parent) {
     ID = 6;
     name = "Whirlwind";
@@ -22,6 +23,7 @@ int Whirlwind::getCurrentCost(player* player) const {
 }
 
 void Whirlwind::play(player* player, QList<Enemy*>& enemies) {
+    if (enemies.isEmpty()) return;
     int energyUsed = player->GETER_SETER_ENERGY();
     player->SPEND_ENERGY(energyUsed);
     int dmg = calculate_damage(player);
@@ -36,8 +38,7 @@ Card* Whirlwind::upgrade() {
     Whirlwind* upgraded = new Whirlwind(*this);
     upgraded->damage += 3;
     upgraded->is_Upgrade = true;
-    upgraded->description = "Deal " + QString::number(upgraded->damage) +
-                            " damage to ALL enemies X times.";
+    upgraded->description = "Deal " + QString::number(upgraded->damage) + " damage to ALL enemies X times.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

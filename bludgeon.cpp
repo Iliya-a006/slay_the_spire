@@ -1,6 +1,7 @@
 #include "bludgeon.h"
-#include"player.h"
+#include "player.h"
 #include "enemy.h"
+
 Bludgeon::Bludgeon(QGraphicsItem *parent) : Attack_Cards(parent) {
     ID = 7;
     name = "Bludgeon";
@@ -18,6 +19,7 @@ Bludgeon::Bludgeon(QGraphicsItem *parent) : Attack_Cards(parent) {
 Bludgeon::Bludgeon(const Bludgeon& other) : Attack_Cards(other) {}
 
 void Bludgeon::play(player* player, QList<Enemy*>& enemies) {
+    if (enemies.isEmpty()) return;
     int dmg = calculate_damage(player);
     applay_damage(player, enemies, dmg);
 }

@@ -440,10 +440,11 @@ void Card::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
         m_isDragged = false;
         setCursor(Qt::ArrowCursor);
 
-        QGraphicsItem* droppedOn = scene()->itemAt(event->scenePos(), QTransform());
+        QPointF scenePos = event->scenePos();
+        QList<QGraphicsItem*> items = scene()->items(scenePos);
 
-        if (droppedOn) {
-            Enemy* targetEnemy = dynamic_cast<Enemy*>(droppedOn);
+        for (QGraphicsItem* item : items) {
+            Enemy* targetEnemy = dynamic_cast<Enemy*>(item);
             if (targetEnemy) {
                 emit Card_Dropped_On_Enemy(this, targetEnemy);
                 event->accept();
@@ -451,7 +452,28 @@ void Card::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
                 return;
             }
 
-            player* targetPlayer = dynamic_cast<player*>(droppedOn);
+            if (item->parentItem()) {
+                Enemy* parentEnemy = dynamic_cast<Enemy*>(item->parentItem());
+                if (parentEnemy) {
+                    emit Card_Dropped_On_Enemy(this, parentEnemy);
+                    event->accept();
+                    QGraphicsItemGroup::mouseReleaseEvent(event);
+                    return;
+                }
+            }
+
+            QVariant data = item->data(0);
+            if (data.isValid()) {
+                Enemy* enemy = data.value<Enemy*>();
+                if (enemy) {
+                    emit Card_Dropped_On_Enemy(this, enemy);
+                    event->accept();
+                    QGraphicsItemGroup::mouseReleaseEvent(event);
+                    return;
+                }
+            }
+
+            player* targetPlayer = dynamic_cast<player*>(item);
             if (targetPlayer) {
                 emit Card_Dropped_On_Player(this);
                 event->accept();

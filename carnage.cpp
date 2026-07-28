@@ -1,6 +1,7 @@
 #include "carnage.h"
 #include "player.h"
-#include"enemy.h"
+#include "enemy.h"
+
 Carnage::Carnage(QGraphicsItem *parent) : Attack_Cards(parent) {
     ID = 5;
     name = "Carnage";
@@ -18,6 +19,7 @@ Carnage::Carnage(QGraphicsItem *parent) : Attack_Cards(parent) {
 Carnage::Carnage(const Carnage& other) : Attack_Cards(other) {}
 
 void Carnage::play(player* player, QList<Enemy*>& enemies) {
+    if (enemies.isEmpty()) return;
     int dmg = calculate_damage(player);
     applay_damage(player, enemies, dmg);
 }

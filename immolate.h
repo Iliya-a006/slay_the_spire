@@ -2,7 +2,7 @@
 #define IMMOLATE_H
 
 #include "attack_cards.h"
-class Burn;
+
 class Immolate : public Attack_Cards
 {
 public:

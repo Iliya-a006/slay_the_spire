@@ -7,8 +7,7 @@ Immolate::Immolate(QGraphicsItem *parent) : Attack_Cards(parent) {
     energy_cost = 2;
     rarity = RARE;
     damage = 21;
-    description = "Deal " + QString::number(damage) +
-                  " damage to ALL enemies.\nAdd a *Burn into your discard pile.";
+    description = "Deal " + QString::number(damage) + " damage to ALL enemies.\nAdd a *Burn into your discard pile.";
     is_Exhaust = true;
     is_Ethereal = false;
     is_Retain = false;
@@ -16,9 +15,11 @@ Immolate::Immolate(QGraphicsItem *parent) : Attack_Cards(parent) {
     Load_Card_Image();
 }
 
+
 Immolate::Immolate(const Immolate& other) : Attack_Cards(other) {}
 
 void Immolate::play(player* player, QList<Enemy*>& enemies) {
+    if (enemies.isEmpty()) return;
     int dmg = calculate_damage(player);
     for (Enemy* e : enemies) {
         e->takeDamage(dmg);
@@ -34,8 +35,7 @@ Card* Immolate::upgrade() {
     Immolate* upgraded = new Immolate(*this);
     upgraded->damage += 7;
     upgraded->is_Upgrade = true;
-    upgraded->description = "Deal " + QString::number(upgraded->damage) +
-                            " damage to ALL enemies.\nAdd a *Burn into your discard pile.";
+    upgraded->description = "Deal " + QString::number(upgraded->damage) + " damage to ALL enemies.\nAdd a *Burn into your discard pile.";
     upgraded->Load_Card_Image(true);
     return upgraded;
 }

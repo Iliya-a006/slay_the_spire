@@ -330,8 +330,13 @@ void CombatScene::setupEnemy()
     }
 
     m_enemyItem->setPos(enemyX, enemyY);
-    m_scene->addItem(m_enemyItem);
 
+    m_enemyItem->setAcceptHoverEvents(true);
+    m_enemyItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+    m_enemyItem->setFlag(QGraphicsItem::ItemIsFocusable, true);
+    m_enemyItem->setData(0, QVariant::fromValue(m_currentEnemy));
+
+    m_scene->addItem(m_enemyItem);
 
     m_enemyHpBarBg = new QGraphicsRectItem();
     m_enemyHpBarBg->setRect(enemyX, enemyY + ITEM_SIZE + 10, 180, 20);
@@ -339,13 +344,11 @@ void CombatScene::setupEnemy()
     m_enemyHpBarBg->setPen(QPen(Qt::gray, 1));
     m_scene->addItem(m_enemyHpBarBg);
 
-
     m_enemyHpBar = new QGraphicsRectItem();
     m_enemyHpBar->setRect(enemyX + 3, enemyY + ITEM_SIZE + 13, 174, 14);
     m_enemyHpBar->setBrush(Qt::red);
     m_enemyHpBar->setPen(Qt::NoPen);
     m_scene->addItem(m_enemyHpBar);
-
 
     m_enemyHPText = new QGraphicsTextItem();
     m_enemyHPText->setPos(enemyX + 40, enemyY + ITEM_SIZE + 8);
@@ -353,7 +356,6 @@ void CombatScene::setupEnemy()
     m_enemyHPText->setFont(font);
     m_enemyHPText->setDefaultTextColor(Qt::white);
     m_scene->addItem(m_enemyHPText);
-
 
     m_enemyIntentText = new QGraphicsTextItem();
     QFont intentFont("Vazirmatn", 13, QFont::Bold);
@@ -475,6 +477,7 @@ void CombatScene::onEnemyDied(Enemy* enemy)
         if (m_enemyIntentText) {
             m_enemyIntentText->setPlainText("💀 Defeated!");
         }
+        deleteEnemy();
     }
 }
 
@@ -538,6 +541,22 @@ void CombatScene::setupPlayerCards()
                     p->SPEND_ENERGY(cost);
                     p->REMOVE_FROM_HAND(c);
                     updateUI();
+                }
+            }
+        });
+
+        connect(card, &Card::Card_Clicked, this, [=](Card* c) {
+            if (c->GETER_TYPE() == ATTACK) {
+                if (c->canPlay(p) && m_currentEnemy) {
+                    int cost = c->getCurrentCost(p);
+                    if (p->GETER_ENERGY() >= cost) {
+                        QList<Enemy*> enemies;
+                        enemies.append(m_currentEnemy);
+                        c->play(p, enemies);
+                        p->SPEND_ENERGY(cost);
+                        p->REMOVE_FROM_HAND(c);
+                        updateUI();
+                    }
                 }
             }
         });

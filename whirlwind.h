@@ -10,7 +10,7 @@ public:
     Whirlwind(const Whirlwind& other);
     virtual ~Whirlwind() = default;
 
-    int getCurrentCost( player* player) const override;
+    int getCurrentCost(player* player) const override;
     void play(player* player, QList<Enemy*>& enemies) override;
     Card* upgrade() override;
     Card* clone() const override;
