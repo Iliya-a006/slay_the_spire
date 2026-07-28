@@ -33,6 +33,7 @@ public:
     int getFloor(){return floor;}
     void setFloor(int f){floor = f;}
     void plusFloor(){++floor;}
+    void plusAct(){++Act;}
     void setOldName(QString n){oldUsername = n;}
     void setOldPassword(QString p){oldPassword = p;}
     int getRemovalUsed(){return removalUsed;}
