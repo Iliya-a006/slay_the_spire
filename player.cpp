@@ -241,7 +241,9 @@ void player::RESETCOMBATSTATS() {
     block = 0;
     strength = 0;
     unblockedDamageTaken = 0;
+    HP=maxHP;
     buffManager.clearAll();
+    emit hpChanged(HP,maxHP);
 }
 
 void player::writeToStream(QDataStream &out) const
@@ -254,6 +256,8 @@ void player::readFromStream(QDataStream &in)
 {
     in >> username >> password >> gold >> Act >> floor >> maxHP >> HP >> mapID >> removalUsed;
     in >> potions >> relics;
+    HP=maxHP;
+    emit hpChanged(HP,maxHP);
 }
 
 bool player::appendPlayer(QString name, QString pass)
@@ -311,6 +315,8 @@ void player::saveFile()
 {
     if (!m_instance)
         return;
+    if(m_instance->HP<=0)
+        m_instance->HP=m_instance->maxHP;
     QVector<player> players;
     player p;
 

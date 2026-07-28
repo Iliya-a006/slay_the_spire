@@ -1,6 +1,7 @@
 #include "strike.h"
-#include"player.h"
-#include"enemy.h"
+#include "player.h"
+#include "enemy.h"
+
 Strike::Strike(QGraphicsItem *parent) : Attack_Cards(parent) {
     ID = 1;
     name = "Strike";
@@ -14,8 +15,14 @@ Strike::Strike(QGraphicsItem *parent) : Attack_Cards(parent) {
     is_Upgrade = false;
     Load_Card_Image();
 }
-Strike::Strike(const Strike& other):Attack_Cards(other){;}
+
+Strike::Strike(const Strike& other) : Attack_Cards(other) {;}
+
 void Strike::play(player* player, QList<Enemy*>& enemies) {
+    if (enemies.isEmpty()) {
+        return;
+    }
+
     int dmg = calculate_damage(player);
     applay_damage(player, enemies, dmg);
 }

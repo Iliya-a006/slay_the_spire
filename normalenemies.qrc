@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/normalenemies">
+        <file>NORMAL_ENEMIES/cultist.png</file>
+        <file>NORMAL_ENEMIES/jawworm.png</file>
+        <file>NORMAL_ENEMIES/largeslime.png</file>
+        <file>NORMAL_ENEMIES/looter.png</file>
+        <file>NORMAL_ENEMIES/lousegreen.png</file>
+        <file>NORMAL_ENEMIES/lousered.png</file>
+        <file>NORMAL_ENEMIES/mediumslime.png</file>
+        <file>NORMAL_ENEMIES/mugger.png</file>
+        <file>NORMAL_ENEMIES/slaverblue.png</file>
+        <file>NORMAL_ENEMIES/slaverred.png</file>
+        <file>NORMAL_ENEMIES/smallslime.png</file>
+        <file>NORMAL_ENEMIES/sphericguardian.png</file>
+    </qresource>
+</RCC>

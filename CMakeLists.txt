@@ -118,6 +118,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         wound.h wound.cpp
         burn.h burn.cpp
         chest.h chest.cpp
+        normalenemies.qrc
+        cultist.h cultist.cpp
+        normalenemy.h normalenemy.cpp
         vendor.h vendor.cpp
         cardremoval.h cardremoval.cpp
 
