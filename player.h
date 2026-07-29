@@ -98,6 +98,7 @@ public:
 
     void initializeDeck();
 
+    void RESET_DECK_FOR_NEW_COMBAT();
     void START_TURN();
     void END_TURN();
     void DRAW_CARD(int count);

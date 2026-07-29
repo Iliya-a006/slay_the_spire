@@ -419,10 +419,13 @@ void Card::mousePressEvent(QGraphicsSceneMouseEvent* event) {
             m_isDragged = true;
             setCursor(Qt::ClosedHandCursor);
             emit Card_Drag_Started(this);
+            event->accept();
+            return;
         } else {
             emit Card_Clicked(this);
         }
         event->accept();
+        return;
     }
     QGraphicsItemGroup::mousePressEvent(event);
 }
@@ -433,6 +436,7 @@ void Card::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
         emit Card_Drag_Moved(this);
         setCursor(Qt::ClosedHandCursor);
         event->accept();
+        return;
     }
     QGraphicsItemGroup::mouseMoveEvent(event);
 }
@@ -487,6 +491,7 @@ void Card::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
         emit Card_Dropped(this);
         Reset_Position();
         event->accept();
+        return;
     }
     QGraphicsItemGroup::mouseReleaseEvent(event);
 }

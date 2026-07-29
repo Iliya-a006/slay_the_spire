@@ -413,7 +413,16 @@ void player::ADD_TO_HAND(Card* card){
 }
 
 void player::REMOVE_FROM_HAND(Card* card){
-    hand.removeAll(card);
+    if (!card) return;
+
+    if (hand.removeAll(card) > 0) {
+        if (card->GETER_SETER_Exhaust() || card->GETER_SETER_Ethereal()) {
+            exhaustPile.append(card);
+        } else {
+            discardPile.append(card);
+        }
+    }
+
     emit handUpdated();
 }
 
@@ -545,5 +554,26 @@ void player::END_TURN()
         block = 0;
         emit blockChanged(block);
     }
+    emit handUpdated();
+}
+
+void player::RESET_DECK_FOR_NEW_COMBAT()
+{
+    for (Card* card : hand) {
+        drawPile.append(card);
+    }
+    hand.clear();
+
+    for (Card* card : discardPile) {
+        drawPile.append(card);
+    }
+    discardPile.clear();
+
+    for (Card* card : exhaustPile) {
+        drawPile.append(card);
+    }
+    exhaustPile.clear();
+
+    SHUFFLE_DRAWPILE();
     emit handUpdated();
 }

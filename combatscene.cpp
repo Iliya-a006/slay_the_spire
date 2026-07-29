@@ -48,10 +48,20 @@ CombatScene::CombatScene(QWidget *parent)
 
 void CombatScene::resetRoom()
 {
-
+    teardownCombat();
+    player* p = player::instance();
+    if (p) {
+        p->RESET_DECK_FOR_NEW_COMBAT();
+    }
+    setupCombat();
 }
 
 CombatScene::~CombatScene()
+{
+    teardownCombat();
+}
+
+void CombatScene::teardownCombat()
 {
     clearCards();
     deleteEnemy();
@@ -85,15 +95,10 @@ CombatScene::~CombatScene()
         delete m_endTurnButton;
         m_endTurnButton = nullptr;
     }
-    if (m_enemyHpBarBg) {
-        m_scene->removeItem(m_enemyHpBarBg);
-        delete m_enemyHpBarBg;
-        m_enemyHpBarBg = nullptr;
-    }
-    if (m_enemyHpBar) {
-        m_scene->removeItem(m_enemyHpBar);
-        delete m_enemyHpBar;
-        m_enemyHpBar = nullptr;
+
+    player* p = player::instance();
+    if (p) {
+        disconnect(p, nullptr, this, nullptr);
     }
 }
 
@@ -125,6 +130,9 @@ void CombatScene::connectPlayerSignals()
 
     connect(p, &player::hpChanged, this, [=](int newHP, int maxHP) {
         updateHPBar();
+        if (newHP <= 0) {
+            emit combatLost();
+        }
     });
 
     connect(p, &player::energyChanged, this, [=](int newEnergy) {
@@ -155,7 +163,7 @@ void CombatScene::setupPlayerAvatar()
 
     QPixmap avatarPixmap = p->pixmap();
     if (!avatarPixmap.isNull()) {
-        QPixmap scaledPixmap = avatarPixmap.scaled(ITEM_SIZE, ITEM_SIZE,
+        QPixmap scaledPixmap = avatarPixmap.scaled(270, 270,
                                                    Qt::KeepAspectRatio,
                                                    Qt::SmoothTransformation);
         m_playerAvatar->setPixmap(scaledPixmap);
@@ -266,7 +274,7 @@ void CombatScene::updateEnergyLabel()
 void CombatScene::setupEndTurnButton()
 {
     m_endTurnButton = new QPushButton("End Turn", this);
-    m_endTurnButton->setGeometry(ScreenSize::getWidth() - 150, 30, 120, 40);
+    m_endTurnButton->setGeometry(ScreenSize::getWidth() - 150, 60, 120, 40);
 
     m_endTurnButton->setStyleSheet(
         "QPushButton {"
@@ -300,7 +308,18 @@ void CombatScene::endTurn()
     if (!p) return;
 
     p->END_TURN();
+
+    if (m_currentEnemy) {
+        m_currentEnemy->executeIntent(*p);
+        m_currentEnemy->endTurn();
+    }
+
     p->START_TURN();
+
+    if (m_currentEnemy) {
+        m_currentEnemy->startTurn();
+        m_currentEnemy->getNextIntent();
+    }
 
     updateUI();
 }
@@ -488,6 +507,7 @@ void CombatScene::onEnemyDied(Enemy* enemy)
             m_enemyIntentText->setPlainText("💀 Defeated!");
         }
         deleteEnemy();
+        emit combatWon();
     }
 }
 
@@ -613,7 +633,7 @@ void CombatScene::resizeEvent(QResizeEvent* event)
     m_scene->setSceneRect(0, 0, width(), height());
 
     if (m_endTurnButton) {
-        m_endTurnButton->setGeometry(ScreenSize::getWidth() - 150, 30, 120, 40);
+        m_endTurnButton->setGeometry(ScreenSize::getWidth() - 150, 60, 120, 40);
     }
 }
 

@@ -151,26 +151,13 @@ EnemyScene::EnemyScene(QWidget *parent)
     });
 
 
-    ////
-    ////
-    winButton = new QPushButton("Win", this);
-    loseButton = new QPushButton("Lose", this);
-    winButton->setFixedSize(60, 40);
-    loseButton->setFixedSize(80, 40);
-    winButton->move(ScreenSize::getWidth() - 150, ScreenSize::getHeigth()/4);
-    loseButton->move(ScreenSize::getWidth() - 150, ScreenSize::getHeigth()/4 + 60);
-    connect(winButton, &QPushButton::clicked, this, [this](){
-        winButton->hide();
-        loseButton->hide();
+
+    connect(this, &CombatScene::combatWon, this, [this](){
         endRoom(true);
     });
-    connect(loseButton, &QPushButton::clicked, this, [this](){
-        winButton->hide();
-        loseButton->hide();
+    connect(this, &CombatScene::combatLost, this, [this](){
         endRoom(false);
     });
-    ////
-    ////
 }
 
 void EnemyScene::resetRoom()
@@ -183,16 +170,14 @@ void EnemyScene::resetRoom()
     nameLabel->hide();
     nextbutton->hide();
     leaveButton->hide();
-    m_endTurnButton->show();
     is_end = false;
+    m_selectedCard = nullptr;
+    deleteScene();
 
+    CombatScene::resetRoom();
+
+    m_endTurnButton->show();
     this->updateBar();
-
-
-    //
-    winButton->show();
-    loseButton->show();
-    //
 }
 
 EnemyScene::~EnemyScene()
@@ -238,7 +223,7 @@ void EnemyScene::resizeEvent(QResizeEvent* event)
     }
 
     if (m_endTurnButton) {
-        m_endTurnButton->setGeometry(ScreenSize::getWidth() - 150, 30, 120, 40);
+        m_endTurnButton->setGeometry(ScreenSize::getWidth() - 150, 60, 120, 40);
     }
 }
 

@@ -46,11 +46,6 @@ private:
     Card* pickRandomCard();
     void deleteScene();
 
-    //
-    QPushButton* winButton;
-    QPushButton* loseButton;
-    //
-
 private slots:
         void onCardClicked(Card* card);
 

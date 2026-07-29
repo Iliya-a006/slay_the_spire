@@ -64,6 +64,7 @@ protected:
     void resizeEvent(QResizeEvent* event) override;
 
     virtual void resetRoom();
+    void teardownCombat();
     void updateBar();
 
 private slots:
@@ -73,6 +74,8 @@ private slots:
 
 signals:
     void roomExited(bool result);
+    void combatWon();
+    void combatLost();
 };
 
 #endif // COMBATSCENE_H
