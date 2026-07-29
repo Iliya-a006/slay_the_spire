@@ -68,6 +68,10 @@ protected:
 private slots:
     void onEndTurnClicked();
     void onEnemyDied(Enemy* enemy);
+
+
+signals:
+    void roomExited(bool result);
 };
 
 #endif // COMBATSCENE_H

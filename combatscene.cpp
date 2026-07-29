@@ -2,6 +2,7 @@
 #include "screensize.h"
 #include <QVBoxLayout>
 #include <QMouseEvent>
+#include "map1.h"
 
 CombatScene::CombatScene(QWidget *parent)
     : QWidget(parent)
@@ -39,6 +40,9 @@ CombatScene::CombatScene(QWidget *parent)
     m_hpText = nullptr;
     m_energyText = nullptr;
     m_endTurnButton = nullptr;
+
+
+    connect(this, &CombatScene::roomExited, Map1::instance(), &Map1::onRoomExited);
 }
 
 void CombatScene::resetRoom()
