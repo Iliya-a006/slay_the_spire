@@ -30,6 +30,7 @@ public:
     int getMapID() { return mapID; }
     void setMapID(int id) { mapID = id; }
     int getAct(){return Act;}
+    void setAct(int a){Act = a;}
     int getFloor(){return floor;}
     void setFloor(int f){floor = f;}
     void plusFloor(){++floor;}

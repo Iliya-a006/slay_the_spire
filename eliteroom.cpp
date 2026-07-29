@@ -1,4 +1,5 @@
 #include "eliteroom.h"
+#include "enemyscene.h"
 #include "mainwindow.h"
 #include "Page.h"
 #include "roomscene.h"
@@ -13,13 +14,13 @@ EliteRoom::EliteRoom(int index, QGraphicsItem *parent) : Room(index, parent){
 
 void EliteRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if(!this->accessible)
-        return;
+    // if(!this->accessible)
+    //     return;
 
     Map1::selectedIndex = this->index;
-    QWidget *widget = MainWindow::m_stack->widget((int)Page::Elite);
-    RoomScene *room = qobject_cast<RoomScene*>(widget);
+    QWidget *widget = MainWindow::m_stack->widget((int)Page::Enemy);
+    EnemyScene *room = qobject_cast<EnemyScene*>(widget);
     if (room)
         room->resetRoom();
-    MainWindow::changeStack((int)Page::Elite);
+    MainWindow::changeStack((int)Page::Enemy);
 }
