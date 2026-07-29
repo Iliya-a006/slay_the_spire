@@ -2,6 +2,7 @@
 #include "screensize.h"
 #include <QVBoxLayout>
 #include <QMouseEvent>
+#include "topbar.h"
 
 CombatScene::CombatScene(QWidget *parent)
     : QWidget(parent)
@@ -43,7 +44,7 @@ CombatScene::CombatScene(QWidget *parent)
 
 void CombatScene::resetRoom()
 {
-
+    this->updateBar();
 }
 
 CombatScene::~CombatScene()
@@ -591,4 +592,13 @@ void CombatScene::resizeEvent(QResizeEvent* event)
     if (m_endTurnButton) {
         m_endTurnButton->setGeometry(ScreenSize::getWidth() - 150, 30, 120, 40);
     }
+}
+
+void CombatScene::updateBar()
+{
+    TopBar::instance(this)->setPlayerName(player::instance()->getName());
+    TopBar::instance()->setGeometry(0, 0, ScreenSize::getWidth(), 40);
+    TopBar::instance()->setHP(player::instance()->GETER_HP(), player::instance()->GETER_MAXHP());
+    TopBar::instance()->setGold(player::instance()->GETER_GOLD());
+    TopBar::instance()->setFloor(player::instance()->getFloor());
 }
