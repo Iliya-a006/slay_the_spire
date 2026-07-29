@@ -18,7 +18,7 @@ EnemyScene::EnemyScene(QWidget *parent)
 
 void EnemyScene::resetRoom()
 {
-
+    this->updateBar();
 }
 
 EnemyScene::~EnemyScene()

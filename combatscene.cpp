@@ -44,7 +44,7 @@ CombatScene::CombatScene(QWidget *parent)
 
 void CombatScene::resetRoom()
 {
-    this->updateBar();
+
 }
 
 CombatScene::~CombatScene()
