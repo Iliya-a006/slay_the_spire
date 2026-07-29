@@ -135,6 +135,7 @@ void EnemyScene::resetRoom()
     nextbutton->hide();
     is_end = false;
 
+    this->updateBar();
 }
 
 EnemyScene::~EnemyScene()
