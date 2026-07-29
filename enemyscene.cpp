@@ -7,6 +7,7 @@
 #include "cultist.h"
 #include <QRandomGenerator>
 #include "shopscene.h"
+#include "topbar.h"
 
 EnemyScene::EnemyScene(QWidget *parent)
     : CombatScene(parent)
@@ -148,6 +149,28 @@ EnemyScene::EnemyScene(QWidget *parent)
             }
         }
     });
+
+
+    ////
+    ////
+    winButton = new QPushButton("Win", this);
+    loseButton = new QPushButton("Lose", this);
+    winButton->setFixedSize(60, 40);
+    loseButton->setFixedSize(80, 40);
+    winButton->move(ScreenSize::getWidth() - 150, ScreenSize::getHeigth()/4);
+    loseButton->move(ScreenSize::getWidth() - 150, ScreenSize::getHeigth()/4 + 60);
+    connect(winButton, &QPushButton::clicked, this, [this](){
+        winButton->hide();
+        loseButton->hide();
+        endRoom(true);
+    });
+    connect(loseButton, &QPushButton::clicked, this, [this](){
+        winButton->hide();
+        loseButton->hide();
+        endRoom(false);
+    });
+    ////
+    ////
 }
 
 void EnemyScene::resetRoom()
@@ -164,6 +187,12 @@ void EnemyScene::resetRoom()
     is_end = false;
 
     this->updateBar();
+
+
+    //
+    winButton->show();
+    loseButton->show();
+    //
 }
 
 EnemyScene::~EnemyScene()
@@ -229,17 +258,19 @@ void EnemyScene::endRoom(bool result)
 
 void EnemyScene::goldGift()
 {
+    m_selectedCard = nullptr;
     dimmer->show();
     coinItem->show();
     countLabel->show();
     nameLabel->show();
     topLabel->show();
+    topLabel->setText("You Recieved");
     victoryLabel->show();
     nextbutton->show();
     victoryLabel->setText("VICTORY!");
     NOfGolds = QRandomGenerator::global()->bounded(16) + 15;
     player::instance()->changeGold(NOfGolds);
-    //TopBar::instance()->setGold(player::instance()->GETER_GOLD());
+    TopBar::instance()->setGold(player::instance()->GETER_GOLD());
     countLabel->setText(QString::number(NOfGolds) + "X");
 }
 

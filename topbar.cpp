@@ -11,6 +11,10 @@ TopBar* TopBar::instance(QWidget *parent)
 {
     if (!m_instance)
         m_instance = new TopBar(parent);
+    if (parent){
+        delete m_instance;
+        m_instance = new TopBar(parent);
+    }
 
     return m_instance;
 }
@@ -97,6 +101,6 @@ void TopBar::setGold(int gold)
 
 void TopBar::setFloor(int floor)
 {
-    m_floorLabel->setText(QString::number(floor));
+    m_floorLabel->setText(QString::number(floor+1));
 }
 

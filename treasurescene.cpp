@@ -164,6 +164,7 @@ void TreasureScene::relicGift()
 {
     // select a random relic
     countLabel->hide();
+    nameLabel->setText("");
     // nameLabel->show();
     // Qstring name = relic name
     // nameLabel->setText( name );

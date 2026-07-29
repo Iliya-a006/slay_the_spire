@@ -200,6 +200,7 @@ CampScene::CampScene(QWidget *parent)
         emit roomExited(true);
     });
     connect(nextButton, &QPushButton::clicked, this, [this](){
+        clearListScene();
         showLeavePage("No card was upgraded.");
     });
     connect(upgradeButton, &QPushButton::clicked, this, [this](){
@@ -211,6 +212,9 @@ CampScene::CampScene(QWidget *parent)
             listScene->removeItem(m_selectedCard);
             m_selectedCard->disconnect(this);
             delete m_selectedCard;
+            m_selectedCard = nullptr;
+
+            clearListScene();
 
             showLeavePage("Your '" + upgradedCard->GETER_NAME() + "' card upgraded!");
             m_selectedCard = nullptr;
@@ -260,6 +264,8 @@ void CampScene::smithOption()
     chooseLabel->show();
     nextButton->show();
     upgradeButton->show();
+
+    allCards.clear();
 
     m_selectedCard = nullptr;
     upgradeButton->setDisabled(true);

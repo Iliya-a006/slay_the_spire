@@ -79,6 +79,11 @@ ShopScene::ShopScene(QWidget *parent)
     connect(leaveButton, &QPushButton::clicked, this, [this](){
         if (in_removal){
             in_removal = false;
+            if (m_selectedCard) {
+                m_selectedCard->setOpacity(1.0);
+                m_selectedCard = nullptr;
+            }
+            clearCardsScene();
             cardsView->hide();
             shopView->show();
             removeButton->hide();
@@ -344,8 +349,10 @@ void ShopScene::onRemovalClicked()
     buyButton->hide();
     cardsView->show();
     removeButton->show();
-    m_selectedCard->setOpacity(1.0);
-    m_selectedCard = nullptr;
+    if (m_selectedCard){
+        m_selectedCard->setOpacity(1.0);
+        m_selectedCard = nullptr;
+    }
     in_removal = true;
 
     clearCardsScene();
@@ -421,6 +428,8 @@ void ShopScene::clearCardsScene()
     for (auto* card : allCards) {
         if (card) {
             disconnect(card, nullptr, this, nullptr);
+            card->Set_Draggable(true);
+            card->setOpacity(1.0);
             cardsScene->removeItem(card);
         }
     }
