@@ -1,5 +1,6 @@
 #include "serpantevent.h"
 #include "player.h"
+#include "topbar.h"
 
 SerpantEvent::SerpantEvent()
 {
@@ -11,6 +12,7 @@ SerpantEvent::SerpantEvent()
                          "Serpent: 'Yeeeeeeeeesssssssssssssssssssssssssssssssssssssssssssss'\n\nSerpent: 'Thissss will all be worthhh it.'\n\nSerpent: '...ssSSSs..... ss... ssssss....!' The serpent rears its head and blasts a stream of gold upwards! It is amazing and terrifying simultaneously. You gather all the gold, thank the snake, and get going.",
                          [](){
                              player::instance()->changeGold(175);
+                             TopBar::instance()->setGold(player::instance()->GETER_GOLD());
                              // recieve curse doubt
                          }};
     this->addOption(agree);

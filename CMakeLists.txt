@@ -123,6 +123,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         normalenemy.h normalenemy.cpp
         vendor.h vendor.cpp
         cardremoval.h cardremoval.cpp
+        topbar.h topbar.cpp
 
 
 

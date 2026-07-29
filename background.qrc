@@ -9,6 +9,7 @@
         <file>images/battleBg.png</file>
         <file>images/greenBg.png</file>
         <file>images/restBg.png</file>
+        <file>images/gray.jfif</file>
     </qresource>
     <qresource prefix="/icons">
         <file>images/BossMapIcon2.png</file>
@@ -26,6 +27,9 @@
         <file>images/coin.png</file>
         <file>images/gold.png</file>
         <file>images/card_removal_service.png</file>
+        <file>images/heart.png</file>
+        <file>images/map.png</file>
+        <file>images/stairs.png</file>
     </qresource>
     <qresource prefix="/characters">
         <file>images/vendor.png</file>

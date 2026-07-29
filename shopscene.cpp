@@ -2,6 +2,7 @@
 #include <qgraphicsitem.h>
 #include <qgraphicsview.h>
 #include "screensize.h"
+#include "topbar.h"
 #include "vendor.h"
 #include <QRandomGenerator>
 #include <qtimer.h>
@@ -110,6 +111,7 @@ ShopScene::ShopScene(QWidget *parent)
                 shopScene->removeItem(cardsCost[i]);
                 shopScene->removeItem(cardsCoinItems[i]);
                 player::instance()->changeGold(-cost);
+                TopBar::instance()->setGold(player::instance()->GETER_GOLD());
                 player::instance()->ADD_TO_DRAWPILE(availableCards[i]);
                 delete cardsCost[i];
                 delete cardsCoinItems[i];
@@ -140,6 +142,7 @@ ShopScene::ShopScene(QWidget *parent)
                 return;
             }
             player::instance()->changeGold(-removalText->toPlainText().toInt());
+            TopBar::instance()->setGold(player::instance()->GETER_GOLD());
             player::instance()->setRemovalUsed(player::instance()->getRemovalUsed()+1);
             removalText->setPlainText(QString::number(50 + player::instance()->getRemovalUsed()*25));
 
@@ -191,6 +194,8 @@ void ShopScene::resetRoom()
     showItems();
     shopView->hide();
     cardsView->hide();
+
+    this->updateBar();
 }
 
 void ShopScene::onVendorClicked()

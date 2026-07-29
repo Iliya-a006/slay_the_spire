@@ -4,6 +4,7 @@
 #include "player.h"
 #include "screensize.h"
 #include "chest.h"
+#include "topbar.h"
 #include <QRandomGenerator>
 
 TreasureScene::TreasureScene(QWidget *parent)
@@ -125,6 +126,8 @@ void TreasureScene::resetRoom()
     nextbutton->hide();
     recieved = false;
     is_end = false;
+
+    this->updateBar();
 }
 
 void TreasureScene::onChestClicked()
@@ -148,6 +151,7 @@ void TreasureScene::goldGift()
     countLabel->show();
     NOfGolds = QRandomGenerator::global()->bounded(31) + 30;
     player::instance()->changeGold(NOfGolds);
+    TopBar::instance()->setGold(player::instance()->GETER_GOLD());
 
     countLabel->setText(QString::number(NOfGolds) + "X");
     QString name = "Gold";

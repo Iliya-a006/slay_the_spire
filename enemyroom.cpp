@@ -1,7 +1,7 @@
 #include "enemyroom.h"
+#include "enemyscene.h"
 #include "mainwindow.h"
 #include "Page.h"
-#include "roomscene.h"
 #include "map1.h"
 
 EnemyRoom::EnemyRoom(int index, QGraphicsItem *parent) : Room(index, parent){
@@ -18,7 +18,7 @@ void EnemyRoom::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     Map1::selectedIndex = this->index;
     QWidget *widget = MainWindow::m_stack->widget((int)Page::Enemy);
-    RoomScene *room = qobject_cast<RoomScene*>(widget);
+    EnemyScene *room = qobject_cast<EnemyScene*>(widget);
     if (room)
         room->resetRoom();
     MainWindow::changeStack((int)Page::Enemy);

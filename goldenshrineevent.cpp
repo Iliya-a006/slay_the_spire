@@ -1,5 +1,6 @@
 #include "goldenshrineevent.h"
 #include "player.h"
+#include "topbar.h"
 
 GoldenShrineEvent::GoldenShrineEvent()
 {
@@ -10,7 +11,8 @@ GoldenShrineEvent::GoldenShrineEvent()
     EventOption pray = {"Pray",
                         "As your hand touches the shrine, gold rains from the ceiling showering you in riches."
                         , [](){
-                             player::instance()->changeGold(100);
+                            player::instance()->changeGold(100);
+                            TopBar::instance()->setGold(player::instance()->GETER_GOLD());
                         }};
     this->addOption(pray);
 

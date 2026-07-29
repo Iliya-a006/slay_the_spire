@@ -1,6 +1,7 @@
 #include "facetraderevent.h"
 #include <QRandomGenerator>
 #include "player.h"
+#include "topbar.h"
 
 FaceTraderEvent::FaceTraderEvent()
 {
@@ -13,7 +14,9 @@ FaceTraderEvent::FaceTraderEvent()
                          , [](){
                              int percent = QRandomGenerator::global()->bounded(6) + 5;
                              player::instance()->SET_MAXHP(player::instance()->GETER_MAXHP() * (100 - percent) / 100);
+                             TopBar::instance()->setHP(player::instance()->GETER_HP(), player::instance()->GETER_MAXHP());
                              player::instance()->changeGold(75);
+                             TopBar::instance()->setGold(player::instance()->GETER_GOLD());
                          }
     };
     this->addOption(touch);

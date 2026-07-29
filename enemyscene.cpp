@@ -16,6 +16,11 @@ EnemyScene::EnemyScene(QWidget *parent)
     bgItem->setPos(0, 0);
 }
 
+void EnemyScene::resetRoom()
+{
+    this->updateBar();
+}
+
 EnemyScene::~EnemyScene()
 {
 }
