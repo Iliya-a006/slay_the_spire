@@ -25,6 +25,30 @@ private slots:
 private:
     void endTurn();
 
+private:
+    QGraphicsPixmapItem* coinItem;
+    QGraphicsRectItem* dimmer;
+    QLabel* topLabel;
+    QLabel* victoryLabel;
+    QLabel* countLabel;
+    QLabel* nameLabel;
+    QPushButton* nextbutton;
+    QPushButton* leaveButton;
+    QVector<Card*> availableCards;
+    Card* m_selectedCard = nullptr;
+    bool is_end;
+    int NOfGolds;
+
+    void endRoom(bool result);
+    void goldGift();
+    void cardGift();
+    void showItems();
+    Card* pickRandomCard();
+    void deleteScene();
+
+private slots:
+        void onCardClicked(Card* card);
+
 };
 
 #endif // ENEMYSCENE_H

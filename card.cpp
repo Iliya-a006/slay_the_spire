@@ -108,11 +108,13 @@ bool Card::canPlay(player* player) const {
 void Card::Set_Hovered(bool hovered) {
     this->hovered = hovered;
     if (hovered) {
-        setZValue(10);
+        if (zValue() < 100)
+            setZValue(10);
         setPos(x(), y() - 20);
         setScale(0.55);
     } else {
-        setZValue(0);
+        if (zValue() < 100)
+            setZValue(0);
         setPos(originalPos);
         setScale(0.5);
     }
