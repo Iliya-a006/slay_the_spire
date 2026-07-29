@@ -463,7 +463,10 @@ void Map1::onRoomExited(bool result)
 
 void Map1::nextAct()
 {
-    player::instance()->plusAct();
+    if (player::instance()->getAct() == 2)
+        player::instance()->setAct(1);
+    else
+        player::instance()->plusAct();
     player::instance()->setFloor(0);
     mapCoder();
     route.clear();
