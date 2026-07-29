@@ -29,7 +29,7 @@ EnemyScene::EnemyScene(QWidget *parent)
     dimmer->setZValue(100);
     m_scene->addItem(dimmer);
 
-    topLabel = new QLabel(this);
+    topLabel = new QLabel("You recieved", this);
     topLabel->setFixedSize(270, 60);
     topLabel->move(ScreenSize::getWidth()/2 - topLabel->width()/2, ScreenSize::getHeigth()/2 - topLabel->height() - 40);
     topLabel->setStyleSheet("QLabel {"
@@ -40,6 +40,18 @@ EnemyScene::EnemyScene(QWidget *parent)
                             "   font-weight: 900;"
                             "   border: none;"
                             "}");
+
+    victoryLabel = new QLabel(this);
+    victoryLabel->setFixedSize(400 ,120);
+    victoryLabel->move(ScreenSize::getWidth()/2 - victoryLabel->width()/2, ScreenSize::getHeigth()/5);
+    victoryLabel->setStyleSheet("QLabel {"
+                                "   background: transparent;"
+                                "   color: #FFD700;"
+                                "   font-family: 'Vazirmatn';"
+                                "   font-size: 64px;"
+                                "   font-weight: 900;"
+                                "   border: none;"
+                                "}");
 
     countLabel = new QLabel(this);
     countLabel->setFixedSize(60, 40);
@@ -88,6 +100,18 @@ EnemyScene::EnemyScene(QWidget *parent)
     }
     )");
 
+    leaveButton = new QPushButton("Leave", this);
+    leaveButton->setFixedSize(100, 40);
+    leaveButton->move(ScreenSize::getWidth() - 150, ScreenSize::getHeigth()/3);
+    leaveButton->setStyleSheet(nextbutton->styleSheet());
+
+
+    connect(leaveButton, &QPushButton::clicked, this, [this](){
+        victoryLabel->hide();
+        dimmer->hide();
+        leaveButton->hide();
+        emit roomExited(false);
+    });
     connect(nextbutton, &QPushButton::clicked, this, [this](){
         if (!is_end){
             is_end = true;
@@ -118,6 +142,7 @@ EnemyScene::EnemyScene(QWidget *parent)
                 deleteScene();
                 dimmer->hide();
                 topLabel->hide();
+                victoryLabel->hide();
                 nextbutton->hide();
                 emit roomExited(true);
             }
@@ -129,10 +154,13 @@ void EnemyScene::resetRoom()
 {
     dimmer->hide();
     topLabel->hide();
+    victoryLabel->hide();
     coinItem->hide();
     countLabel->hide();
     nameLabel->hide();
     nextbutton->hide();
+    leaveButton->hide();
+    m_endTurnButton->show();
     is_end = false;
 
     this->updateBar();
@@ -185,6 +213,20 @@ void EnemyScene::resizeEvent(QResizeEvent* event)
     }
 }
 
+void EnemyScene::endRoom(bool result)
+{
+    m_endTurnButton->hide();
+    if (result){
+        goldGift();
+    }
+    else{
+        dimmer->show();
+        victoryLabel->show();
+        victoryLabel->setText("DEFEAT!");
+        leaveButton->show();
+    }
+}
+
 void EnemyScene::goldGift()
 {
     dimmer->show();
@@ -192,7 +234,9 @@ void EnemyScene::goldGift()
     countLabel->show();
     nameLabel->show();
     topLabel->show();
+    victoryLabel->show();
     nextbutton->show();
+    victoryLabel->setText("VICTORY!");
     NOfGolds = QRandomGenerator::global()->bounded(16) + 15;
     player::instance()->changeGold(NOfGolds);
     //TopBar::instance()->setGold(player::instance()->GETER_GOLD());
@@ -218,13 +262,14 @@ void EnemyScene::showItems()
             availableCards[i] = pickRandomCard();
         }
         m_scene->addItem(availableCards[i]);
-        x = ScreenSize::getWidth()/2 - 325 + i*250;
+        x = ScreenSize::getWidth()/2 - 375 + i*250;
         y = ScreenSize::getHeigth()/2 - 40;
         availableCards[i]->setPos(x, y);
         availableCards[i]->Set_Original_Position(x, y);
         availableCards[i]->setScale(0.5);
         availableCards[i]->Set_Draggable(false);
-        availableCards[i]->setAcceptHoverEvents(true);
+        availableCards[i]->setAcceptHoverEvents(false);
+        availableCards[i]->setZValue(101);
         connect(availableCards[i], &Card::Card_Clicked, this, &EnemyScene::onCardClicked, Qt::UniqueConnection);
     }
 }
@@ -235,7 +280,7 @@ Card* EnemyScene::pickRandomCard()
     return ShopScene::cardFactories[index]();
 }
 
-void ShopScene::onCardClicked(Card* card)
+void EnemyScene::onCardClicked(Card* card)
 {
     if (m_selectedCard == card) {
         return;
