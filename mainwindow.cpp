@@ -51,9 +51,9 @@ void MainWindow::onLoginSuccess()
 {
     MainMenu* mainmenu = new MainMenu(m_stack);
     startMenu* start = new startMenu(m_stack);
-    leaderBoard* leaderB = new leaderBoard(m_stack);
     SettingsPage* settings = new SettingsPage(m_stack);
     settings->setMainMenu(mainmenu);
+    // leaderboard
     Map1* mapAct1 = new Map1(m_stack);
     Map1::m_instance = mapAct1;
     EnemyScene* enemySc = new EnemyScene(m_stack);
@@ -67,7 +67,7 @@ void MainWindow::onLoginSuccess()
 
     m_stack->addWidget(mainmenu);
     m_stack->addWidget(start);
-    m_stack->addWidget(leaderB);
+    m_stack->addWidget(leaderBoard::instance());
     m_stack->addWidget(settings);
     m_stack->addWidget(mapAct1);
     m_stack->addWidget(enemySc);

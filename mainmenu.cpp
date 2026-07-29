@@ -14,6 +14,7 @@
 #include <QHoverEvent>
 #include <QUrl>
 #include <QTimer>
+#include "leaderboard.h"
 
 MainMenu::MainMenu(QWidget *parent)
     : QWidget(parent)
@@ -73,6 +74,7 @@ MainMenu::MainMenu(QWidget *parent)
     });
 
     connect(leaderBButton, &QPushButton::clicked, this, [](){
+        leaderBoard::instance()->refreshBoard();
         MainWindow::changeStack((int)Page::leaderBoard);
     });
 

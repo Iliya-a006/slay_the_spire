@@ -459,6 +459,7 @@ void Map1::onRoomExited(bool result)
 
         MainWindow::changeStack((int)Page::MainMenu);
     }
+    player::instance()->saveFile();
 }
 
 void Map1::nextAct()

@@ -11,25 +11,26 @@
 #include "mainwindow.h"
 #include "player.h"
 
+leaderBoard* leaderBoard::m_instance = nullptr;
+
+leaderBoard* leaderBoard::instance(QWidget *parent)
+{
+    if (!m_instance)
+        m_instance = new leaderBoard(parent);
+    return m_instance;
+}
+
+void leaderBoard::refreshBoard()
+{
+    if (m_instance)
+        m_instance->refresh();
+}
 
 leaderBoard::leaderBoard(QWidget *parent)
     : QWidget(parent)
 {
-    QVector<player> players = player::allPlayers();
-    std::sort(players.begin(), players.end(), [](player p1, player p2){
-        return p1.getAct()*11 + p1.getFloor() > p2.getAct()*11 + p2.getFloor();
-    });
-    QVector<std::array<QString, 4>> items;
-    items.resize(players.size());
-    for (int i=0; i<players.size(); ++i){
-        items[i][0] = QString::number(i+1);
-        items[i][1] = players[i].getName();
-        items[i][2] = QString::number(players[i].getAct());
-        items[i][3] = QString::number(players[i].getFloor()+1);
-    }
-
-    QVBoxLayout *outerLayout = new QVBoxLayout(this);
-    outerLayout->setContentsMargins(30, 30, 30, 30);
+    m_outerLayout = new QVBoxLayout(this);
+    m_outerLayout->setContentsMargins(30, 30, 30, 30);
 
     QWidget *header = new QWidget();
     QHBoxLayout *headerLayout = new QHBoxLayout(header);
@@ -59,8 +60,7 @@ leaderBoard::leaderBoard(QWidget *parent)
     headerLayout->addWidget(headerLabel3);
     headerLayout->addWidget(headerLabel4);
 
-
-    QPushButton* backButton = new QPushButton("Back" ,this);
+    QPushButton* backButton = new QPushButton("Back", this);
     backButton->setFixedSize(80, 40);
     backButton->setStyleSheet(R"(
     QPushButton {
@@ -84,15 +84,40 @@ leaderBoard::leaderBoard(QWidget *parent)
         MainWindow::changeStack((int)Page::MainMenu);
     });
 
+    m_outerLayout->addWidget(header, 0, Qt::AlignCenter);
+    m_outerLayout->addSpacing(10);
 
-    outerLayout->addWidget(header, 0, Qt::AlignCenter);
-    outerLayout->addSpacing(10);
-    QScrollArea *list = createScrollableList(items);
-    outerLayout->addWidget(list, 0, Qt::AlignCenter);
-    outerLayout->addWidget(backButton, 0, Qt::AlignCenter);
-    outerLayout->addStretch();
+    m_list = nullptr;
+    refresh(); // لیست اولیه رو می‌سازه و توی index درست insert می‌کنه
+
+    m_outerLayout->addWidget(backButton, 0, Qt::AlignCenter);
+    m_outerLayout->addStretch();
 }
 
+void leaderBoard::refresh()
+{
+    QVector<player> players = player::allPlayers();
+    std::sort(players.begin(), players.end(), [](player p1, player p2){
+        return p1.getAct()*11 + p1.getFloor() > p2.getAct()*11 + p2.getFloor();
+    });
+
+    QVector<std::array<QString, 4>> items;
+    items.resize(players.size());
+    for (int i = 0; i < players.size(); ++i){
+        items[i][0] = QString::number(i+1);
+        items[i][1] = players[i].getName();
+        items[i][2] = QString::number(players[i].getAct());
+        items[i][3] = QString::number(players[i].getFloor()+1);
+    }
+
+    if (m_list) {
+        m_outerLayout->removeWidget(m_list);
+        m_list->deleteLater();
+    }
+
+    m_list = createScrollableList(items);
+    m_outerLayout->insertWidget(2, m_list, 0, Qt::AlignCenter);
+}
 
 QWidget* leaderBoard::createRow(const QString &text1, const QString &text2, const QString &text3, const QString &text4)
 {
@@ -144,8 +169,8 @@ QScrollArea* leaderBoard::createScrollableList(const QVector<std::array<QString,
     return scrollArea;
 }
 
-
 leaderBoard::~leaderBoard()
 {
-
+    if (m_instance == this)
+        m_instance = nullptr;
 }
