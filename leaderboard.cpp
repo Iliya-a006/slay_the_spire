@@ -88,7 +88,7 @@ leaderBoard::leaderBoard(QWidget *parent)
     m_outerLayout->addSpacing(10);
 
     m_list = nullptr;
-    refresh(); // لیست اولیه رو می‌سازه و توی index درست insert می‌کنه
+    refresh();
 
     m_outerLayout->addWidget(backButton, 0, Qt::AlignCenter);
     m_outerLayout->addStretch();
