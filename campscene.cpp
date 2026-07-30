@@ -344,14 +344,15 @@ void CampScene::onCardClickedForUpgrade(Card* card)
 
 void CampScene::clearListScene()
 {
-    for (QGraphicsItem *item : listScene->items()) {
-        if (Card* card = dynamic_cast<Card*>(item)) {
+    for (Card* card : allCards) {
+        if (card) {
             card->disconnect(this);
             card->Set_Draggable(true);
             card->setOpacity(1.0);
+            listScene->removeItem(card);
         }
-        listScene->removeItem(item);
     }
+    allCards.clear();
     m_selectedCard = nullptr;
 }
 

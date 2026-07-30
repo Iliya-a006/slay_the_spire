@@ -43,6 +43,7 @@ CombatScene::CombatScene(QWidget *parent)
     m_endTurnButton = nullptr;
 
 
+    connect(this, &CombatScene::roomExited, this, &CombatScene::clearCards);
     connect(this, &CombatScene::roomExited, Map1::instance(), &Map1::onRoomExited);
 }
 
@@ -171,6 +172,7 @@ void CombatScene::setupPlayerAvatar()
         m_playerAvatar->setPixmap(avatarPixmap);
     }
 
+    m_playerAvatar->setScale(1.3);
     int avatarX = MARGIN;
     int avatarY = (ScreenSize::getHeigth() / 2) - (ITEM_SIZE / 2);
     m_playerAvatar->setPos(avatarX, avatarY);
